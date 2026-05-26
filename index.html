@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Лабораторная работа №4 — Аутентификация и Авторизация</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0e0f14;
+  --bg2: #161820;
+  --bg3: #1e2030;
+  --bg4: #252840;
+  --border: #2e3150;
+  --accent: #7c6af7;
+  --accent2: #a78bfa;
+  --accent3: #c4b5fd;
+  --green: #4ade80;
+  --green-dim: #14532d;
+  --orange: #fb923c;
+  --orange-dim: #431407;
+  --red: #f87171;
+  --red-dim: #450a0a;
+  --blue: #60a5fa;
+  --blue-dim: #1e3a5f;
+  --yellow: #fbbf24;
+  --text: #e2e4f0;
+  --text2: #9da3c0;
+  --text3: #5c6080;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Onest', sans-serif;
+}
+ 
+* { margin: 0; padding: 0; box-sizing: border-box; }
+ 
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.7;
+}
+ 
+/* ── LAYOUT ── */
+.layout { display: flex; min-height: 100vh; }
+ 
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 280px;
+  min-width: 280px;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+ 
+.sidebar-logo {
+  padding: 24px 20px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-logo .badge {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 99px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.sidebar-logo h1 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.4;
+}
+ 
+.nav { padding: 12px 0; flex: 1; }
+.nav-section-title {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  padding: 8px 20px 4px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 20px;
+  cursor: pointer;
+  transition: background .15s;
+  border-radius: 0;
+  color: var(--text2);
+  font-size: 13.5px;
+}
+.nav-item:hover { background: var(--bg3); color: var(--text); }
+.nav-item.active { background: rgba(124,106,247,.15); color: var(--accent3); border-right: 2px solid var(--accent); }
+.nav-item .step-num {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--bg4);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; font-family: var(--mono);
+  color: var(--text3); flex-shrink: 0;
+}
+.nav-item.active .step-num { background: var(--accent); border-color: var(--accent); color: #fff; }
+.nav-item.done .step-num { background: var(--green-dim); border-color: var(--green); color: var(--green); }
+ 
+/* ── MAIN ── */
+.main { flex: 1; max-width: 860px; }
+ 
+.stage {
+  display: none;
+  padding: 48px 56px;
+  animation: fadeIn .25s ease;
+}
+.stage.active { display: block; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+ 
+/* ── STAGE HEADER ── */
+.stage-header {
+  display: flex; align-items: flex-start; gap: 20px;
+  margin-bottom: 36px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.stage-num-big {
+  width: 52px; height: 52px; border-radius: 14px;
+  background: linear-gradient(135deg, var(--accent), #a855f7);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 20px; font-weight: 700;
+  color: #fff; flex-shrink: 0;
+}
+.stage-title-group { flex: 1; }
+.stage-title-group .stage-tag {
+  font-size: 11px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--accent2); margin-bottom: 4px;
+}
+.stage-title-group h2 { font-size: 26px; font-weight: 600; color: var(--text); line-height: 1.2; }
+ 
+/* ── THEORY BLOCK ── */
+.theory-block {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+.theory-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 20px;
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+}
+.theory-header:hover { background: var(--bg4); }
+.theory-icon {
+  width: 28px; height: 28px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+.theory-icon.purple { background: rgba(124,106,247,.2); }
+.theory-icon.green { background: rgba(74,222,128,.15); }
+.theory-icon.orange { background: rgba(251,146,60,.15); }
+.theory-icon.blue { background: rgba(96,165,250,.15); }
+.theory-header h3 { font-size: 14px; font-weight: 600; flex: 1; }
+.theory-header .chevron {
+  color: var(--text3); font-size: 12px;
+  transition: transform .2s;
+}
+.theory-body { padding: 20px; display: none; }
+.theory-block.open .chevron { transform: rotate(180deg); }
+.theory-block.open .theory-body { display: block; }
+ 
+p { color: var(--text2); margin-bottom: 12px; font-size: 15px; }
+p strong { color: var(--text); font-weight: 500; }
+p:last-child { margin-bottom: 0; }
+ 
+ul, ol { color: var(--text2); font-size: 15px; padding-left: 20px; }
+li { margin-bottom: 6px; }
+li strong { color: var(--text); }
+ 
+/* ── CODE BLOCK ── */
+.code-block {
+  background: #0a0b10;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 16px 0;
+}
+.code-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+}
+.code-filename { font-family: var(--mono); font-size: 12px; color: var(--text2); }
+.code-lang {
+  font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--accent2); background: rgba(124,106,247,.1); padding: 2px 8px; border-radius: 99px;
+}
+.code-copy {
+  background: transparent; border: 1px solid var(--border); border-radius: 6px;
+  color: var(--text3); font-size: 11px; padding: 3px 10px; cursor: pointer;
+  transition: all .15s; font-family: var(--sans);
+}
+.code-copy:hover { border-color: var(--accent); color: var(--accent2); }
+pre {
+  padding: 18px 20px; overflow-x: auto; font-family: var(--mono);
+  font-size: 13px; line-height: 1.7; color: #c9d1d9;
+}
+/* Syntax highlight classes */
+.kw { color: #ff79c6; }
+.fn { color: #50fa7b; }
+.str { color: #f1fa8c; }
+.num { color: #bd93f9; }
+.cmt { color: #6272a4; font-style: italic; }
+.type { color: #8be9fd; }
+.ann { color: #ffb86c; }
+ 
+/* ── CALLOUT ── */
+.callout {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 14px 16px; border-radius: 10px; margin: 16px 0;
+  font-size: 14px; line-height: 1.6;
+}
+.callout.info { background: var(--blue-dim); border: 1px solid rgba(96,165,250,.3); color: #bfdbfe; }
+.callout.warning { background: var(--orange-dim); border: 1px solid rgba(251,146,60,.3); color: #fed7aa; }
+.callout.success { background: var(--green-dim); border: 1px solid rgba(74,222,128,.3); color: #bbf7d0; }
+.callout.danger { background: var(--red-dim); border: 1px solid rgba(248,113,113,.3); color: #fecaca; }
+.callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.callout strong { color: inherit; }
+ 
+/* ── ANALOGY BOX ── */
+.analogy {
+  background: rgba(124,106,247,.07);
+  border: 1px solid rgba(124,106,247,.2);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+  padding: 16px 20px; margin: 16px 0;
+}
+.analogy .label {
+  font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent2); margin-bottom: 6px;
+}
+.analogy p { color: var(--text); font-size: 14px; margin: 0; }
+ 
+/* ── STEP TASK ── */
+.task-box {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-top: 28px;
+}
+.task-box h4 {
+  font-size: 13px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
+  color: var(--accent2); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.task-list { list-style: none; padding: 0; }
+.task-list li {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 8px 0; border-bottom: 1px solid var(--border);
+  color: var(--text2); font-size: 14px;
+}
+.task-list li:last-child { border-bottom: none; }
+.task-list li::before { content: "→"; color: var(--accent); flex-shrink: 0; margin-top: 1px; }
+ 
+/* ── NAV BUTTONS ── */
+.nav-buttons {
+  display: flex; gap: 12px; justify-content: flex-end;
+  margin-top: 40px; padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.btn {
+  padding: 10px 24px; border-radius: 8px; font-size: 14px; font-weight: 500;
+  cursor: pointer; transition: all .15s; font-family: var(--sans); border: none;
+}
+.btn-ghost {
+  background: transparent; border: 1px solid var(--border); color: var(--text2);
+}
+.btn-ghost:hover { border-color: var(--text2); color: var(--text); }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: #6b5ce7; }
+ 
+/* ── TABLE ── */
+table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 16px 0; }
+th {
+  text-align: left; padding: 10px 14px;
+  background: var(--bg3); color: var(--text2); font-weight: 500; font-size: 12px;
+  text-transform: uppercase; letter-spacing: .06em;
+  border-bottom: 1px solid var(--border);
+}
+td { padding: 10px 14px; border-bottom: 1px solid var(--bg3); color: var(--text2); vertical-align: top; }
+tr:hover td { background: var(--bg3); }
+code {
+  font-family: var(--mono); font-size: 12px; background: var(--bg3);
+  border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--accent3);
+}
+ 
+/* ── PROGRESS ── */
+.progress-bar {
+  height: 3px; background: var(--border);
+  position: sticky; top: 0; z-index: 10;
+}
+.progress-fill { height: 100%; background: var(--accent); transition: width .4s ease; }
+ 
+/* ── SCHEMA DIAGRAM ── */
+.diagram {
+  background: #0a0b10; border: 1px solid var(--border); border-radius: 12px;
+  padding: 24px; margin: 16px 0; text-align: center;
+}
+.diagram-row { display: flex; align-items: center; justify-content: center; gap: 0; margin: 8px 0; flex-wrap: wrap; }
+.d-box {
+  background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 10px 16px; font-size: 13px; font-family: var(--mono); color: var(--text2);
+  white-space: nowrap;
+}
+.d-box.highlight { border-color: var(--accent); color: var(--accent3); background: rgba(124,106,247,.1); }
+.d-box.green { border-color: var(--green); color: var(--green); background: rgba(74,222,128,.08); }
+.d-box.orange { border-color: var(--orange); color: var(--orange); background: rgba(251,146,60,.08); }
+.d-arrow { color: var(--text3); font-size: 18px; padding: 0 4px; }
+.d-label { font-size: 11px; color: var(--text3); margin: 4px 0 12px; }
+ 
+/* ── INLINE DIFF ── */
+.diff-add { background: rgba(74,222,128,.1); border-left: 3px solid var(--green); }
+.diff-add pre { color: #a7f3d0; }
+ 
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+ 
+h4.section { font-size: 16px; font-weight: 600; color: var(--text); margin: 24px 0 10px; }
+hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+ 
+.tag {
+  display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px;
+  border-radius: 99px; margin-right: 4px;
+}
+.tag.get { background: rgba(74,222,128,.15); color: var(--green); }
+.tag.post { background: rgba(96,165,250,.15); color: var(--blue); }
+.tag.put { background: rgba(251,191,36,.15); color: var(--yellow); }
+.tag.delete { background: rgba(248,113,113,.15); color: var(--red); }
+ 
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } .stage { padding: 24px 20px; } .sidebar { width: 260px; min-width: 260px; } }
+</style>
+</head>
+<body>
+ 
+<div class="layout">
+ 
+<!-- ══════════════ SIDEBAR ══════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="badge">ЛАБ №4</div>
+    <h1>Аутентификация<br>и авторизация</h1>
+  </div>
+  <nav class="nav">
+    <div class="nav-section-title">Этапы</div>
+    <div class="nav-item active" onclick="goTo(1)">
+      <span class="step-num">1</span>Добавить --secret и Role
+    </div>
+    <div class="nav-item" onclick="goTo(2)">
+      <span class="step-num">2</span>JWT-токены
+    </div>
+    <div class="nav-item" onclick="goTo(3)">
+      <span class="step-num">3</span>Фильтр аутентификации
+    </div>
+    <div class="nav-item" onclick="goTo(4)">
+      <span class="step-num">4</span>Права (Permissions)
+    </div>
+    <div class="nav-item" onclick="goTo(5)">
+      <span class="step-num">5</span>Авторизация маршрутов
+    </div>
+    <div class="nav-item" onclick="goTo(6)">
+      <span class="step-num">6</span>Проверка владения (Owner)
+    </div>
+    <div class="nav-item" onclick="goTo(7)">
+      <span class="step-num">7</span>Финальная сборка
+    </div>
+  </nav>
+</aside>
+ 
+<!-- ══════════════ CONTENT ══════════════ -->
+<main class="main">
+  <div class="progress-bar"><div class="progress-fill" id="progress" style="width:14%"></div></div>
+ 
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ЭТАП 1: --secret и Role
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="stage active" id="stage-1">
+  <div class="stage-header">
+    <div class="stage-num-big">1</div>
+    <div class="stage-title-group">
+      <div class="stage-tag">Подготовка</div>
+      <h2>Добавить параметр <code>--secret</code> и роль пользователя</h2>
+    </div>
+  </div>
+ 
+  <!-- THEORY -->
+  <div class="theory-block open">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <div class="theory-icon purple">📖</div>
+      <h3>Теория: JCommander — параметры командной строки</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>В твоём проекте уже используется <strong>JCommander</strong> — библиотека для разбора аргументов командной строки. Сейчас в <code>AppArgs</code> уже есть <code>--tasks-file</code>, <code>--categories-file</code>, <code>--users-file</code>, <code>--port</code>.</p>
+      <p>Нужно добавить ещё один параметр — <strong><code>--secret</code></strong>. Это будет секретный ключ, которым подписываются JWT-токены. Его нельзя хранить в исходном коде — только передавать снаружи.</p>
+ 
+      <div class="analogy">
+        <div class="label">Аналогия</div>
+        <p>Представь, что ты директор завода. Каждому сотруднику выдаётся пропуск (токен). Пропуска подписывает только директор своей личной печатью (secret). Охранник (сервер) проверяет печать и пропускает тебя. Секрет — это твоя печать: если она утечёт, любой сможет подделать пропуска.</p>
+      </div>
+ 
+      <p>В JCommander аннотация <code>@Parameter</code> принимает несколько опций:</p>
+      <ul>
+        <li><strong><code>names</code></strong> — список допустимых имён флага, например <code>["--port", "-p"]</code></li>
+        <li><strong><code>required = true</code></strong> — если параметр не передан, JCommander бросит исключение</li>
+        <li><strong><code>required = false</code></strong> (по умолчанию) — параметр опциональный, будет использоваться <code>defaultValue</code></li>
+      </ul>
+    </div>
+  </div>
+ 
+  <div class="theory-block open">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <div class="theory-icon green">💡</div>
+      <h3>Пример НЕ из твоей работы: добавление параметра <code>--api-key</code></h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>Представим другое приложение — сервис погоды. Ему нужен API-ключ для внешнего сервиса. Так выглядит добавление нового параметра:</p>
+ 
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <div>До изменения в AppArgs было только <code>--port</code> и <code>--data-file</code>. Добавляем <code>--api-key</code>.</div>
+      </div>
+ 
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">WeatherArgs.kt (пример)</span>
+          <span class="code-lang">Kotlin</span>
+          <button class="code-copy" onclick="copyCode(this)">копировать</button>
+        </div>
+        <pre><span class="ann">@Parameters</span>(separators = <span class="str">"="</span>)
+<span class="kw">class</span> <span class="type">WeatherArgs</span> {
+ 
+    <span class="ann">@Parameter</span>(names = [<span class="str">"--port"</span>], required = <span class="kw">true</span>)
+    <span class="kw">var</span> port: <span class="type">Int</span> = <span class="num">0</span>
+ 
+    <span class="ann">@Parameter</span>(names = [<span class="str">"--data-file"</span>], required = <span class="kw">true</span>)
+    <span class="kw">var</span> dataFile: <span class="type">String</span> = <span class="str">""</span>
+ 
+    <span class="cmt">// ← Добавляем новый параметр:</span>
+    <span class="ann">@Parameter</span>(names = [<span class="str">"--api-key"</span>], required = <span class="kw">true</span>)
+    <span class="kw">var</span> apiKey: <span class="type">String</span> = <span class="str">""</span>
+}</pre>
+      </div>
+ 
+      <p>Теперь запуск приложения требует: <code>./gradlew run --args="--port=8080 --data-file=data.csv --api-key=abc123"</code></p>
+      <p>В <code>main()</code> можно получить ключ как <code>appArgs.apiKey</code> и передать дальше туда, где он нужен.</p>
+    </div>
+  </div>
+ 
+  <div class="theory-block open">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <div class="theory-icon orange">🏷️</div>
+      <h3>Теория: Enum-классы в Kotlin — роли пользователя</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p><strong>Enum (перечисление)</strong> — тип данных с фиксированным набором значений. Идеально подходит для ролей, т.к. роль — это всегда одно из предопределённых значений.</p>
+ 
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">Пример: роли в другом приложении</span>
+          <span class="code-lang">Kotlin</span>
+          <button class="code-copy" onclick="copyCode(this)">копировать</button>
+        </div>
+        <pre><span class="cmt">// Пример с сервисом доставки еды (не твоё приложение)</span>
+<span class="kw">enum class</span> <span class="type">DeliveryRole</span> {
+    Customer,       <span class="cmt">// обычный покупатель</span>
+    Courier,        <span class="cmt">// курьер</span>
+    RestaurantAdmin <span class="cmt">// администратор ресторана</span>
+}
+ 
+<span class="cmt">// Использование в data class:</span>
+<span class="kw">data class</span> <span class="type">DeliveryUser</span>(
+    <span class="kw">val</span> id: <span class="type">UUID</span>,
+    <span class="kw">val</span> name: <span class="type">String</span>,
+    <span class="kw">val</span> role: <span class="type">DeliveryRole</span>  <span class="cmt">// ← добавляем поле роли</span>
+)
+ 
+<span class="cmt">// Работа с enum: получение по строке из CSV</span>
+<span class="kw">val</span> role = <span class="type">DeliveryRole</span>.<span class="fn">valueOf</span>(<span class="str">"Courier"</span>)  <span class="cmt">// DeliveryRole.Courier</span>
+<span class="kw">val</span> roleName = role.name  <span class="cmt">// строка "Courier"</span>
+ 
+<span class="cmt">// Когда используем when — Kotlin требует покрыть все варианты:</span>
+<span class="kw">when</span> (user.role) {
+    <span class="type">DeliveryRole</span>.Customer        -> <span class="fn">showMenu</span>()
+    <span class="type">DeliveryRole</span>.Courier         -> <span class="fn">showOrders</span>()
+    <span class="type">DeliveryRole</span>.RestaurantAdmin -> <span class="fn">showDashboard</span>()
+}</pre>
+      </div>
+ 
+      <div class="callout info">
+        <span class="callout-icon">ℹ️</span>
+        <div>Если при чтении CSV значение роли не совпадёт ни с одним enum — <code>valueOf()</code> бросит исключение. Обрабатывай это: <code>enumValueOf&lt;Role&gt;(str)</code> или <code>try/catch</code>.</div>
+      </div>
+ 
+      <p>CSV-файл с ролью выглядит так:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-filename">users.csv (пример с ролями)</span><span class="code-lang">CSV</span></div>
+        <pre>Id,Login,RegistrationDateTime,Email,Role
+de42a00f-...,User123,2024-01-01T00:00,user123@example.com,User
+a2c5117e-...,Admin1,2024-01-02T00:00,admin@example.com,UserManager</pre>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- WHAT TO DO -->
+  <div class="task-box">
+    <h4>📝 Что делаешь в своём проекте на этом этапе</h4>
+    <ul class="task-list">
+      <li>В <code>AppArgs</code> (файл <code>Main.kt</code>) добавь поле <code>secret</code> с аннотацией <code>@Parameter(names = ["--secret"], required = true)</code></li>
+      <li>В <code>User.kt</code> добавь поле <code>val role: UserRole</code> — создай рядом файл <code>UserRole.kt</code> с enum-классом: <code>User</code>, <code>CategoryManager</code>, <code>UserManager</code></li>
+      <li>В <code>CsvParser.kt</code> в функции <code>loadUser()</code> добавь чтение поля <code>Role</code> — <code>UserRole.valueOf(row["Role"]?.trim() ?: "User")</code></li>
+      <li>В <code>data/users.csv</code> добавь колонку <code>Role</code> и проставь значения пользователям</li>
+    </ul>
+  </div>
+ 
+  <div class="nav-buttons">
+    <button class="btn btn-primary" onclick="goTo(2)">Этап 2 →</button>
+  </div>
+</section>
+ 
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ЭТАП 2: JWT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="stage" id="stage-2">
+  <div class="stage-header">
+    <div class="stage-num-big">2</div>
+    <div class="stage-title-group">
+      <div class="stage-tag">Библиотека java-jwt</div>
+      <h2>Создание и верификация JWT-токенов</h2>
+    </div>
+  </div>
+ 
+  <div class="theory-block open">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <div class="theory-icon purple">🔐</div>
+      <h3>Теория: что такое JWT и зачем он нужен</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>JWT (JSON Web Token) — это способ «упаковать» данные о пользователе в строку и <strong>подписать эту строку</strong>, чтобы никто не мог её подделать.</p>
+ 
+      <div class="analogy">
+        <div class="label">Аналогия — выдача пропуска на мероприятие</div>
+        <p>Охрана (сервер) выдаёт пропуск (токен) с именем гостя (userId), датой истечения и печатью (подписью). Чтобы войти, показываешь пропуск — охрана смотрит на печать и дату. Не нужно снова проверять паспорт (не нужна база данных сессий).</p>
+      </div>
+ 
+      <p>Токен выглядит так — три части разделены точками:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-filename">Пример JWT-токена</span><span class="code-lang">JWT</span></div>
+        <pre><span class="cmt">eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9</span>.<span class="str">eyJzdWIiOiJkZTQyYTAwZiIsImlzcyI6ImFwcCIsImV4cCI6MTczNTY4OTYwMH0</span>.<span class="fn">SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c</span>
+<span class="cmt">│──── HEADER (алгоритм) ────│──────────── PAYLOAD (данные) ─────────────│─── SIGNATURE (подпись) ───│</span></pre>
+      </div>
+ 
+      <p>Payload расшифровывается в:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-filename">Содержимое payload</span><span class="code-lang">JSON</span></div>
+        <pre>{
+  <span class="str">"sub"</span>: <span class="str">"de42a00f-7f43-4d10-808d-bee47fdeef49"</span>,  <span class="cmt">// ID пользователя</span>
+  <span class="str">"iss"</span>: <span class="str">"tasks-app"</span>,                              <span class="cmt">// кто выдал</span>
+  <span class="str">"exp"</span>: <span class="num">1735689600</span>                                 <span class="cmt">// до каких пор действителен</span>
+}</pre>
+      </div>
+ 
+      <div class="callout danger">
+        <span class="callout-icon">🚫</span>
+        <div><strong>Payload читается без ключа!</strong> Base64 — это не шифрование. Никогда не кладите в payload пароли, секреты или конфиденциальные данные.</div>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="theory-block open">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <div class="theory-icon green">📦</div>
+      <h3>Подключение библиотеки + пример создания/проверки токена</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p><strong>Шаг 1:</strong> добавить зависимость в <code>build.gradle.kts</code>:</p>
+ 
+      <div class="code-block diff-add">
+        <div class="code-header">
+          <span class="code-filename">build.gradle.kts</span>
+          <span class="code-lang">Kotlin DSL</span>
+          <button class="code-copy" onclick="copyCode(this)">копировать</button>
+        </div>
+        <pre>dependencies {
+    testImplementation(kotlin(<span class="str">"test"</span>))
+    <span class="cmt">// ← добавить эту строку:</span>
+    implementation(<span class="str">"com.auth0:java-jwt:4.4.0"</span>)
+}</pre>
+      </div>
+ 
+      <p><strong>Шаг 2 (пример не из твоей работы):</strong> Представим приложение-заметки "NoteApp". Там тоже нужен JWT. Класс будет выглядеть так:</p>
+ 
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">NoteJwtTools.kt (пример)</span>
+          <span class="code-lang">Kotlin</span>
+          <button class="code-copy" onclick="copyCode(this)">копировать</button>
+        </div>
+        <pre><span class="kw">import</span> com.auth0.jwt.JWT
+<span class="kw">import</span> com.auth0.jwt.JWTVerifier
+<span class="kw">import</span> com.auth0.jwt.algorithms.Algorithm
+<span class="kw">import</span> com.auth0.jwt.exceptions.JWTVerificationException
+<span class="kw">import</span> java.time.Instant
+ 
+<span class="kw">class</span> <span class="type">NoteJwtTools</span>(<span class="kw">private val</span> secret: <span class="type">String</span>) {
+ 
+    <span class="cmt">// Algorithm и Verifier создаём ОДИН РАЗ для всего приложения</span>
+    <span class="kw">private val</span> algorithm = <span class="type">Algorithm</span>.<span class="fn">HMAC512</span>(secret)
+ 
+    <span class="kw">private val</span> verifier: <span class="type">JWTVerifier</span> = <span class="type">JWT</span>.<span class="fn">require</span>(algorithm)
+        .<span class="fn">withIssuer</span>(<span class="str">"note-app"</span>)
+        .<span class="fn">build</span>()
+ 
+    <span class="cmt">// Создать токен для пользователя. Builder создаём КАЖДЫЙ РАЗ.</span>
+    <span class="kw">fun</span> <span class="fn">createToken</span>(userId: <span class="type">String</span>): <span class="type">String</span> =
+        <span class="type">JWT</span>.<span class="fn">create</span>()
+            .<span class="fn">withIssuer</span>(<span class="str">"note-app"</span>)
+            .<span class="fn">withSubject</span>(userId)              <span class="cmt">// кто владелец токена</span>
+            .<span class="fn">withExpiresAt</span>(<span class="type">Instant</span>.now().<span class="fn">plusSeconds</span>(<span class="num">3600</span>)) <span class="cmt">// живёт 1 час</span>
+            .<span class="fn">sign</span>(algorithm)
+ 
+    <span class="cmt">// Проверить токен. Вернуть userId или null если невалидный.</span>
+    <span class="kw">fun</span> <span class="fn">getUserId</span>(token: <span class="type">String</span>): <span class="type">String</span>? =
+        <span class="kw">try</span> {
+            verifier.<span class="fn">verify</span>(token).subject  <span class="cmt">// вернёт "sub" из payload</span>
+        } <span class="kw">catch</span> (e: <span class="type">JWTVerificationException</span>) {
+            <span class="kw">null</span>  <span class="cmt">// неверная подпись, истёк, или другая ошибка</span>
+        }
+}</pre>
+      </div>
+ 
+      <div class="callout success">
+        <span class="callout-icon">✅</span>
+        <div><strong>Ключевое правило:</strong> <code>Algorithm</code> и <code>JWTVerifier</code> — создавай один раз в конструкторе класса. <code>JWT.create()</code> — вызывай каждый раз при создании нового токена.</div>
+      </div>
+ 
+      <p>Как это использовать в том же NoteApp (в main функции):</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-filename">Пример использования JwtTools</span><span class="code-lang">Kotlin</span><button class="code-copy" onclick="copyCode(this)">копировать</button></div>
+        <pre><span class="kw">val</span> jwt = <span class="type">NoteJwtTools</span>(appArgs.secret)
+ 
+<span class="cmt">// Создать токен — например при логине:</span>
+<span class="kw">val</span> token = jwt.<span class="fn">createToken</span>(<span class="str">"de42a00f-7f43-4d10-808d-bee47fdeef49"</span>)
+<span class="cmt">// → "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9..."</span>
+ 
+<span class="cmt">// Проверить токен — например при каждом запросе:</span>
+<span class="kw">val</span> userId = jwt.<span class="fn">getUserId</span>(token)
+<span class="cmt">// → "de42a00f-7f43-4d10-808d-bee47fdeef49" или null</span></pre>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="task-box">
+    <h4>📝 Что делаешь в своём проекте на этом этапе</h4>
+    <ul class="task-list">
+      <li>В <code>build.gradle.kts</code> добавь зависимость <code>com.auth0:java-jwt:4.4.0</code> в блок <code>dependencies</code></li>
+      <li>Создай файл <code>src/main/kotlin/ru/yarsu/auth/JwtTools.kt</code> — класс принимает <code>secret: String</code>, имеет методы <code>createToken(userId: String): String</code> и <code>getUserId(token: String): String?</code></li>
+      <li>В <code>withIssuer()</code> поставь любое осмысленное имя, например <code>"tasks-app"</code> — главное использовать одно и то же везде</li>
+      <li>Убедись что <code>createToken</code> выбрасывает исключение при ошибке, а <code>getUserId</code> возвращает <code>null</code> при любой ошибке валидации</li>
+    </ul>
+  </div>
+ 
+  <div class="nav-buttons">
+    <button class="btn btn-ghost" onclick="goTo(1)">← Этап 1</button>
+    <button class="btn btn-primary" onclick="goTo(3)">Этап 3 →</button>
+  </div>
+</section>
+ 
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ЭТАП 3: ФИЛЬТР АУТЕНТИФИКАЦИИ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="stage" id="stage-3">
+  <div class="stage-header">
+    <div class="stage-num-big">3</div>
+    <div class="stage-title-group">
+      <div class="stage-tag">http4k Filters + RequestKey</div>
+      <h2>Фильтр аутентификации: извлечение токена из запроса</h2>
+    </div>
+  </div>
+ 
+  <div class="theory-block open">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <div class="theory-icon purple">🔗</div>
+      <h3>Теория: как работают фильтры в http4k</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>В твоём проекте уже есть фильтр — <code>lensFailureFilter</code>. Фильтр в http4k — это функция, которая <strong>оборачивает обработчик</strong>: перехватывает запрос до обработчика и/или ответ после.</p>
+ 
+      <div class="analogy">
+        <div class="label">Аналогия — охранник на входе</div>
+        <p>Фильтр — это охранник перед кабинетом. Директора (обработчик) нельзя беспокоить без проверки. Охранник смотрит пропуск (токен), записывает имя посетителя в журнал (RequestKey), и только потом пускает к директору или разворачивает обратно (401).</p>
+      </div>
+ 
+      <div class="code-block">
+        <div class="code-header"><span class="code-filename">Анатомия Filter в http4k</span><span class="code-lang">Kotlin</span><button class="code-copy" onclick="copyCode(this)">копировать</button></div>
+        <pre><span class="kw">val</span> myFilter = <span class="type">Filter</span> { next ->   <span class="cmt">// next — это следующий обработчик</span>
+    { request ->               <span class="cmt">// это лямбда, которая вызывается на каждый запрос</span>
+ 
+        <span class="cmt">// Код ДО обработчика — здесь читаем/проверяем запрос</span>
+        <span class="kw">val</span> result = next(request)  <span class="cmt">// передаём запрос дальше</span>
+        <span class="cmt">// Код ПОСЛЕ обработчика — здесь можно изменить ответ</span>
+ 
+        result  <span class="cmt">// возвращаем ответ</span>
+    }
+}</pre>
+      </div>
+ 
+      <p>Чтобы <strong>ранний возврат</strong> (не пустить дальше), просто не вызываем <code>next()</code>:</p>
+ 
+      <div class="code-block">
+        <div class="code-header"><span class="code-filename">Фильтр с ранним возвратом (пример)</span><span class="code-lang">Kotlin</span><button class="code-copy" onclick="copyCode(this)">копировать</button></div>
+        <pre><span class="kw">val</span> checkTimeFilter = <span class="type">Filter</span> { next ->
+    { request ->
+        <span class="kw">val</span> hour = <span class="type">LocalTime</span>.now().hour
+        <span class="kw">if</span> (hour < <span class="num">9</span> || hour > <span class="num">18</span>) {
+            <span class="cmt">// Сервис закрыт — next() НЕ вызываем!</span>
+            <span class="type">Response</span>(<span class="type">Status</span>.SERVICE_UNAVAILABLE)
+                .<span class="fn">body</span>(<span class="str">"Сервис работает только с 9 до 18"</span>)
+        } <span class="kw">else</span> {
+            next(request)  <span class="cmt">// В рабочее время — пускаем дальше</span>
+        }
+    }
+}</pre>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="theory-block open">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <div class="theory-icon blue">🗝️</div>
+      <h3>Теория: RequestKey — передача данных между фильтром и обработчиком</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>Фильтр извлёк userId из токена. Как передать его в обработчик? Нельзя использовать глобальные переменные (параллельные запросы сломают всё). Решение — <strong>RequestKey</strong>: типобезопасный «карман» внутри объекта <code>Request</code>.</p>
+ 
+      <div class="diagram">
+        <div class="d-label">Поток обработки запроса</div>
+        <div class="diagram-row">
+          <div class="d-box">HTTP Request</div>
+          <div class="d-arrow">→</div>
+          <div class="d-box highlight">Filter<br><small style="font-size:11px">читает токен,<br>кладёт userId</small></div>
+          <div class="d-arrow">→</div>
+          <div class="d-box highlight">Request<br>+ userId</div>
+          <div class="d-arrow">→</div>
+          <div class="d-box green">Handler<br><small style="font-size:11px">достаёт userId<br>из Request</small></div>
+        </div>
+      </div>
+ 
+      <div class="code-block">
+        <div class="code-header"><span class="code-filename">RequestKeys.kt (пример для NoteApp)</span><span class="code-lang">Kotlin</span><button class="code-copy" onclick="copyCode(this)">копировать</button></div>
+        <pre><span class="kw">import</span> org.http4k.lens.RequestKey
+ 
+<span class="cmt">// RequestKey.optional — userId может отсутствовать (для публичных маршрутов)</span>
+<span class="kw">val</span> userIdKey = <span class="type">RequestKey</span>.<span class="fn">optional</span>&lt;<span class="type">String</span>&gt;(<span class="str">"userId"</span>)
+ 
+<span class="cmt">// Как положить значение в Request:</span>
+<span class="kw">val</span> enriched = request.<span class="fn">with</span>(userIdKey <span class="kw">of</span> <span class="str">"de42a00f-..."</span>)
+ 
+<span class="cmt">// Как достать значение в обработчике:</span>
+<span class="kw">val</span> userId: <span class="type">String</span>? = userIdKey(request)  <span class="cmt">// null если не было токена</span></pre>
+      </div>
+ 
+      <div class="callout info">
+        <span class="callout-icon">ℹ️</span>
+        <div><strong>optional vs required:</strong> используй <code>RequestKey.optional</code> для userId — токена может не быть у публичных маршрутов. Если нужно гарантировать наличие, используй <code>required</code> — но тогда запрос без этого ключа бросит исключение.</div>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="theory-block open">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <div class="theory-icon orange">🛡️</div>
+      <h3>Полный пример фильтра аутентификации (не из твоей работы)</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>NoteApp — сервис заметок. Клиент передаёт токен в заголовке <code>Authorization: Bearier &lt;token&gt;</code>. Фильтр извлекает userId и кладёт в контекст запроса:</p>
+ 
+      <div class="code-block">
+        <div class="code-header"><span class="code-filename">NoteAuthFilter.kt (пример)</span><span class="code-lang">Kotlin</span><button class="code-copy" onclick="copyCode(this)">копировать</button></div>
+        <pre><span class="kw">import</span> org.http4k.core.Filter
+<span class="kw">import</span> org.http4k.core.Response
+<span class="kw">import</span> org.http4k.core.Status
+<span class="kw">import</span> org.http4k.core.with
+ 
+<span class="kw">fun</span> <span class="fn">makeAuthFilter</span>(
+    jwt: <span class="type">NoteJwtTools</span>,
+    userIdKey: <span class="cmt">/* RequestKey<String?> */</span>
+): <span class="type">Filter</span> = <span class="type">Filter</span> { next ->
+    { request ->
+        <span class="cmt">// 1. Читаем заголовок Authorization</span>
+        <span class="kw">val</span> authHeader: <span class="type">String</span>? = request.<span class="fn">header</span>(<span class="str">"Authorization"</span>)
+ 
+        <span class="cmt">// 2. Проверяем что начинается с "Bearier " и убираем префикс</span>
+        <span class="kw">val</span> token: <span class="type">String</span>? = authHeader
+            ?.takeIf { it.<span class="fn">startsWith</span>(<span class="str">"Bearier "</span>) }
+            ?.<span class="fn">removePrefix</span>(<span class="str">"Bearier "</span>)
+ 
+        <span class="cmt">// 3. Проверяем токен — получаем userId или null</span>
+        <span class="kw">val</span> userId: <span class="type">String</span>? = token?.<span class="fn">let</span> { jwt.<span class="fn">getUserId</span>(it) }
+ 
+        <span class="cmt">// 4. Кладём userId в Request (даже если null — для публичных маршрутов)</span>
+        <span class="kw">val</span> enriched = request.<span class="fn">with</span>(userIdKey <span class="kw">of</span> userId)
+ 
+        <span class="cmt">// 5. Передаём обогащённый запрос дальше</span>
+        next(enriched)
+    }
+}</pre>
+      </div>
+ 
+      <div class="callout success">
+        <span class="callout-icon">✅</span>
+        <div>Этот фильтр <strong>не возвращает 401</strong> — он только кладёт userId (или null) в контекст. Возврат 401 происходит позже — в фильтре проверки прав или в самом обработчике, где нужна аутентификация.</div>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="task-box">
+    <h4>📝 Что делаешь в своём проекте на этом этапе</h4>
+    <ul class="task-list">
+      <li>Создай файл <code>src/main/kotlin/ru/yarsu/auth/RequestKeys.kt</code> — определи <code>val userIdKey = RequestKey.optional&lt;String&gt;("userId")</code></li>
+      <li>Создай файл <code>src/main/kotlin/ru/yarsu/auth/AuthFilter.kt</code> — функция <code>makeAuthFilter(jwt: JwtTools, userIdKey: ...): Filter</code></li>
+      <li>В фильтре: читай заголовок <code>"Authorization"</code>, убирай префикс <code>"Bearier "</code> (именно с такой опечаткой, как в спецификации!), верифицируй через <code>jwt.getUserId()</code>, кладь в Request через <code>request.with(userIdKey of userId)</code></li>
+      <li>Фильтр пока не возвращает 401 — только обогащает запрос. 401 будет в следующем этапе.</li>
+    </ul>
+  </div>
+ 
+  <div class="nav-buttons">
+    <button class="btn btn-ghost" onclick="goTo(2)">← Этап 2</button>
+    <button class="btn btn-primary" onclick="goTo(4)">Этап 4 →</button>
+  </div>
+</section>
+ 
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ЭТАП 4: PERMISSIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="stage" id="stage-4">
+  <div class="stage-header">
+    <div class="stage-num-big">4</div>
+    <div class="stage-title-group">
+      <div class="stage-tag">RBAC — ролевая модель</div>
+      <h2>Система прав (Permissions) и фильтр авторизации</h2>
+    </div>
+  </div>
+ 
+  <div class="theory-block open">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <div class="theory-icon purple">🎯</div>
+      <h3>Теория: зачем отделять роль от прав?</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>Роль пользователя (<code>UserRole</code>) — это категория из базы данных. Права (<code>Permissions</code>) — это конкретный список <em>что можно делать</em> в приложении. Разделение важно потому что:</p>
+      <ul>
+        <li>Один класс <code>Permissions</code> описывает бизнес-логику прав — независимо от того, откуда пришли данные</li>
+        <li>Легко добавить новую роль или изменить её права — только в одном месте</li>
+        <li>Обработчики работают с <code>Permissions</code>, а не с конкретными ролями — меньше связность</li>
+      </ul>
+ 
+      <div class="analogy">
+        <div class="label">Аналогия — карта доступа в офисе</div>
+        <p>В базе хранится твоя должность (роль): «Стажёр». При входе карточку прикладываешь — турникет знает что Стажёр может ходить в переговорку и столовую, но не в серверную. Права — это список дверей, а не сама должность.</p>
+      </div>
+ 
+      <div class="code-block">
+        <div class="code-header"><span class="code-filename">Permissions.kt (пример для сервиса доставки)</span><span class="code-lang">Kotlin</span><button class="code-copy" onclick="copyCode(this)">копировать</button></div>
+        <pre><span class="cmt">// Пример из сервиса доставки — не твой код</span>
+<span class="kw">data class</span> <span class="type">DeliveryPermissions</span>(
+    <span class="kw">val</span> canPlaceOrder: <span class="type">Boolean</span> = <span class="kw">false</span>,
+    <span class="kw">val</span> canViewAllOrders: <span class="type">Boolean</span> = <span class="kw">false</span>,
+    <span class="kw">val</span> canManageRestaurants: <span class="type">Boolean</span> = <span class="kw">false</span>,
+    <span class="kw">val</span> canDeliverOrders: <span class="type">Boolean</span> = <span class="kw">false</span>,
+) {
+    <span class="kw">companion object</span> {
+        <span class="kw">val</span> GUEST = <span class="type">DeliveryPermissions</span>()
+        
+        <span class="kw">val</span> CUSTOMER = <span class="type">DeliveryPermissions</span>(
+            canPlaceOrder = <span class="kw">true</span>
+        )
+        <span class="kw">val</span> COURIER = <span class="type">DeliveryPermissions</span>(
+            canDeliverOrders = <span class="kw">true</span>,
+            canViewAllOrders = <span class="kw">true</span>
+        )
+        <span class="kw">val</span> RESTAURANT_ADMIN = <span class="type">DeliveryPermissions</span>(
+            canPlaceOrder = <span class="kw">true</span>,
+            canViewAllOrders = <span class="kw">true</span>,
+            canManageRestaurants = <span class="kw">true</span>
+        )
+    }
+}
+ 
+<span class="cmt">// Маппинг роль → права:</span>
+<span class="kw">fun</span> <span class="type">DeliveryRole</span>.<span class="fn">toPermissions</span>(): <span class="type">DeliveryPermissions</span> = <span class="kw">when</span> (<span class="kw">this</span>) {
+    <span class="type">DeliveryRole</span>.Customer        -> <span class="type">DeliveryPermissions</span>.CUSTOMER
+    <span class="type">DeliveryRole</span>.Courier         -> <span class="type">DeliveryPermissions</span>.COURIER
+    <span class="type">DeliveryRole</span>.RestaurantAdmin -> <span class="type">DeliveryPermissions</span>.RESTAURANT_ADMIN
+}</pre>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="theory-block open">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <div class="theory-icon blue">🔄</div>
+      <h3>Фильтр авторизации: от userId к Permissions</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>После фильтра аутентификации в Request лежит <code>userId</code> (или null). Второй фильтр — авторизации — берёт userId, находит пользователя в базе, получает его роль, конвертирует в права и кладёт в Request.</p>
+ 
+      <div class="code-block">
+        <div class="code-header"><span class="code-filename">NotePermissionsFilter.kt (пример)</span><span class="code-lang">Kotlin</span><button class="code-copy" onclick="copyCode(this)">копировать</button></div>
+        <pre><span class="kw">fun</span> <span class="fn">makePermissionsFilter</span>(
+    storage: <span class="type">NoteStorage</span>,
+    userIdKey: <span class="cmt">/* RequestKey<String?> */</span>,
+    permissionsKey: <span class="cmt">/* RequestKey<Permissions> */</span>
+): <span class="type">Filter</span> = <span class="type">Filter</span> { next ->
+    { request ->
+        <span class="cmt">// Достаём userId из контекста (положил предыдущий фильтр)</span>
+        <span class="kw">val</span> userId: <span class="type">String</span>? = userIdKey(request)
+ 
+        <span class="cmt">// Получаем права: если нет userId — гость, иначе ищем пользователя</span>
+        <span class="kw">val</span> permissions = <span class="kw">if</span> (userId == <span class="kw">null</span>) {
+            <span class="type">NotePermissions</span>.GUEST
+        } <span class="kw">else</span> {
+            <span class="kw">val</span> user = storage.<span class="fn">getUser</span>(<span class="type">UUID</span>.<span class="fn">fromString</span>(userId))
+            user?.role?.<span class="fn">toPermissions</span>() ?: <span class="type">NotePermissions</span>.GUEST
+        }
+ 
+        <span class="cmt">// Кладём права в Request и передаём дальше</span>
+        next(request.<span class="fn">with</span>(permissionsKey <span class="kw">of</span> permissions))
+    }
+}</pre>
+      </div>
+ 
+      <div class="callout info">
+        <span class="callout-icon">ℹ️</span>
+        <div>Если userId есть, но пользователь не найден в базе — токен валидный, но пользователь удалён. Корректно вернуть GUEST или 401. В лабе, скорее всего, достаточно вернуть GUEST.</div>
+      </div>
+ 
+      <h4 class="section">Использование Permissions в обработчике</h4>
+ 
+      <div class="code-block">
+        <div class="code-header"><span class="code-filename">Проверка права в обработчике (пример)</span><span class="code-lang">Kotlin</span><button class="code-copy" onclick="copyCode(this)">копировать</button></div>
+        <pre><span class="kw">class</span> <span class="type">DeleteRestaurantHandler</span>(
+    <span class="kw">private val</span> storage: <span class="type">NoteStorage</span>,
+    <span class="kw">private val</span> permissionsKey: <span class="cmt">/* ... */</span>
+) : <span class="type">HttpHandler</span> {
+    <span class="kw">override fun</span> <span class="fn">invoke</span>(request: <span class="type">Request</span>): <span class="type">Response</span> {
+ 
+        <span class="cmt">// Достаём права из контекста</span>
+        <span class="kw">val</span> permissions = permissionsKey(request)
+ 
+        <span class="cmt">// Проверяем право:</span>
+        <span class="kw">if</span> (!permissions.canManageRestaurants) {
+            <span class="kw">return</span> <span class="type">Response</span>(<span class="type">Status</span>.FORBIDDEN)
+                .<span class="fn">header</span>(<span class="str">"Content-Type"</span>, <span class="str">"application/json"</span>)
+                .<span class="fn">body</span>(<span class="str">"""{"Error": "Нет доступа"}"""</span>)
+        }
+ 
+        <span class="cmt">// ... дальше — реальная логика</span>
+    }
+}</pre>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="theory-block">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <div class="theory-icon orange">📊</div>
+      <h3>Матрица прав для твоего приложения (спецификация)</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <table>
+        <tr><th>Маршрут</th><th>Метод</th><th>Кто может</th></tr>
+        <tr><td><code>/ping</code>, <code>/v3/tasks</code></td><td><span class="tag get">GET</span></td><td>Все (без токена)</td></tr>
+        <tr><td><code>/v3/tasks</code></td><td><span class="tag post">POST</span></td><td>Любой авторизованный</td></tr>
+        <tr><td><code>/v3/tasks/{id}</code></td><td><span class="tag get">GET</span></td><td>Любой авторизованный</td></tr>
+        <tr><td><code>/v3/tasks/{id}</code></td><td><span class="tag put">PUT</span></td><td>Автор задачи (Owner)</td></tr>
+        <tr><td><code>/v3/tasks/eisenhower</code>, <code>/by-time</code>, <code>/statistics</code></td><td><span class="tag get">GET</span></td><td>Любой авторизованный (только свои)</td></tr>
+        <tr><td><code>/v3/categories</code></td><td><span class="tag get">GET</span></td><td>Любой авторизованный</td></tr>
+        <tr><td><code>/v3/categories/{id}</code></td><td><span class="tag put">PUT</span> <span class="tag delete">DELETE</span></td><td>Owner категории или CategoryManager</td></tr>
+        <tr><td><code>/v3/users</code></td><td><span class="tag get">GET</span></td><td>Любой авторизованный</td></tr>
+        <tr><td><code>/v3/users/{id}</code></td><td><span class="tag delete">DELETE</span></td><td>UserManager</td></tr>
+      </table>
+    </div>
+  </div>
+ 
+  <div class="task-box">
+    <h4>📝 Что делаешь в своём проекте на этом этапе</h4>
+    <ul class="task-list">
+      <li>Создай <code>auth/Permissions.kt</code>: data class с полями <code>canCreateTask</code>, <code>canManageCategories</code>, <code>canManageUsers</code>, <code>isAuthenticated</code>. Добавь companion object с константами GUEST, USER, CATEGORY_MANAGER, USER_MANAGER</li>
+      <li>Добавь extension-функцию <code>UserRole.toPermissions(): Permissions</code> — маппинг через <code>when</code></li>
+      <li>В <code>RequestKeys.kt</code> добавь <code>val permissionsKey = RequestKey.required&lt;Permissions&gt;("permissions")</code></li>
+      <li>Создай <code>auth/PermissionsFilter.kt</code>: по userId из контекста находит User, берёт его role, конвертирует в Permissions, кладёт в Request</li>
+    </ul>
+  </div>
+ 
+  <div class="nav-buttons">
+    <button class="btn btn-ghost" onclick="goTo(3)">← Этап 3</button>
+    <button class="btn btn-primary" onclick="goTo(5)">Этап 5 →</button>
+  </div>
+</section>
+ 
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ЭТАП 5: АВТОРИЗАЦИЯ МАРШРУТОВ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="stage" id="stage-5">
+  <div class="stage-header">
+    <div class="stage-num-big">5</div>
+    <div class="stage-title-group">
+      <div class="stage-tag">Маршрутизация + Filters</div>
+      <h2>Авторизация маршрутов: 401 и 403</h2>
+    </div>
+  </div>
+ 
+  <div class="theory-block open">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <div class="theory-icon purple">🚦</div>
+      <h3>Теория: 401 vs 403 — когда и что возвращать</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <div class="two-col">
+        <div style="background:var(--bg3); border:1px solid var(--border); border-radius:10px; padding:16px;">
+          <p style="color:var(--orange); font-weight:600; font-size:14px; margin-bottom:8px;">401 Unauthorized</p>
+          <p style="font-size:14px;">Мы не знаем <em>кто</em> делает запрос. Токена нет, или он истёк/повреждён.</p>
+          <p style="font-size:13px; color:var(--text3); margin:0;">Ответ: «Представьтесь, пожалуйста»</p>
+        </div>
+        <div style="background:var(--bg3); border:1px solid var(--border); border-radius:10px; padding:16px;">
+          <p style="color:var(--red); font-weight:600; font-size:14px; margin-bottom:8px;">403 Forbidden</p>
+          <p style="font-size:14px;">Мы знаем <em>кто</em> делает запрос, но у него нет прав на это действие.</p>
+          <p style="font-size:13px; color:var(--text3); margin:0;">Ответ: «Вам сюда нельзя»</p>
+        </div>
+      </div>
+ 
+      <div class="analogy" style="margin-top:16px">
+        <div class="label">Пример</div>
+        <p>Ты пришёл в банк без паспорта → <strong>401</strong> (не знаем кто ты). Ты пришёл с паспортом, но хочешь снять деньги с чужого счёта → <strong>403</strong> (знаем кто ты, но это чужое).</p>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="theory-block open">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <div class="theory-icon green">🔧</div>
+      <h3>Паттерн: фильтр проверки прав для маршрута</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>Создаём переиспользуемую функцию-фабрику, которая принимает условие и возвращает фильтр:</p>
+ 
+      <div class="code-block">
+        <div class="code-header"><span class="code-filename">AuthorizationFilters.kt (пример)</span><span class="code-lang">Kotlin</span><button class="code-copy" onclick="copyCode(this)">копировать</button></div>
+        <pre><span class="cmt">// Универсальный фильтр проверки права доступа к маршруту</span>
+<span class="kw">fun</span> <span class="fn">requirePermission</span>(
+    userIdKey: <span class="cmt">/* RequestKey<String?> */</span>,
+    permissionsKey: <span class="cmt">/* RequestKey<Permissions> */</span>,
+    canAccess: (<span class="type">Permissions</span>) -> <span class="type">Boolean</span>,
+): <span class="type">Filter</span> = <span class="type">Filter</span> { next ->
+    { request ->
+        <span class="kw">val</span> userId = userIdKey(request)
+        <span class="kw">val</span> permissions = permissionsKey(request)
+ 
+        <span class="kw">when</span> {
+            <span class="cmt">// Токена нет — 401</span>
+            userId == <span class="kw">null</span> ->
+                <span class="type">Response</span>(<span class="type">Status</span>.UNAUTHORIZED)
+                    .<span class="fn">header</span>(<span class="str">"Content-Type"</span>, <span class="str">"application/json"</span>)
+                    .<span class="fn">body</span>(<span class="str">"""{"Error": "Необходима авторизация"}"""</span>)
+ 
+            <span class="cmt">// Токен есть, но прав нет — 403</span>
+            !canAccess(permissions) ->
+                <span class="type">Response</span>(<span class="type">Status</span>.FORBIDDEN)
+                    .<span class="fn">header</span>(<span class="str">"Content-Type"</span>, <span class="str">"application/json"</span>)
+                    .<span class="fn">body</span>(<span class="str">"""{"Error": "Доступ запрещён"}"""</span>)
+ 
+            <span class="cmt">// Всё хорошо — передаём дальше</span>
+            <span class="kw">else</span> -> next(request)
+        }
+    }
+}</pre>
+      </div>
+ 
+      <p>Применение в маршрутизаторе:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="code-filename">NoteRoutes.kt (пример применения)</span><span class="code-lang">Kotlin</span><button class="code-copy" onclick="copyCode(this)">копировать</button></div>
+        <pre><span class="kw">fun</span> <span class="fn">noteRoutes</span>(storage: <span class="type">NoteStorage</span>, ...): <span class="type">RoutingHttpHandler</span> = <span class="fn">routes</span>(
+ 
+    <span class="cmt">// Публичный маршрут — никаких фильтров авторизации</span>
+    <span class="str">"/notes"</span> <span class="fn">bind</span> <span class="type">Method</span>.GET <span class="kw">to</span> <span class="fn">ListNotesHandler</span>(storage),
+ 
+    <span class="cmt">// Нужна аутентификация (любой авторизованный)</span>
+    <span class="str">"/notes"</span> <span class="fn">bind</span> <span class="type">Method</span>.POST <span class="kw">to</span>
+        <span class="fn">requirePermission</span>(userIdKey, permissionsKey) { it.isAuthenticated }
+            .<span class="fn">then</span>(<span class="fn">CreateNoteHandler</span>(storage, userIdKey)),
+ 
+    <span class="cmt">// Нужна конкретная роль (только администратор)</span>
+    <span class="str">"/admin/users/{id}"</span> <span class="fn">bind</span> <span class="type">Method</span>.DELETE <span class="kw">to</span>
+        <span class="fn">requirePermission</span>(userIdKey, permissionsKey) { it.canManageUsers }
+            .<span class="fn">then</span>(<span class="fn">DeleteUserHandler</span>(storage, userIdKey)),
+)</pre>
+      </div>
+ 
+      <div class="callout info">
+        <span class="callout-icon">ℹ️</span>
+        <div><code>.then()</code> в http4k — это цепочка фильтров. <code>filter.then(handler)</code> = «сначала прогони через filter, потом через handler».</div>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="task-box">
+    <h4>📝 Что делаешь в своём проекте на этом этапе</h4>
+    <ul class="task-list">
+      <li>Создай <code>auth/AuthorizationFilters.kt</code> с функцией <code>requirePermission()</code> (или несколькими специализированными функциями)</li>
+      <li>Создай новые v3-обработчики или скопируй v2 — в <code>web/routes/v3/</code></li>
+      <li>В <code>ApplicationRoutes.kt</code> добавь маршруты <code>/v3/...</code> с соответствующими фильтрами авторизации перед каждым защищённым маршрутом</li>
+      <li>Убедись что маршруты без требований авторизации (GET /v3/tasks, GET /ping) работают без токена</li>
+      <li>Подключи <code>authFilter.then(permissionsFilter).then(router)</code> в сборке приложения в Main.kt</li>
+    </ul>
+  </div>
+ 
+  <div class="nav-buttons">
+    <button class="btn btn-ghost" onclick="goTo(4)">← Этап 4</button>
+    <button class="btn btn-primary" onclick="goTo(6)">Этап 6 →</button>
+  </div>
+</section>
+ 
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ЭТАП 6: ВЛАДЕНИЕ (OWNER)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="stage" id="stage-6">
+  <div class="stage-header">
+    <div class="stage-num-big">6</div>
+    <div class="stage-title-group">
+      <div class="stage-tag">Авторизация с данными</div>
+      <h2>Проверка владения ресурсом (Owner Check)</h2>
+    </div>
+  </div>
+ 
+  <div class="theory-block open">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <div class="theory-icon orange">👤</div>
+      <h3>Теория: почему Owner — особый случай</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>Проверка роли в фильтре работает без знания конкретного ресурса. Но для проверки владения нужно знать: «является ли текущий пользователь автором <em>этой конкретной</em> задачи?»</p>
+      <p>Это невозможно сделать в общем фильтре — нужно загружать задачу из базы. Поэтому такая проверка выполняется <strong>внутри обработчика</strong>.</p>
+ 
+      <div class="diagram">
+        <div class="d-label">Уровни авторизации</div>
+        <div class="diagram-row">
+          <div class="d-box highlight">Фильтр<br><small>«есть токен?»</small></div>
+          <div class="d-arrow">→</div>
+          <div class="d-box highlight">Фильтр маршрута<br><small>«есть права?»</small></div>
+          <div class="d-arrow">→</div>
+          <div class="d-box green">Обработчик<br><small>«владеет ресурсом?»</small></div>
+        </div>
+      </div>
+ 
+      <div class="code-block">
+        <div class="code-header"><span class="code-filename">UpdateNoteHandler.kt (пример — сервис заметок)</span><span class="code-lang">Kotlin</span><button class="code-copy" onclick="copyCode(this)">копировать</button></div>
+        <pre><span class="kw">class</span> <span class="type">UpdateNoteHandler</span>(
+    <span class="kw">private val</span> storage: <span class="type">NoteStorage</span>,
+    <span class="kw">private val</span> userIdKey: <span class="cmt">/* ... */</span>
+) : <span class="type">HttpHandler</span> {
+ 
+    <span class="kw">override fun</span> <span class="fn">invoke</span>(request: <span class="type">Request</span>): <span class="type">Response</span> {
+        <span class="cmt">// Достаём ID заметки из пути /notes/{note-id}</span>
+        <span class="kw">val</span> noteId = notIdLens(request)
+ 
+        <span class="cmt">// Достаём текущего пользователя из контекста</span>
+        <span class="kw">val</span> currentUserId = <span class="type">UUID</span>.<span class="fn">fromString</span>(userIdKey(request)!!)
+ 
+        <span class="cmt">// Находим заметку</span>
+        <span class="kw">val</span> note = storage.<span class="fn">getNote</span>(noteId)
+            ?: <span class="kw">return</span> <span class="type">Response</span>(<span class="type">Status</span>.NOT_FOUND)
+                .<span class="fn">body</span>(<span class="str">"""{"Error": "Заметка не найдена"}"""</span>)
+ 
+        <span class="cmt">// ПРОВЕРКА ВЛАДЕНИЯ — является ли пользователь автором?</span>
+        <span class="kw">if</span> (note.authorId != currentUserId) {
+            <span class="kw">return</span> <span class="type">Response</span>(<span class="type">Status</span>.FORBIDDEN)
+                .<span class="fn">body</span>(<span class="str">"""{"Error": "Нельзя редактировать чужую заметку"}"""</span>)
+        }
+ 
+        <span class="cmt">// Только теперь — обновляем заметку</span>
+        <span class="cmt">// ... парсинг тела запроса, сохранение</span>
+    }
+}</pre>
+      </div>
+ 
+      <div class="callout success">
+        <span class="callout-icon">✅</span>
+        <div>Паттерн: <strong>сначала найти ресурс</strong> (404 если нет), <strong>затем проверить владение</strong> (403 если не владелец), затем обрабатывать.</div>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="theory-block open">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <div class="theory-icon blue">🎭</div>
+      <h3>Комбинированный случай: Owner ИЛИ роль (для категорий)</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>Для <code>PUT /v3/categories/{id}</code> и <code>DELETE /v3/categories/{id}</code> доступ разрешён:</p>
+      <ul>
+        <li>Владельцу категории (Owner)</li>
+        <li><strong>ИЛИ</strong> пользователю с ролью CategoryManager</li>
+      </ul>
+ 
+      <div class="code-block">
+        <div class="code-header"><span class="code-filename">DeleteCategoryHandler.kt (пример с OR-условием)</span><span class="code-lang">Kotlin</span><button class="code-copy" onclick="copyCode(this)">копировать</button></div>
+        <pre><span class="kw">val</span> category = storage.<span class="fn">getCategory</span>(categoryId)
+    ?: <span class="kw">return</span> <span class="type">Response</span>(<span class="type">Status</span>.NOT_FOUND)
+        .<span class="fn">body</span>(<span class="str">"""{"Error": "Категория не найдена"}"""</span>)
+ 
+<span class="kw">val</span> permissions = permissionsKey(request)
+<span class="kw">val</span> currentUserId = <span class="type">UUID</span>.<span class="fn">fromString</span>(userIdKey(request)!!)
+ 
+<span class="cmt">// Проверка: (текущий пользователь — владелец) ИЛИ (есть роль менеджера)</span>
+<span class="kw">val</span> isOwner = category.owner == currentUserId
+<span class="kw">val</span> isManager = permissions.canManageCategories
+ 
+<span class="kw">if</span> (!isOwner && !isManager) {
+    <span class="kw">return</span> <span class="type">Response</span>(<span class="type">Status</span>.FORBIDDEN)
+        .<span class="fn">body</span>(<span class="str">"""{"Error": "Нет доступа"}"""</span>)
+}
+ 
+<span class="cmt">// Удаляем сначала все задачи категории, потом саму категорию</span>
+storage.<span class="fn">getTasksByCategory</span>(categoryId).<span class="fn">forEach</span> { storage.<span class="fn">removeTask</span>(it.id) }
+storage.<span class="fn">removeCategory</span>(categoryId)
+<span class="kw">return</span> <span class="type">Response</span>(<span class="type">Status</span>.NO_CONTENT)</pre>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="task-box">
+    <h4>📝 Что делаешь в своём проекте на этом этапе</h4>
+    <ul class="task-list">
+      <li>В обработчике <code>UpdateTaskHandler</code> — добавь проверку: <code>task.author != currentUserId</code> → 403</li>
+      <li>В обработчике <code>DeleteCategoryHandler</code> — добавь проверку владения или роли: <code>!isOwner && !isManager</code> → 403</li>
+      <li>В обработчике <code>UpdateCategoryHandler</code> — аналогично</li>
+      <li>В обработчиках <code>EisenhowerTasksHandler</code>, <code>TasksByTimeHandler</code>, <code>TasksStatisticsHandler</code> — фильтруй задачи только по текущему пользователю (<code>filter { it.author == currentUserId }</code>)</li>
+      <li>При создании задачи <code>CreateTaskHandler</code> — автор задачи = <code>currentUserId</code> из контекста (не из тела запроса!). Если категория передана — проверь что она принадлежит этому пользователю, иначе 403</li>
+    </ul>
+  </div>
+ 
+  <div class="nav-buttons">
+    <button class="btn btn-ghost" onclick="goTo(5)">← Этап 5</button>
+    <button class="btn btn-primary" onclick="goTo(7)">Этап 7 →</button>
+  </div>
+</section>
+ 
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ЭТАП 7: ФИНАЛЬНАЯ СБОРКА
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="stage" id="stage-7">
+  <div class="stage-header">
+    <div class="stage-num-big">7</div>
+    <div class="stage-title-group">
+      <div class="stage-tag">Финал</div>
+      <h2>Сборка всего приложения и чеклист</h2>
+    </div>
+  </div>
+ 
+  <div class="theory-block open">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <div class="theory-icon green">🔌</div>
+      <h3>Как собрать всё вместе в Main.kt</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <p>Все части создаются один раз и передаются через dependency injection (просто параметрами в конструктор). Вот как это выглядит в NoteApp:</p>
+ 
+      <div class="code-block">
+        <div class="code-header"><span class="code-filename">main() — сборка приложения (пример)</span><span class="code-lang">Kotlin</span><button class="code-copy" onclick="copyCode(this)">копировать</button></div>
+        <pre><span class="kw">fun</span> <span class="fn">main</span>(args: <span class="type">Array</span>&lt;<span class="type">String</span>&gt;) {
+    <span class="kw">val</span> appArgs = <span class="type">NoteArgs</span>()
+    <span class="type">JCommander</span>.<span class="fn">newBuilder</span>().<span class="fn">addObject</span>(appArgs).<span class="fn">build</span>().<span class="fn">parse</span>(*args)
+ 
+    <span class="kw">val</span> storage = <span class="type">NoteStorage</span>(...)
+ 
+    <span class="cmt">// 1. Создаём инструменты JWT</span>
+    <span class="kw">val</span> jwt = <span class="type">NoteJwtTools</span>(appArgs.secret)
+ 
+    <span class="cmt">// 2. Создаём ключи для контекста</span>
+    <span class="kw">val</span> userIdKey = <span class="type">RequestKey</span>.<span class="fn">optional</span>&lt;<span class="type">String</span>&gt;(<span class="str">"userId"</span>)
+    <span class="kw">val</span> permissionsKey = <span class="type">RequestKey</span>.<span class="fn">required</span>&lt;<span class="type">Permissions</span>&gt;(<span class="str">"permissions"</span>)
+ 
+    <span class="cmt">// 3. Создаём фильтры</span>
+    <span class="kw">val</span> authFilter = <span class="fn">makeAuthFilter</span>(jwt, userIdKey)
+    <span class="kw">val</span> permissionsFilter = <span class="fn">makePermissionsFilter</span>(storage, userIdKey, permissionsKey)
+ 
+    <span class="cmt">// 4. Создаём маршрутизатор</span>
+    <span class="kw">val</span> router = <span class="fn">noteRoutes</span>(storage, userIdKey, permissionsKey)
+ 
+    <span class="cmt">// 5. Собираем цепочку фильтров</span>
+    <span class="kw">val</span> app = lensFailureFilter
+        .<span class="fn">then</span>(authFilter)         <span class="cmt">// сначала читаем токен</span>
+        .<span class="fn">then</span>(permissionsFilter)  <span class="cmt">// потом считаем права</span>
+        .<span class="fn">then</span>(router)             <span class="cmt">// потом маршрутизируем</span>
+ 
+    app.<span class="fn">asServer</span>(<span class="type">Netty</span>(appArgs.port)).<span class="fn">start</span>().<span class="fn">block</span>()
+}</pre>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="theory-block open">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <div class="theory-icon blue">📁</div>
+      <h3>Итоговая структура файлов проекта</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <div class="code-block">
+        <div class="code-header"><span class="code-filename">Структура src/main/kotlin/ru/yarsu/</span><span class="code-lang">Tree</span></div>
+        <pre>ru/yarsu/
+├── Main.kt                          <span class="cmt">← добавить --secret, создать JwtTools</span>
+├── <span class="kw">auth/</span>                            <span class="cmt">← новая папка</span>
+│   ├── JwtTools.kt                  <span class="cmt">← createToken + getUserId</span>
+│   ├── RequestKeys.kt               <span class="cmt">← userIdKey + permissionsKey</span>
+│   ├── Permissions.kt               <span class="cmt">← data class + companion object</span>
+│   ├── AuthFilter.kt                <span class="cmt">← читает заголовок, кладёт userId</span>
+│   └── PermissionsFilter.kt         <span class="cmt">← userId → User → role → permissions</span>
+├── model/
+│   ├── Task.kt                      <span class="cmt">← без изменений</span>
+│   ├── Category.kt                  <span class="cmt">← без изменений</span>
+│   ├── User.kt                      <span class="cmt">← добавить поле role: UserRole</span>
+│   └── UserRole.kt                  <span class="cmt">← новый enum: User, CategoryManager, UserManager</span>
+├── csv/
+│   └── CsvParser.kt                 <span class="cmt">← добавить чтение Role из CSV</span>
+├── storage/
+│   └── AppStorage.kt                <span class="cmt">← без изменений</span>
+└── web/routes/
+    ├── ApplicationRoutes.kt         <span class="cmt">← добавить /v3/... маршруты</span>
+    └── v3/                          <span class="cmt">← новая папка (или изменить v2)</span>
+        ├── tasks/                   <span class="cmt">← обновлённые обработчики с авторизацией</span>
+        ├── categories/
+        └── users/</pre>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="theory-block open">
+    <div class="theory-header" onclick="toggleTheory(this)">
+      <div class="theory-icon purple">✅</div>
+      <h3>Финальный чеклист перед сдачей</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="theory-body">
+      <div class="task-list" style="list-style:none;padding:0;">
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <label style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--text2);cursor:pointer;"><input type="checkbox" id="c1"> Параметр <code>--secret</code> добавлен в AppArgs и передаётся в JwtTools</label>
+          <label style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--text2);cursor:pointer;"><input type="checkbox" id="c2"> Enum <code>UserRole</code> создан с тремя значениями</label>
+          <label style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--text2);cursor:pointer;"><input type="checkbox" id="c3"> <code>User.kt</code> содержит поле <code>role: UserRole</code></label>
+          <label style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--text2);cursor:pointer;"><input type="checkbox" id="c4"> CSV-файл <code>users.csv</code> содержит колонку <code>Role</code></label>
+          <label style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--text2);cursor:pointer;"><input type="checkbox" id="c5"> <code>CsvParser.kt</code> читает роль при загрузке пользователей</label>
+          <label style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--text2);cursor:pointer;"><input type="checkbox" id="c6"> Зависимость <code>java-jwt</code> добавлена в build.gradle.kts</label>
+          <label style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--text2);cursor:pointer;"><input type="checkbox" id="c7"> <code>JwtTools</code> создаёт и верифицирует токены (HMAC512)</label>
+          <label style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--text2);cursor:pointer;"><input type="checkbox" id="c8"> <code>AuthFilter</code> читает заголовок <code>Authorization: Bearier ...</code></label>
+          <label style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--text2);cursor:pointer;"><input type="checkbox" id="c9"> <code>PermissionsFilter</code> конвертирует роль в права доступа</label>
+          <label style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--text2);cursor:pointer;"><input type="checkbox" id="c10"> Публичные маршруты (GET /v3/tasks) работают без токена</label>
+          <label style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--text2);cursor:pointer;"><input type="checkbox" id="c11"> Защищённые маршруты возвращают 401 без токена</label>
+          <label style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--text2);cursor:pointer;"><input type="checkbox" id="c12"> Защищённые маршруты возвращают 403 при недостатке прав</label>
+          <label style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--text2);cursor:pointer;"><input type="checkbox" id="c13"> PUT /v3/tasks/{id} — проверяет что редактирует автор задачи</label>
+          <label style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--text2);cursor:pointer;"><input type="checkbox" id="c14"> DELETE /v3/categories/{id} — удаляет все задачи категории тоже</label>
+          <label style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--text2);cursor:pointer;"><input type="checkbox" id="c15"> DELETE /v3/users/{id} — доступно только UserManager</label>
+          <label style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--text2);cursor:pointer;"><input type="checkbox" id="c16"> Eisenhower / by-time / statistics — возвращают только задачи текущего пользователя</label>
+          <label style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--text2);cursor:pointer;"><input type="checkbox" id="c17"> POST /v3/tasks — автор берётся из токена, не из тела запроса</label>
+          <label style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--text2);cursor:pointer;"><input type="checkbox" id="c18"> Цепочка фильтров в Main.kt: lensFailureFilter → authFilter → permissionsFilter → router</label>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="nav-buttons">
+    <button class="btn btn-ghost" onclick="goTo(6)">← Этап 6</button>
+    <button class="btn btn-primary" onclick="goTo(1)">↩ В начало</button>
+  </div>
+</section>
+ 
+</main>
+</div>
+ 
+<script>
+let current = 1;
+ 
+function goTo(n) {
+  document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach((item, i) => {
+    item.classList.remove('active');
+    if (i < n - 1) item.classList.add('done');
+    else item.classList.remove('done');
+  });
+  document.getElementById('stage-' + n).classList.add('active');
+  document.querySelectorAll('.nav-item')[n - 1].classList.add('active');
+  document.getElementById('progress').style.width = (n / 7 * 100) + '%';
+  current = n;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+ 
+function toggleTheory(header) {
+  const block = header.closest('.theory-block');
+  block.classList.toggle('open');
+}
+ 
+function copyCode(btn) {
+  const pre = btn.closest('.code-block').querySelector('pre');
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'скопировано!';
+    btn.style.color = 'var(--green)';
+    btn.style.borderColor = 'var(--green)';
+    setTimeout(() => {
+      btn.textContent = 'копировать';
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>
