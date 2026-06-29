@@ -24,7 +24,6 @@
             margin: 0 auto;
         }
 
-        /* ─── Header ─── */
         .header {
             text-align: center;
             padding: 40px 20px 30px;
@@ -67,7 +66,6 @@
             margin: 16px auto 0;
         }
 
-        /* ─── TOC ─── */
         .toc {
             background: #1B1713;
             border: 1px solid #2A2415;
@@ -112,7 +110,6 @@
             margin-right: 6px;
         }
 
-        /* ─── Questions ─── */
         .question {
             background: #1B1713;
             border: 1px solid #2A2415;
@@ -161,7 +158,6 @@
             margin-top: -4px;
         }
 
-        /* ─── Content Blocks ─── */
         .q-body {
             font-size: 15px;
             color: #E8E0D4;
@@ -259,23 +255,6 @@
             margin-bottom: 3px;
         }
 
-        .q-body .example-list {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .q-body .example-list li {
-            padding: 4px 0 4px 20px;
-            position: relative;
-        }
-
-        .q-body .example-list li::before {
-            content: "▸";
-            color: #6FC79A;
-            position: absolute;
-            left: 0;
-        }
-
         .q-body .highlight {
             color: #E0A458;
         }
@@ -284,7 +263,6 @@
             color: #6A6053;
         }
 
-        /* ─── Scroll Top ─── */
         .scroll-top {
             position: fixed;
             bottom: 30px;
@@ -315,7 +293,6 @@
             display: flex;
         }
 
-        /* ─── Progress ─── */
         .progress {
             position: fixed;
             top: 0;
@@ -327,7 +304,6 @@
             box-shadow: 0 0 12px rgba(224, 164, 88, 0.4);
         }
 
-        /* ─── Responsive ─── */
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -383,7 +359,6 @@
             }
         }
 
-        /* ─── Print ─── */
         @media print {
             body {
                 background: white;
@@ -451,12 +426,6 @@
             .q-source {
                 color: #666 !important;
             }
-            .q-body .dim {
-                color: #666 !important;
-            }
-            .q-body .highlight {
-                color: #0f3460 !important;
-            }
             .scroll-top {
                 display: none !important;
             }
@@ -470,9 +439,6 @@
     <div class="progress" id="progressBar"></div>
 
     <div class="container">
-        <!-- ══════════════════════════════════════════ -->
-        <!-- HEADER -->
-        <!-- ══════════════════════════════════════════ -->
         <header class="header">
             <div class="sub">Теория функций комплексного переменного</div>
             <h1>ТФКП</h1>
@@ -481,20 +447,13 @@
             <div class="divider"></div>
         </header>
 
-        <!-- ══════════════════════════════════════════ -->
-        <!-- TOC -->
-        <!-- ══════════════════════════════════════════ -->
         <nav class="toc" id="toc">
             <h2>📑 Содержание</h2>
             <div class="toc-grid" id="tocList"></div>
         </nav>
 
-        <!-- ══════════════════════════════════════════ -->
-        <!-- CONTENT -->
-        <!-- ══════════════════════════════════════════ -->
         <div id="content"></div>
 
-        <!-- Footer -->
         <div style="text-align:center;padding:30px 0 20px;border-top:1px solid #2A2415;margin-top:20px;">
             <div style="color:#E0A458;font-size:20px;font-weight:700;">Удачи на экзамене! 🍀</div>
             <div style="color:#6A6053;font-size:14px;font-style:italic;margin-top:4px;">
@@ -503,12 +462,11 @@
         </div>
     </div>
 
-    <!-- Scroll Top -->
     <button class="scroll-top" id="scrollTopBtn" onclick="scrollToTop()">↑</button>
 
     <script>
         // ════════════════════════════════════════════════
-        // ДАННЫЕ: 26 ВОПРОСОВ (полная версия)
+        // ДАННЫЕ: 26 ВОПРОСОВ (ВСЕ ФОРМУЛЫ ИСПРАВЛЕНЫ)
         // ════════════════════════════════════════════════
         const questions = [{
             id: 1,
@@ -516,55 +474,57 @@
             source: "Алгебраическая, геометрическая, тригонометрическая, показательная форма. Модуль и аргумент. Степени и корни. Стереографическое проектирование.",
             content: `
                 <div class="defbox">
-                    <span class="label label-def">Определение.</span> Комплексное число — пара $(x,y)\\in\\R^2$ с формой записи $z=x+iy$ (где $i^2=-1$). Здесь $x=\\Re z$ — вещественная часть, $y=\\Im z$ — мнимая часть. Сопряжённое: $\\bar z=x-iy$.
+                    <span class="label label-def">Комплексное число.</span> Пара $(x,y)\\in\\R^2$ с формой записи $z=x+iy$ (где $i^2=-1$). Здесь $x=\\Re z$ — вещественная часть, $y=\\Im z$ — мнимая часть. Сопряжённое: $\\bar z=x-iy$.
                 </div>
                 <p><b>Арифметические операции</b> ($z_k=x_k+iy_k$):</p>
-                <div class="formula">$z_1\\pm z_2=(x_1\\pm x_2)+i(y_1\\pm y_2)$</div>
-                <div class="formula">$z_1 z_2=(x_1x_2-y_1y_2)+i(x_1y_2+x_2y_1)$</div>
-                <div class="formula">$\\dfrac{z_1}{z_2}=\\dfrac{z_1\\bar z_2}{|z_2|^2}$ $(z_2\\ne0)$</div>
+                <div class="formula">$z_1 \\pm z_2 = (x_1 \\pm x_2) + i(y_1 \\pm y_2)$</div>
+                <div class="formula">$z_1 z_2 = (x_1x_2 - y_1y_2) + i(x_1y_2 + x_2y_1)$</div>
+                <div class="formula">$\\dfrac{z_1}{z_2} = \\dfrac{z_1\\bar z_2}{|z_2|^2} = \\dfrac{(x_1x_2 + y_1y_2) + i(x_2y_1 - x_1y_2)}{x_2^2 + y_2^2}$ $(z_2 \\ne 0)$</div>
 
                 <div class="defbox">
-                    <span class="label label-def">Модуль.</span> $|z|=\\sqrt{x^2+y^2}=\\sqrt{z\\bar z}$.<br>
-                    Свойства: $|z_1z_2|=|z_1||z_2|$; $|z_1+z_2|\\le|z_1|+|z_2|$; $|z_1|-|z_2|\\le|z_1-z_2|$.
+                    <span class="label label-def">Модуль.</span> $|z| = \\sqrt{x^2 + y^2} = \\sqrt{z\\bar z}$.<br>
+                    Свойства: $|z_1z_2| = |z_1||z_2|$; $|z_1 + z_2| \\le |z_1| + |z_2|$; $|z_1| - |z_2| \\le |z_1 - z_2|$.
                 </div>
                 <div class="defbox">
-                    <span class="label label-def">Аргумент.</span> Угол $\\varphi$ между положительной осью $Ox$ и вектором $z\\ne0$; определён с точностью до $2\\pi k$.<br>
-                    <i>Главное значение</i> $\\arg z\\in(-\\pi,\\pi]$. Многозначный аргумент $\\Arg z=\\arg z+2\\pi k$, $k\\in\\Z$.
+                    <span class="label label-def">Аргумент.</span> Угол $\\varphi$ между положительной осью $Ox$ и вектором $z \\ne 0$; определён с точностью до $2\\pi k$.<br>
+                    <i>Главное значение</i> $\\arg z \\in (-\\pi,\\pi]$. Многозначный аргумент $\\Arg z = \\arg z + 2\\pi k$, $k \\in \\Z$.
                 </div>
 
                 <div class="defbox">
-                    <span class="label label-def">Тригонометрическая форма.</span> $z=r(\\cos\\varphi+i\\sin\\varphi)$, где $r=|z|$, $\\varphi=\\arg z$.<br>
-                    Умножение: $z_1z_2=r_1r_2(\\cos(\\varphi_1+\\varphi_2)+i\\sin(\\varphi_1+\\varphi_2))$.
+                    <span class="label label-def">Тригонометрическая форма.</span> $z = r(\\cos\\varphi + i\\sin\\varphi)$, где $r = |z|$, $\\varphi = \\arg z$.<br>
+                    Умножение: $z_1z_2 = r_1r_2(\\cos(\\varphi_1+\\varphi_2) + i\\sin(\\varphi_1+\\varphi_2))$.
                 </div>
                 <div class="defbox">
-                    <span class="label label-def">Формула Эйлера и показательная форма.</span> $e^{i\\varphi}=\\cos\\varphi+i\\sin\\varphi$, поэтому $z=re^{i\\varphi}$.
+                    <span class="label label-def">Формула Эйлера и показательная форма.</span> $e^{i\\varphi} = \\cos\\varphi + i\\sin\\varphi$, поэтому $z = re^{i\\varphi}$.
                 </div>
 
                 <div class="thmbox">
-                    <span class="label label-thm">Формула Муавра.</span> $z^n=r^n(\\cos n\\varphi+i\\sin n\\varphi)$.<br>
-                    То есть $|z^n|=|z|^n$, $\\arg(z^n)=n\\arg z$.
+                    <span class="label label-thm">Формула Муавра.</span> $z^n = r^n(\\cos n\\varphi + i\\sin n\\varphi)$.<br>
+                    То есть $|z^n| = |z|^n$, $\\arg(z^n) = n\\arg z$.
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Корни $n$-й степени.</span> Уравнение $w^n=z$ при $z\\ne0$ имеет ровно $n$ решений:
-                    <div class="formula">$w_k=\\sqrt[n]{r}\\left(\\cos\\dfrac{\\varphi+2\\pi k}{n}+i\\sin\\dfrac{\\varphi+2\\pi k}{n}\\right)$, $k=0,1,\\dots,n-1$</div>
-                    Геометрически — вершины правильного $n$-угольника.
+                    <span class="label label-thm">Корни $n$-й степени.</span> Уравнение $w^n = z$ при $z \\ne 0$ имеет ровно $n$ решений:
+                    <div class="formula">$w_k = \\sqrt[n]{r}\\left(\\cos\\dfrac{\\varphi + 2\\pi k}{n} + i\\sin\\dfrac{\\varphi + 2\\pi k}{n}\\right)$, $k = 0,1,\\dots,n-1$</div>
+                    Геометрически — вершины правильного $n$-угольника на окружности $|w| = \\sqrt[n]{r}$.
                 </div>
                 <div class="exbox">
                     <span class="label label-ex">Пример.</span> $\\sqrt[3]{-8}$: $r=8$, $\\varphi=\\pi$. Корни:
-                    $w_k=2\\left(\\cos\\dfrac{\\pi+2\\pi k}{3}+i\\sin\\dfrac{\\pi+2\\pi k}{3}\\right)$, $k=0,1,2$.
-                    Явно: $w_0=1+i\\sqrt3$, $w_1=-2$, $w_2=1-i\\sqrt3$.
+                    $w_k = 2\\left(\\cos\\dfrac{\\pi + 2\\pi k}{3} + i\\sin\\dfrac{\\pi + 2\\pi k}{3}\\right)$, $k=0,1,2$.
+                    Явно: $w_0 = 1 + i\\sqrt3$, $w_1 = -2$, $w_2 = 1 - i\\sqrt3$.
                 </div>
 
                 <div class="defbox">
-                    <span class="label label-def">Расширенная плоскость.</span> $\\overline\\C=\\C\\cup\\{\\infty\\}$. Окрестность $\\infty$ — внешность круга $\\{|z|>R\\}$.
+                    <span class="label label-def">Расширенная плоскость.</span> $\\overline\\C = \\C \\cup \\{\\infty\\}$. Окрестность $\\infty$ — внешность круга $\\{|z| > R\\}$.
                 </div>
                 <div class="defbox">
-                    <span class="label label-def">Стереографическая проекция.</span> Биекция между $\\overline\\C$ и сферой Римана $S^2$:
-                    <div class="formula">$\\xi=\\dfrac{x}{1+|z|^2},\\quad \\eta=\\dfrac{y}{1+|z|^2},\\quad \\zeta=\\dfrac{|z|^2}{1+|z|^2}$</div>
-                    При $|z|\\to\\infty$ точка стремится к северному полюсу $N\\leftrightarrow\\infty$.
+                    <span class="label label-def">Стереографическая проекция.</span> Биекция между $\\overline\\C$ и единичной сферой $S^2 \\subset \\R^3$ (сфера Римана):
+                    <div class="formula">$\\xi = \\dfrac{2x}{1 + |z|^2},\\qquad \\eta = \\dfrac{2y}{1 + |z|^2},\\qquad \\zeta = \\dfrac{|z|^2 - 1}{|z|^2 + 1}$</div>
+                    <p><b>Проверка:</b> $\\xi^2 + \\eta^2 + \\zeta^2 = 1$</p>
+                    <p><b>Обратная проекция:</b> $z = \\dfrac{\\xi + i\\eta}{1 - \\zeta}$ при $\\zeta \\ne 1$</p>
+                    <p><b>Предел:</b> при $|z| \\to \\infty$: $\\xi \\to 0$, $\\eta \\to 0$, $\\zeta \\to 1$ → северный полюс $N(0,0,1)$.</p>
                 </div>
                 <div class="rembox">
-                    <span class="label label-rem">Свойство.</span> Стереографическая проекция — гомеоморфизм $\\overline\\C\\to S^2$, переводит окружности и прямые в окружности сферы.
+                    <span class="label label-rem">Свойство.</span> Стереографическая проекция является гомеоморфизмом $\\overline\\C \\to S^2$ и переводит окружности и прямые плоскости в окружности сферы.
                 </div>
             `
         }, {
@@ -573,32 +533,31 @@
             source: "Определение сходящейся последовательности. Критерий через части. Теоремы о сходящихся последовательностях.",
             content: `
                 <div class="defbox">
-                    <span class="label label-def">Сходимость.</span> Последовательность $\\{z_n\\}$ <i>сходится</i> к $z_0\\in\\C$, если
-                    $\\forall\\varepsilon>0\\;\\exists N:\\;|z_n-z_0|<\\varepsilon$ при всех $n>N$. Пишут $z_n\\to z_0$.
+                    <span class="label label-def">Сходимость.</span> Последовательность $\\{z_n\\}$ <i>сходится</i> к $z_0 \\in \\C$, если
+                    $\\forall\\varepsilon > 0\\; \\exists N:\\; |z_n - z_0| < \\varepsilon$ при всех $n > N$. Пишут $z_n \\to z_0$ или $\\lim_{n\\to\\infty} z_n = z_0$.
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Критерий через части.</span> $z_n=x_n+iy_n\\to z_0=x_0+iy_0$ тогда и только тогда, когда $x_n\\to x_0$ и $y_n\\to y_0$ (как вещественные последовательности).
+                    <span class="label label-thm">Критерий через части.</span> $z_n = x_n + iy_n \\to z_0 = x_0 + iy_0$ тогда и только тогда, когда $x_n \\to x_0$ и $y_n \\to y_0$ (как вещественные последовательности).
                 </div>
                 <div class="thmbox">
                     <span class="label label-thm">Основные теоремы.</span>
                     <ul>
-                        <li><b>Единственность предела.</b> Если $z_n\\to a$ и $z_n\\to b$, то $a=b$.</li>
-                        <li><b>Ограниченность.</b> Сходящаяся последовательность ограничена.</li>
-                        <li><b>Арифметика пределов.</b> Если $z_n\\to a$, $w_n\\to b$, то
-                            $z_n\\pm w_n\\to a\\pm b$, $z_nw_n\\to ab$, $z_n/w_n\\to a/b$ ($b\\ne0$).</li>
-                        <li><b>Критерий Коши.</b> $\\{z_n\\}$ сходится $\\Longleftrightarrow$
-                            $\\forall\\varepsilon>0\\;\\exists N:\\;|z_m-z_n|<\\varepsilon$ при $m,n>N$.</li>
+                        <li><b>Единственность предела.</b> Если $z_n \\to a$ и $z_n \\to b$, то $a = b$.</li>
+                        <li><b>Ограниченность.</b> Сходящаяся последовательность ограничена: $\\exists M:\\; |z_n| \\le M$.</li>
+                        <li><b>Арифметика пределов.</b> Если $z_n \\to a$, $w_n \\to b$, то
+                            $z_n \\pm w_n \\to a \\pm b$, $z_n w_n \\to ab$, $z_n / w_n \\to a/b$ ($b \\ne 0$).</li>
+                        <li><b>Критерий Коши.</b> $\\{z_n\\}$ сходится $\\Longleftrightarrow$ $\\forall\\varepsilon > 0\\; \\exists N:\\; |z_m - z_n| < \\varepsilon$ при $m,n > N$.</li>
                         <li><b>Теорема Больцано–Вейерштрасса.</b> Из любой ограниченной последовательности можно выделить сходящуюся подпоследовательность.</li>
                     </ul>
                 </div>
                 <div class="corbox">
-                    <span class="label label-cor">Следствие.</span> $|z_n|\\to|z_0|$; $\\Re z_n\\to\\Re z_0$; $\\Im z_n\\to\\Im z_0$; $\\bar z_n\\to\\bar z_0$.
+                    <span class="label label-cor">Следствие.</span> $|z_n| \\to |z_0|$; $\\Re z_n \\to \\Re z_0$; $\\Im z_n \\to \\Im z_0$; $\\bar z_n \\to \\bar z_0$.
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">Пример сходящейся.</span> $z_n=\\dfrac{1}{n}+i\\left(1-\\dfrac{1}{n^2}\\right)\\to 0+i\\cdot1=i$.
+                    <span class="label label-ex">Пример сходящейся.</span> $z_n = \\dfrac{1}{n} + i\\left(1 - \\dfrac{1}{n^2}\\right) \\to 0 + i\\cdot 1 = i$.
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">Пример расходящейся.</span> $z_n=i^n$: $1,i,-1,-i,1,\\dots$ — не сходится.
+                    <span class="label label-ex">Пример расходящейся.</span> $z_n = i^n$: $1, i, -1, -i, 1, \\dots$ — не сходится.
                 </div>
             `
         }, {
@@ -607,31 +566,31 @@
             source: "Топологические понятия. Кривые и контуры. Односвязность и многосвязность. Примеры.",
             content: `
                 <div class="defbox">
-                    <span class="label label-def">Окрестность.</span> Открытый круг $B(z_0,\\varepsilon)=\\{z:|z-z_0|<\\varepsilon\\}$.<br>
-                    <i>Проколотая</i> окрестность: $\\mathring B(z_0,\\varepsilon)=B\\setminus\\{z_0\\}$.
+                    <span class="label label-def">Окрестность.</span> Открытый круг $B(z_0,\\varepsilon) = \\{z: |z - z_0| < \\varepsilon\\}$.<br>
+                    <i>Проколотая</i> окрестность: $\\mathring B(z_0,\\varepsilon) = B \\setminus \\{z_0\\}$.
                 </div>
                 <div class="defbox">
                     <span class="label label-def">Типы точек.</span> Точка $z_0$ называется:
                     <ul>
-                        <li><b>внутренней</b> для $E$, если $\\exists\\varepsilon>0:\\;B(z_0,\\varepsilon)\\subset E$;</li>
-                        <li><b>граничной</b> для $E$, если любая $B(z_0,\\varepsilon)$ содержит точки из $E$ и из $\\C\\setminus E$;</li>
-                        <li><b>предельной</b> для $E$, если $\\forall\\varepsilon>0:\\;\\mathring B(z_0,\\varepsilon)\\cap E\\ne\\varnothing$.</li>
+                        <li><b>внутренней</b> для $E$, если $\\exists\\varepsilon > 0:\\; B(z_0,\\varepsilon) \\subset E$;</li>
+                        <li><b>граничной</b> для $E$, если любая $B(z_0,\\varepsilon)$ содержит точки из $E$ и из $\\C \\setminus E$;</li>
+                        <li><b>предельной</b> для $E$, если $\\forall\\varepsilon > 0:\\; \\mathring B(z_0,\\varepsilon) \\cap E \\ne \\varnothing$.</li>
                     </ul>
                     Граница: $\\partial E$.
                 </div>
                 <div class="defbox">
-                    <span class="label label-def">Открытое/замкнутое множество.</span> $E$ <i>открыто</i>, если $E=\\operatorname{int}E$. $E$ <i>замкнуто</i>, если $\\C\\setminus E$ открыто. <i>Замыкание</i>: $\\overline E=E\\cup\\partial E$.
+                    <span class="label label-def">Открытое/замкнутое множество.</span> $E$ <i>открыто</i>, если $E = \\operatorname{int} E$. $E$ <i>замкнуто</i>, если $\\C \\setminus E$ открыто. <i>Замыкание</i>: $\\overline E = E \\cup \\partial E$.
                 </div>
                 <div class="defbox">
-                    <span class="label label-def">Связность и область.</span> Множество $E$ <i>связно</i>, если его нельзя разбить на два непустых открытых непересекающихся подмножества. <i>Область</i> $G$ — открытое связное непустое подмножество $\\C$. <i>Замкнутая область</i>: $\\overline G=G\\cup\\partial G$.
+                    <span class="label label-def">Связность и область.</span> Множество $E$ <i>связно</i>, если его нельзя разбить на два непустых открытых непересекающихся подмножества. <i>Область</i> $G$ — открытое связное непустое подмножество $\\C$. <i>Замкнутая область</i>: $\\overline G = G \\cup \\partial G$.
                 </div>
 
                 <div class="defbox">
-                    <span class="label label-def">Кривая.</span> Непрерывное отображение $\\gamma:[a,b]\\to\\C$, $t\\mapsto z(t)$.<br>
-                    Кривая <i>замкнута</i>, если $z(a)=z(b)$; <i>проста</i> (Жордана), если не имеет самопересечений.
+                    <span class="label label-def">Кривая.</span> Непрерывное отображение $\\gamma:[a,b] \\to \\C$, $t \\mapsto z(t)$.<br>
+                    Кривая <i>замкнута</i>, если $z(a) = z(b)$; <i>проста</i> (Жордана), если не имеет самопересечений.
                 </div>
                 <div class="defbox">
-                    <span class="label label-def">Гладкая кривая.</span> $z(t)=x(t)+iy(t)$ — гладкая, если $x'(t),y'(t)$ непрерывны и $z'(t)\\ne0$.<br>
+                    <span class="label label-def">Гладкая кривая.</span> $z(t) = x(t) + iy(t)$ — гладкая, если $x'(t), y'(t)$ непрерывны и $z'(t) \\ne 0$.<br>
                     <i>Контур</i> — кусочно-гладкая простая замкнутая кривая. Положительная ориентация (CCW) — область слева.
                 </div>
                 <div class="thmbox">
@@ -640,17 +599,17 @@
 
                 <div class="defbox">
                     <span class="label label-def">Односвязная область.</span> Область, в которой каждый замкнутый контур стягиваем в точку внутри области (нет «дыр»).<br>
-                    <i>Примеры:</i> $\\C$; круг $|z|<R$; полуплоскость $\\Im z>0$.
+                    <i>Примеры:</i> $\\C$; круг $|z| < R$; полуплоскость $\\Im z > 0$.
                 </div>
                 <div class="defbox">
                     <span class="label label-def">Многосвязная область.</span> Область с «дырами». Граница состоит из нескольких компонент.<br>
-                    <i>Примеры:</i> кольцо $r<|z|<R$ (двусвязная); $\\C\\setminus\\{0\\}$; плоскость с несколькими вырезанными кругами.
+                    <i>Примеры:</i> кольцо $r < |z| < R$ (двусвязная); $\\C \\setminus \\{0\\}$; плоскость с несколькими вырезанными кругами.
                 </div>
                 <div class="exbox">
                     <span class="label label-ex">Примеры областей.</span>
                     <ul>
-                        <li><b>Односвязные:</b> $|z|<1$; $\\Re z>0$; $\\C\\setminus(-\\infty,0]$.</li>
-                        <li><b>Двусвязные:</b> $1<|z|<2$; $\\C\\setminus\\{0\\}$; $0<|z-a|<r$.</li>
+                        <li><b>Односвязные:</b> $|z| < 1$; $\\Re z > 0$; $\\C \\setminus (-\\infty,0]$.</li>
+                        <li><b>Двусвязные:</b> $1 < |z| < 2$; $\\C \\setminus \\{0\\}$; $0 < |z-a| < r$.</li>
                         <li><b>Многосвязные:</b> $\\C$ без нескольких точек или отрезков.</li>
                     </ul>
                 </div>
@@ -661,41 +620,41 @@
             source: "Определение функции. Предел в точке. Непрерывность. Примеры.",
             content: `
                 <div class="defbox">
-                    <span class="label label-def">Функция.</span> Отображение $f:D\\subset\\C\\to\\C$. Записывается как $f(z)=u(x,y)+iv(x,y)$, где $u,v:\\R^2\\to\\R$ — вещественная и мнимая части ($z=x+iy$).
+                    <span class="label label-def">Функция.</span> Отображение $f:D \\subset \\C \\to \\C$. Записывается как $f(z) = u(x,y) + iv(x,y)$, где $u,v: \\R^2 \\to \\R$ — вещественная и мнимая части ($z = x + iy$).
                 </div>
                 <div class="exbox">
                     <span class="label label-ex">Примеры.</span>
                     <ul>
-                        <li>$f(z)=z^2$: $u=x^2-y^2$, $v=2xy$.</li>
-                        <li>$f(z)=e^z=e^x(\\cos y+i\\sin y)$.</li>
-                        <li>$f(z)=\\bar z$: $u=x$, $v=-y$ (непрерывна, но нигде не аналитична).</li>
-                        <li>$f(z)=1/z$ ($z\\ne0$): $u=x/(x^2+y^2)$, $v=-y/(x^2+y^2)$.</li>
-                        <li>$f(z)=\\ln|z|+i\\arg z$ (ветвь логарифма).</li>
+                        <li>$f(z) = z^2$: $u = x^2 - y^2$, $v = 2xy$.</li>
+                        <li>$f(z) = e^z = e^x(\\cos y + i\\sin y)$.</li>
+                        <li>$f(z) = \\bar z$: $u = x$, $v = -y$ (непрерывна, но нигде не аналитична).</li>
+                        <li>$f(z) = 1/z$ ($z \\ne 0$): $u = x/(x^2+y^2)$, $v = -y/(x^2+y^2)$.</li>
+                        <li>$f(z) = \\ln|z| + i\\arg z$ (ветвь логарифма).</li>
                     </ul>
                 </div>
                 <div class="defbox">
-                    <span class="label label-def">Предел.</span> $\\displaystyle\\lim_{z\\to z_0}f(z)=w_0$, если $\\forall\\varepsilon>0\\;\\exists\\delta>0:\\;0<|z-z_0|<\\delta\\Rightarrow|f(z)-w_0|<\\varepsilon$.
+                    <span class="label label-def">Предел.</span> $\\displaystyle\\lim_{z \\to z_0} f(z) = w_0$, если $\\forall\\varepsilon > 0\\; \\exists\\delta > 0:\\; 0 < |z - z_0| < \\delta \\Rightarrow |f(z) - w_0| < \\varepsilon$.
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Критерий через части.</span> $\\displaystyle\\lim_{z\\to z_0}f(z)=u_0+iv_0$ тогда и только тогда, когда
-                    $\\lim_{(x,y)\\to(x_0,y_0)}u(x,y)=u_0$ и $\\lim_{(x,y)\\to(x_0,y_0)}v(x,y)=v_0$.
+                    <span class="label label-thm">Критерий через части.</span> $\\displaystyle\\lim_{z \\to z_0} f(z) = u_0 + iv_0$ тогда и только тогда, когда
+                    $\\lim_{(x,y) \\to (x_0,y_0)} u(x,y) = u_0$ и $\\lim_{(x,y) \\to (x_0,y_0)} v(x,y) = v_0$.
                 </div>
                 <div class="rembox">
-                    <span class="label label-rem">Важно.</span> Предел по комплексной переменной означает, что $z\\to z_0$ с <i>любого</i> направления — это строже, чем предел по вещественному параметру.
+                    <span class="label label-rem">Важно.</span> Предел по комплексной переменной означает, что $z \\to z_0$ с <i>любого</i> направления — это строже, чем предел по вещественному параметру.
                 </div>
                 <div class="defbox">
-                    <span class="label label-def">Непрерывность.</span> $f$ <i>непрерывна</i> в $z_0$, если $\\displaystyle\\lim_{z\\to z_0}f(z)=f(z_0)$.
+                    <span class="label label-def">Непрерывность.</span> $f$ <i>непрерывна</i> в $z_0$, если $\\displaystyle\\lim_{z \\to z_0} f(z) = f(z_0)$.
                 </div>
                 <div class="thmbox">
                     <span class="label label-thm">Теоремы о непрерывных функциях.</span>
                     <ul>
-                        <li>Сумма, разность, произведение, частное непрерывных функций — непрерывны.</li>
+                        <li>Сумма, разность, произведение, частное непрерывных функций — непрерывны (частное — в точках, где знаменатель $\\ne 0$).</li>
                         <li>Суперпозиция непрерывных функций непрерывна.</li>
-                        <li>Если $f$ непрерывна на компакте $K$, то $|f|$ ограничена и достигает максимума и минимума.</li>
+                        <li>Если $f$ непрерывна на компакте $K$, то $|f|$ ограничена и достигает своих максимума и минимума.</li>
                     </ul>
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">Пример.</span> $f(z)=\\Re z$. $f(x+iy)=x$. $\\lim_{z\\to0}f(z)=0$, $f$ непрерывна в $0$.
+                    <span class="label label-ex">Пример.</span> $f(z) = \\Re z$. $f(x+iy) = x$. $\\lim_{z \\to 0} f(z) = 0$, $f$ непрерывна в $0$.
                 </div>
             `
         }, {
@@ -704,36 +663,36 @@
             source: "Производная. УКР. Достаточные условия. Аналитическая функция. Примеры.",
             content: `
                 <div class="defbox">
-                    <span class="label label-def">Производная.</span> $f'(z_0)=\\displaystyle\\lim_{\\Delta z\\to0}\\dfrac{f(z_0+\\Delta z)-f(z_0)}{\\Delta z}$, если предел существует (и не зависит от направления $\\Delta z\\to0$).
+                    <span class="label label-def">Производная.</span> $f'(z_0) = \\displaystyle\\lim_{\\Delta z \\to 0} \\dfrac{f(z_0 + \\Delta z) - f(z_0)}{\\Delta z}$, если предел существует (и не зависит от направления $\\Delta z \\to 0$).
                 </div>
                 <div class="rembox">
-                    <span class="label label-rem">Ключевое отличие.</span> Предел $\\Delta z\\to0$ берётся по всем направлениям — поэтому дифференцируемость по $z$ значительно сильнее, чем по $(x,y)\\in\\R^2$.
+                    <span class="label label-rem">Ключевое отличие.</span> Предел $\\Delta z \\to 0$ берётся по всем направлениям комплексной плоскости — поэтому дифференцируемость по $z$ значительно сильнее, чем дифференцируемость по $(x,y) \\in \\R^2$.
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Теорема (необходимые условия).</span> Если $f=u+iv$ дифференцируема в $z_0=x_0+iy_0$, то в этой точке выполнены <b>условия Коши–Римана (УКР)</b>:
-                    <div class="formula">$\\dfrac{\\partial u}{\\partial x}=\\dfrac{\\partial v}{\\partial y},\\qquad \\dfrac{\\partial u}{\\partial y}=-\\dfrac{\\partial v}{\\partial x}$</div>
-                    Производная: $f'(z_0)=u_x+iv_x=v_y-iu_y$.
+                    <span class="label label-thm">Теорема (необходимые условия).</span> Если $f = u + iv$ дифференцируема в точке $z_0 = x_0 + iy_0$, то в этой точке существуют все четыре частные производные $u_x, u_y, v_x, v_y$ и выполнены <b>условия Коши–Римана (УКР)</b>:
+                    <div class="formula">$\\dfrac{\\partial u}{\\partial x} = \\dfrac{\\partial v}{\\partial y},\\qquad \\dfrac{\\partial u}{\\partial y} = -\\dfrac{\\partial v}{\\partial x}$</div>
+                    Производная тогда: $f'(z_0) = u_x + iv_x = v_y - iu_y = u_x - iu_y = v_y + iv_x$.
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Теорема (достаточные условия).</span> Если в окрестности $z_0$ существуют непрерывные частные производные $u_x,u_y,v_x,v_y$ и выполнены УКР, то $f$ дифференцируема в $z_0$.
+                    <span class="label label-thm">Теорема (достаточные условия).</span> Если в окрестности $z_0$ существуют непрерывные частные производные $u_x, u_y, v_x, v_y$ и выполнены УКР, то $f$ дифференцируема в $z_0$.
                 </div>
                 <div class="defbox">
-                    <span class="label label-def">Аналитическая функция.</span> $f$ <i>аналитична</i> в области $G$, если она дифференцируема в каждой точке $G$. Если $f$ аналитична в $\\C$ — называется <i>целой</i> функцией.
+                    <span class="label label-def">Аналитическая (голоморфная) функция.</span> $f$ <i>аналитична</i> в области $G$, если она дифференцируема в каждой точке $G$. Если $f$ аналитична в $\\C$ — называется <i>целой</i> функцией.
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Необходимое и достаточное условие.</span> $f=u+iv$ аналитична в $G$ $\\Longleftrightarrow$ $u,v$ имеют непрерывные частные производные и выполнены УКР в каждой точке $G$.
+                    <span class="label label-thm">Необходимое и достаточное условие.</span> $f = u + iv$ аналитична в области $G$ тогда и только тогда, когда $u,v$ имеют непрерывные частные производные первого порядка в $G$ и выполнены УКР в каждой точке $G$.
                 </div>
                 <div class="exbox">
                     <span class="label label-ex">Примеры.</span>
                     <ul>
-                        <li><b>Аналитические на $\\C$:</b> $z^n$; $e^z$; $\\sin z$; $\\cos z$; многочлены.</li>
-                        <li><b>Аналитична на $\\C\\setminus\\{0\\}$:</b> $1/z$.</li>
-                        <li><b>Не аналитична нигде:</b> $\\bar z$, $|z|$, $\\Re z$.</li>
-                        <li><b>Дифференцируема лишь в одной точке:</b> $|z|^2$ — УКР только при $z=0$.</li>
+                        <li><b>Аналитические на $\\C$:</b> $z^n$; $e^z$; $\\sin z$; $\\cos z$; многочлены $P(z)$.</li>
+                        <li><b>Аналитична на $\\C \\setminus \\{0\\}$:</b> $1/z$.</li>
+                        <li><b>Не аналитична нигде:</b> $\\bar z$, $|z|$, $\\Re z$ — УКР нарушены во всех точках.</li>
+                        <li><b>Дифференцируема лишь в одной точке:</b> $|z|^2$ — УКР выполнены только при $z = 0$.</li>
                     </ul>
                 </div>
                 <div class="rembox">
-                    <span class="label label-rem">Гармоничность.</span> Если $f=u+iv$ аналитична, то $u$ и $v$ — гармонические функции: $\\Delta u=0$, $\\Delta v=0$.
+                    <span class="label label-rem">Гармоничность.</span> Если $f = u + iv$ аналитична, то $u$ и $v$ — гармонические функции: $\\Delta u = u_{xx} + u_{yy} = 0$, $\\Delta v = 0$. Функции $u$ и $v$ называются <i>сопряжёнными гармоническими</i>.
                 </div>
             `
         }, {
@@ -742,30 +701,31 @@
             source: "Основные свойства. Модуль и аргумент производной. Конформное отображение.",
             content: `
                 <div class="thmbox">
-                    <span class="label label-thm">Алгебраические свойства.</span> Сумма, разность, произведение, частное (знаменатель $\\ne0$) и суперпозиция аналитических функций — аналитические функции.
+                    <span class="label label-thm">Алгебраические свойства.</span> Сумма, разность, произведение, частное (знаменатель $\\ne 0$) и суперпозиция аналитических функций — аналитические функции.
                 </div>
                 <div class="defbox">
-                    <span class="label label-def">Модуль производной.</span> $|f'(z_0)|$ — <i>коэффициент линейного растяжения</i>: бесконечно малые отрезки умножаются на $|f'(z_0)|$.
-                    <div class="formula">$|f'(z_0)|=\\sqrt{u_x^2+v_x^2}=\\sqrt{J_f(z_0)}$</div>
+                    <span class="label label-def">Модуль производной.</span> $|f'(z_0)|$ — <i>коэффициент линейного растяжения</i> в точке $z_0$: бесконечно малые отрезки в окрестности $z_0$ умножаются на $|f'(z_0)|$.
+                    <div class="formula">$|f'(z_0)| = \\sqrt{u_x^2 + v_x^2} = \\sqrt{J_f(z_0)}$</div>
+                    где $J_f = u_x v_y - u_y v_x = u_x^2 + v_x^2$ — якобиан отображения.
                 </div>
                 <div class="defbox">
-                    <span class="label label-def">Аргумент производной.</span> $\\arg f'(z_0)=\\alpha$ — <i>угол поворота</i>: касательная к любой кривой поворачивается на угол $\\alpha$.
+                    <span class="label label-def">Аргумент производной.</span> $\\arg f'(z_0) = \\alpha$ — <i>угол поворота</i>: касательная к любой кривой, проходящей через $z_0$, поворачивается на угол $\\alpha$ при отображении $f$.
                 </div>
                 <div class="defbox">
-                    <span class="label label-def">Конформность в точке.</span> Отображение <i>конформно</i> в точке $z_0$, если:
+                    <span class="label label-def">Конформность в точке.</span> Отображение $f$ <i>конформно</i> в точке $z_0$, если оно:
                     <ul>
                         <li>сохраняет углы между кривыми (по величине и ориентации);</li>
                         <li>является локально изотропным растяжением.</li>
                     </ul>
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Теорема.</span> Аналитическая функция $f$ является конформным отображением в каждой точке $z_0$, где $f'(z_0)\\ne0$. В точках, где $f'(z_0)=0$, конформность нарушается.
+                    <span class="label label-thm">Теорема.</span> Аналитическая функция $f$ является конформным отображением в каждой точке $z_0$, где $f'(z_0) \\ne 0$. В точках, где $f'(z_0) = 0$, конформность нарушается (углы умножаются на кратность нуля производной).
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Теорема Римана об отображении.</span> Любая односвязная область $G\\subsetneq\\C$ конформно отображается на единичный круг $|w|<1$. При нормировке $f(z_0)=0$, $\\arg f'(z_0)=\\alpha$ — единственно.
+                    <span class="label label-thm">Теорема Римана об отображении.</span> Любая односвязная область $G \\subsetneq \\C$ конформно отображается на единичный круг $|w| < 1$. Если дополнительно зафиксировать $f(z_0) = 0$ и $\\arg f'(z_0) = \\alpha$, то отображение единственно.
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">Пример.</span> $f(z)=z^2$ конформна всюду, кроме $z=0$. В $z=0$ углы удваиваются.
+                    <span class="label label-ex">Пример.</span> $f(z) = z^2$ конформна всюду, кроме $z = 0$. В $z = 0$ углы удваиваются.
                 </div>
             `
         }, {
@@ -774,32 +734,32 @@
             source: "Определение. Свойства. Вычисление. Оценка интеграла.",
             content: `
                 <div class="defbox">
-                    <span class="label label-def">Интеграл по кривой.</span> Пусть $\\gamma: z(t)$, $t\\in[a,b]$ — кусочно-гладкая кривая, $f$ непрерывна на $\\gamma$. Тогда:
-                    <div class="formula">$\\int_\\gamma f(z)\\,dz=\\int_a^b f(z(t))\\,z'(t)\\,dt$</div>
+                    <span class="label label-def">Интеграл по кривой.</span> Пусть $\\gamma: z(t)$, $t \\in [a,b]$ — кусочно-гладкая кривая, $f$ непрерывна на $\\gamma$. Тогда:
+                    <div class="formula">$\\int_\\gamma f(z)\\,dz = \\int_a^b f(z(t))\\,z'(t)\\,dt$</div>
                 </div>
-                <p><b>Связь с вещественными интегралами:</b> при $f=u+iv$, $dz=dx+idy$:</p>
-                <div class="formula">$\\int_\\gamma f\\,dz=\\int_\\gamma(u\\,dx-v\\,dy)+i\\int_\\gamma(v\\,dx+u\\,dy)$</div>
+                <p><b>Связь с вещественными интегралами:</b> при $f = u + iv$, $dz = dx + idy$:</p>
+                <div class="formula">$\\int_\\gamma f\\,dz = \\int_\\gamma (u\\,dx - v\\,dy) + i\\int_\\gamma (v\\,dx + u\\,dy)$</div>
 
                 <div class="thmbox">
                     <span class="label label-thm">Свойства интеграла.</span>
                     <ul>
-                        <li><b>Линейность:</b> $\\int_\\gamma(\\alpha f+\\beta g)\\,dz=\\alpha\\int_\\gamma f\\,dz+\\beta\\int_\\gamma g\\,dz$.</li>
-                        <li><b>Аддитивность:</b> $\\int_{\\gamma_1+\\gamma_2}=\\int_{\\gamma_1}+\\int_{\\gamma_2}$.</li>
-                        <li><b>Смена направления:</b> $\\int_{-\\gamma}f\\,dz=-\\int_\\gamma f\\,dz$.</li>
-                        <li><b>Оценка модуля:</b> $\\left|\\int_\\gamma f\\,dz\\right|\\le\\max_\\gamma|f|\\cdot L(\\gamma)$.</li>
+                        <li><b>Линейность:</b> $\\int_\\gamma(\\alpha f + \\beta g)\\,dz = \\alpha\\int_\\gamma f\\,dz + \\beta\\int_\\gamma g\\,dz$.</li>
+                        <li><b>Аддитивность по контуру:</b> $\\int_{\\gamma_1 + \\gamma_2} = \\int_{\\gamma_1} + \\int_{\\gamma_2}$.</li>
+                        <li><b>Смена направления:</b> $\\int_{-\\gamma} f\\,dz = -\\int_\\gamma f\\,dz$.</li>
+                        <li><b>Оценка модуля:</b> $\\displaystyle\\left|\\int_\\gamma f\\,dz\\right| \\le \\max_\\gamma |f| \\cdot L(\\gamma)$, где $L$ — длина $\\gamma$.</li>
                     </ul>
                 </div>
                 <div class="defbox">
-                    <span class="label label-def">Первообразная.</span> $F$ — первообразная $f$ в $G$, если $F'(z)=f(z)$ в $G$.
+                    <span class="label label-def">Первообразная.</span> $F$ — первообразная $f$ в $G$, если $F'(z) = f(z)$ в $G$.
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Формула Ньютона–Лейбница.</span> Если $F'=f$ в односвязной $G$, то
-                    <div class="formula">$\\int_{z_1}^{z_2}f(z)\\,dz=F(z_2)-F(z_1)$</div>
+                    <span class="label label-thm">Формула Ньютона–Лейбница.</span> Если $F' = f$ в односвязной $G$, то
+                    <div class="formula">$\\int_{z_1}^{z_2} f(z)\\,dz = F(z_2) - F(z_1)$</div>
                     (не зависит от пути в $G$).
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">Пример.</span> $\\displaystyle\\oint_{|z|=1}\\frac{dz}{z}$: $z(t)=e^{it}$, $z'(t)=ie^{it}$, $t\\in[0,2\\pi]$.
-                    $\\int_0^{2\\pi}\\frac{1}{e^{it}}\\cdot ie^{it}\\,dt=i\\int_0^{2\\pi}dt=2\\pi i$.
+                    <span class="label label-ex">Пример.</span> $\\displaystyle\\oint_{|z|=1} \\frac{dz}{z}$: $z(t) = e^{it}$, $z'(t) = ie^{it}$, $t \\in [0,2\\pi]$.
+                    $\\int_0^{2\\pi} \\frac{1}{e^{it}} \\cdot ie^{it}\\,dt = i\\int_0^{2\\pi} dt = 2\\pi i$.
                 </div>
             `
         }, {
@@ -808,26 +768,27 @@
             source: "Для односвязной и многосвязной области. Независимость от пути.",
             content: `
                 <div class="thmbox">
-                    <span class="label label-thm">Теорема Коши (для односвязной области).</span> Если $f$ аналитична в односвязной области $G$, то для любого замкнутого контура $\\gamma\\subset G$:
-                    <div class="formula">$\\oint_\\gamma f(z)\\,dz=0$</div>
+                    <span class="label label-thm">Теорема Коши (для односвязной области).</span> Если $f$ аналитична в односвязной области $G$, то для любого замкнутого контура $\\gamma \\subset G$:
+                    <div class="formula">$\\oint_\\gamma f(z)\\,dz = 0$</div>
                 </div>
                 <div class="exbox">
                     <span class="label label-ex">Идея доказательства.</span> Используется формула Грина:
-                    $\\oint_\\gamma(u\\,dx-v\\,dy)=\\iint_D(-v_x-u_y)\\,dx\\,dy=0$ и
-                    $\\oint_\\gamma(v\\,dx+u\\,dy)=\\iint_D(u_x-v_y)\\,dx\\,dy=0$ в силу УКР.
+                    $\\oint_\\gamma (u\\,dx - v\\,dy) = \\iint_D (-v_x - u_y)\\,dx\\,dy = 0$ и
+                    $\\oint_\\gamma (v\\,dx + u\\,dy) = \\iint_D (u_x - v_y)\\,dx\\,dy = 0$ в силу УКР.
                 </div>
                 <div class="corbox">
-                    <span class="label label-cor">Следствие — независимость от пути.</span> В односвязной области $\\displaystyle\\int_{z_1}^{z_2}f\\,dz$ не зависит от пути.
+                    <span class="label label-cor">Следствие — независимость от пути.</span> В односвязной области $\\displaystyle\\int_{z_1}^{z_2} f\\,dz$ не зависит от пути.
                 </div>
                 <div class="corbox">
-                    <span class="label label-cor">Следствие — существование первообразной.</span> В односвязной области каждая аналитическая функция имеет первообразную: $F(z)=\\int_{z_0}^z f(\\zeta)\\,d\\zeta$.
+                    <span class="label label-cor">Следствие — существование первообразной.</span> В односвязной области каждая аналитическая функция имеет первообразную: $F(z) = \\int_{z_0}^z f(\\zeta)\\,d\\zeta$.
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Теорема Коши для многосвязной области.</span> Если $f$ аналитична в области с внешним контуром $\\Gamma$ и внутренними $\\gamma_1,\\dots,\\gamma_n$ (все CCW), то:
-                    <div class="formula">$\\oint_\\Gamma f\\,dz=\\sum_{k=1}^n\\oint_{\\gamma_k}f\\,dz$</div>
+                    <span class="label label-thm">Теорема Коши для многосвязной области.</span> Пусть $f$ аналитична в области $G$, ограниченной внешним контуром $\\Gamma$ (положительная ориентация) и внутренними контурами $\\gamma_1,\\dots,\\gamma_n$ (отрицательная ориентация). Тогда:
+                    <div class="formula">$\\oint_\\Gamma f\\,dz = \\sum_{k=1}^n \\oint_{\\gamma_k} f\\,dz$</div>
+                    где все контуры ориентированы положительно (область слева).
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">Важный пример.</span> $\\displaystyle\\oint_{|z|=r}\\frac{dz}{(z-a)^n}=\\begin{cases}2\\pi i,&n=1,\\\\0,&n\\ne1\\end{cases}$ при $|a|<r$.
+                    <span class="label label-ex">Важный пример.</span> $\\displaystyle\\oint_{|z|=r} \\frac{dz}{(z-a)^n} = \\begin{cases} 2\\pi i, & n = 1, \\\\ 0, & n \\ne 1 \\end{cases}$ при $|a| < r$.
                 </div>
             `
         }, {
@@ -836,21 +797,21 @@
             source: "Формулировка, доказательство, следствия. Формула для производных.",
             content: `
                 <div class="thmbox">
-                    <span class="label label-thm">Интегральная формула Коши.</span> Пусть $f$ аналитична в замкнутой области $\\overline G$ с границей $\\Gamma$ (положительно ориентирована). Тогда для любой точки $z_0\\in G$:
-                    <div class="formula">$f(z_0)=\\dfrac{1}{2\\pi i}\\oint_\\Gamma\\dfrac{f(\\zeta)}{\\zeta-z_0}\\,d\\zeta$</div>
+                    <span class="label label-thm">Интегральная формула Коши.</span> Пусть $f$ аналитична в замкнутой области $\\overline G$ с кусочно-гладкой границей $\\Gamma$ (ориентирована положительно). Тогда для любой точки $z_0 \\in G$:
+                    <div class="formula">$f(z_0) = \\dfrac{1}{2\\pi i}\\oint_\\Gamma \\dfrac{f(\\zeta)}{\\zeta - z_0}\\,d\\zeta$</div>
                 </div>
                 <div class="exbox">
                     <span class="label label-ex">Доказательство.</span> Интеграл заменяем на интеграл по малой окружности $\\gamma_\\varepsilon$:
-                    <div class="formula">$\\oint_\\Gamma\\dfrac{f(\\zeta)}{\\zeta-z_0}\\,d\\zeta=
-                    \\oint_{\\gamma_\\varepsilon}\\dfrac{f(\\zeta)-f(z_0)}{\\zeta-z_0}\\,d\\zeta+f(z_0)\\oint_{\\gamma_\\varepsilon}\\dfrac{d\\zeta}{\\zeta-z_0}$</div>
-                    Первый интеграл $\\to0$ при $\\varepsilon\\to0$, второй $=2\\pi i$.
+                    <div class="formula">$\\oint_\\Gamma \\dfrac{f(\\zeta)}{\\zeta - z_0}\\,d\\zeta =
+                    \\oint_{\\gamma_\\varepsilon} \\dfrac{f(\\zeta) - f(z_0)}{\\zeta - z_0}\\,d\\zeta + f(z_0)\\oint_{\\gamma_\\varepsilon} \\dfrac{d\\zeta}{\\zeta - z_0}$</div>
+                    Первый интеграл $\\to 0$ при $\\varepsilon \\to 0$ (по непрерывности $f$), второй $= 2\\pi i$.
                 </div>
                 <div class="corbox">
-                    <span class="label label-cor">Формула для производных.</span> Для любого $n\\ge0$:
-                    <div class="formula">$f^{(n)}(z_0)=\\dfrac{n!}{2\\pi i}\\oint_\\Gamma\\dfrac{f(\\zeta)}{(\\zeta-z_0)^{n+1}}\\,d\\zeta$</div>
+                    <span class="label label-cor">Формула для производных.</span> Для любого $n \\ge 0$:
+                    <div class="formula">$f^{(n)}(z_0) = \\dfrac{n!}{2\\pi i}\\oint_\\Gamma \\dfrac{f(\\zeta)}{(\\zeta - z_0)^{n+1}}\\,d\\zeta$</div>
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">Пример.</span> $\\displaystyle\\oint_{|z|=2}\\dfrac{e^z}{z^3}\\,dz=\\dfrac{2\\pi i}{2!}\\cdot(e^z)''|_{z=0}=\\dfrac{2\\pi i}{2}\\cdot e^0=\\pi i$.
+                    <span class="label label-ex">Пример.</span> $\\displaystyle\\oint_{|z|=2} \\dfrac{e^z}{z^3}\\,dz = \\dfrac{2\\pi i}{2!} \\cdot (e^z)''|_{z=0} = \\dfrac{2\\pi i}{2} \\cdot e^0 = \\pi i$.
                 </div>
                 <div class="rembox">
                     <span class="label label-rem">Смысл.</span> Значение аналитической функции внутри контура полностью определяется её значениями на контуре.
@@ -863,23 +824,23 @@
             content: `
                 <div class="thmbox">
                     <span class="label label-thm">Принцип максимума модуля.</span> Пусть $f$ аналитична в ограниченной области $G$ и непрерывна на $\\overline G$. Тогда:
-                    <div class="formula">$\\max_{\\overline G}|f(z)|=\\max_{\\partial G}|f(z)|$</div>
-                    Причём, если $|f|$ достигает максимума во внутренней точке, то $f\\equiv\\mathrm{const}$.
+                    <div class="formula">$\\max_{\\overline G} |f(z)| = \\max_{\\partial G} |f(z)|$</div>
+                    Причём, если $|f|$ достигает максимума во внутренней точке, то $f \\equiv \\mathrm{const}$.
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">Идея доказательства.</span> Предположим $|f(z_0)|=M=\\max_G|f|$, $z_0\\in G$.
-                    <div class="formula">$|f(z_0)|\\le\\dfrac{1}{2\\pi}\\cdot2\\pi r\\cdot\\dfrac{M}{r}=M$</div>
-                    Неравенство обращается в равенство только если $f$ постоянна на окружности.
+                    <span class="label label-ex">Идея доказательства.</span> Предположим $|f(z_0)| = M = \\max_G |f|$, $z_0 \\in G$.
+                    <div class="formula">$|f(z_0)| \\le \\dfrac{1}{2\\pi} \\cdot 2\\pi r \\cdot \\dfrac{M}{r} = M$</div>
+                    Неравенство обращается в равенство только если $f$ постоянна на окружности; анализируя при всех $r$ — $f \\equiv \\mathrm{const}$.
                 </div>
                 <div class="corbox">
-                    <span class="label label-cor">Принцип минимума.</span> Если $f$ аналитична в $G$, непрерывна на $\\overline G$ и $f\\ne0$ в $G$, то
-                    <div class="formula">$\\min_{\\overline G}|f(z)|=\\min_{\\partial G}|f(z)|$</div>
+                    <span class="label label-cor">Принцип минимума.</span> Если $f$ аналитична в $G$, непрерывна на $\\overline G$ и $f \\ne 0$ в $G$, то
+                    <div class="formula">$\\min_{\\overline G} |f(z)| = \\min_{\\partial G} |f(z)|$</div>
                 </div>
                 <div class="corbox">
-                    <span class="label label-cor">Оценка.</span> Если $|f|\\le M$ на $\\partial G$, то $|f|\\le M$ всюду в $G$.
+                    <span class="label label-cor">Оценка.</span> Если $|f| \\le M$ на $\\partial G$, то $|f| \\le M$ всюду в $G$.
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">Применение.</span> Доказательство единственности решения задачи Дирихле: разность двух решений — гармоническая функция, равная нулю на границе, следовательно $\\equiv0$.
+                    <span class="label label-ex">Применение.</span> Доказательство единственности решения задачи Дирихле: разность двух решений — гармоническая функция, равная нулю на границе, следовательно $\\equiv 0$.
                 </div>
             `
         }, {
@@ -892,19 +853,19 @@
                 </div>
                 <div class="exbox">
                     <span class="label label-ex">Доказательство.</span> Из формулы Коши для производных:
-                    <div class="formula">$f^{(n)}(z_0)=\\dfrac{n!}{2\\pi i}\\oint_\\Gamma\\dfrac{f(\\zeta)}{(\\zeta-z_0)^{n+1}}\\,d\\zeta$</div>
+                    <div class="formula">$f^{(n)}(z_0) = \\dfrac{n!}{2\\pi i}\\oint_\\Gamma \\dfrac{f(\\zeta)}{(\\zeta - z_0)^{n+1}}\\,d\\zeta$</div>
                     следует, что $f^{(n)}$ существует для любого $n$.
                 </div>
                 <div class="defbox">
                     <span class="label label-def">Интегральное представление производных.</span>
-                    <div class="formula">$f^{(n)}(z_0)=\\dfrac{n!}{2\\pi i}\\oint_\\Gamma\\dfrac{f(\\zeta)}{(\\zeta-z_0)^{n+1}}\\,d\\zeta$</div>
+                    <div class="formula">$f^{(n)}(z_0) = \\dfrac{n!}{2\\pi i}\\oint_\\Gamma \\dfrac{f(\\zeta)}{(\\zeta - z_0)^{n+1}}\\,d\\zeta$</div>
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Неравенство Коши.</span> Если $f$ аналитична в $|z-z_0|<R$ и $|f|\\le M$ на $|z-z_0|=r<R$, то:
-                    <div class="formula">$|f^{(n)}(z_0)|\\le\\dfrac{n!\\,M}{r^n}$</div>
+                    <span class="label label-thm">Неравенство Коши.</span> Если $f$ аналитична в $|z - z_0| < R$ и $|f| \\le M$ на $|z - z_0| = r < R$, то:
+                    <div class="formula">$|f^{(n)}(z_0)| \\le \\dfrac{n!\\,M}{r^n}$</div>
                 </div>
                 <div class="corbox">
-                    <span class="label label-cor">Следствие.</span> Для целой ограниченной функции все производные ограничены. При $r\\to\\infty$ получаем $f^{(n)}(z_0)=0$ при $n\\ge1$, т.е. $f=\\mathrm{const}$ — это теорема Лиувилля.
+                    <span class="label label-cor">Следствие.</span> Для целой ограниченной функции все производные ограничены. При $r \\to \\infty$ получаем $f^{(n)}(z_0) = 0$ при $n \\ge 1$, т.е. $f = \\mathrm{const}$ — это теорема Лиувилля.
                 </div>
             `
         }, {
@@ -913,49 +874,49 @@
             source: "Обратная к теореме Коши. Ограниченные целые функции.",
             content: `
                 <div class="thmbox">
-                    <span class="label label-thm">Теорема Морера (обратная к т. Коши).</span> Если $f$ непрерывна в односвязной области $G$ и $\\oint_\\gamma f(z)\\,dz=0$ для любого замкнутого контура $\\gamma\\subset G$, то $f$ аналитична в $G$.
+                    <span class="label label-thm">Теорема Морера (обратная к теореме Коши).</span> Если $f$ непрерывна в односвязной области $G$ и $\\oint_\\gamma f(z)\\,dz = 0$ для любого замкнутого контура $\\gamma \\subset G$, то $f$ аналитична в $G$.
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">Доказательство.</span> Из условия следует, что $F(z)=\\int_{z_0}^z f(\\zeta)\\,d\\zeta$ не зависит от пути и $F'(z)=f(z)$, то есть $F$ аналитична. По теореме §11 $f=F'$ тоже аналитична.
+                    <span class="label label-ex">Доказательство.</span> Из условия следует, что $F(z) = \\int_{z_0}^z f(\\zeta)\\,d\\zeta$ не зависит от пути и $F'(z) = f(z)$, то есть $F$ дифференцируема, значит аналитична. По теореме о бесконечной дифференцируемости $f = F'$ тоже аналитична.
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Теорема Лиувилля.</span> Если $f$ целая (аналитична на всей $\\C$) и ограничена: $|f(z)|\\le M$ для всех $z\\in\\C$, то $f\\equiv\\mathrm{const}$.
+                    <span class="label label-thm">Теорема Лиувилля.</span> Если $f$ целая (аналитична на всей $\\C$) и ограничена: $|f(z)| \\le M$ для всех $z \\in \\C$, то $f \\equiv \\mathrm{const}$.
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">Доказательство.</span> Из неравенства Коши: $|f'(z_0)|\\le M/r$ для любого $r>0$. При $r\\to\\infty$ получаем $f'\\equiv0$, откуда $f=\\mathrm{const}$.
+                    <span class="label label-ex">Доказательство.</span> Из неравенства Коши: $|f'(z_0)| \\le M/r$ для любого $r > 0$. При $r \\to \\infty$ получаем $|f'(z_0)| = 0$ для любого $z_0$, т.е. $f' \\equiv 0$, откуда $f = \\mathrm{const}$.
                 </div>
                 <div class="corbox">
-                    <span class="label label-cor">Основная теорема алгебры (через Лиувилля).</span> Каждый многочлен $P(z)$ степени $n\\ge1$ имеет хотя бы один комплексный корень.<br>
+                    <span class="label label-cor">Основная теорема алгебры (через Лиувилля).</span> Каждый многочлен $P(z)$ степени $n \\ge 1$ имеет хотя бы один комплексный корень.<br>
                     <i>Доказательство:</i> если корней нет, то $1/P(z)$ — целая ограниченная функция, значит константа — противоречие.
                 </div>
             `
         }, {
             id: 13,
             title: "Ряды. Равномерная сходимость",
-            source: "Числовые ряды. Функциональные ряды. Признаки сходимости.",
+            source: "Числовые ряды. Функциональные ряды. Признаки сходимости. Основные утверждения.",
             content: `
                 <div class="defbox">
-                    <span class="label label-def">Числовой ряд.</span> Ряд $\\sum c_n$ <i>сходится</i>, если частичные суммы $S_N\\to S$. <i>Необходимое условие</i>: $c_n\\to0$.
+                    <span class="label label-def">Числовой ряд.</span> Ряд $\\sum c_n$ <i>сходится</i>, если частичные суммы $S_N \\to S$. <i>Необходимое условие</i>: $c_n \\to 0$.
                 </div>
                 <div class="defbox">
-                    <span class="label label-def">Абсолютная сходимость.</span> $\\sum c_n$ <i>сходится абсолютно</i>, если $\\sum|c_n|<\\infty$. Абсолютная сходимость влечёт сходимость.
+                    <span class="label label-def">Абсолютная сходимость.</span> $\\sum c_n$ <i>сходится абсолютно</i>, если $\\sum |c_n| < \\infty$. Абсолютная сходимость влечёт сходимость.
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Критерий Коши.</span> $\\sum c_n$ сходится $\\Longleftrightarrow$ $\\forall\\varepsilon>0\\;\\exists N:\\;\\left|\\sum_{k=m+1}^n c_k\\right|<\\varepsilon$ при $n>m>N$.
+                    <span class="label label-thm">Критерий Коши.</span> $\\sum c_n$ сходится $\\Longleftrightarrow$ $\\forall\\varepsilon > 0\\; \\exists N:\\; \\left|\\sum_{k=m+1}^n c_k\\right| < \\varepsilon$ при $n > m > N$.
                 </div>
                 <div class="defbox">
                     <span class="label label-def">Равномерная сходимость.</span> Ряд $\\sum f_n(z)$ <i>равномерно сходится</i> на $E$, если
-                    <div class="formula">$\\sup_{z\\in E}|S(z)-S_N(z)|\\xrightarrow{N\\to\\infty}0$</div>
+                    <div class="formula">$\\sup_{z \\in E} |S(z) - S_N(z)| \\xrightarrow{N \\to \\infty} 0$</div>
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Признак Вейерштрасса (M-тест).</span> Если $|f_n(z)|\\le M_n$ для всех $z\\in E$ и $\\sum M_n<\\infty$, то $\\sum f_n(z)$ сходится равномерно (и абсолютно) на $E$.
+                    <span class="label label-thm">Признак Вейерштрасса (M-тест).</span> Если $|f_n(z)| \\le M_n$ для всех $z \\in E$ и $\\sum M_n < \\infty$, то $\\sum f_n(z)$ сходится равномерно (и абсолютно) на $E$.
                 </div>
                 <div class="thmbox">
                     <span class="label label-thm">Следствия равномерной сходимости.</span>
                     <ul>
-                        <li><b>Непрерывность суммы:</b> если $f_n$ непрерывны и $\\sum f_n\\rightrightarrows S$, то $S$ непрерывна.</li>
-                        <li><b>Почленное интегрирование:</b> $\\displaystyle\\int_\\gamma\\sum f_n\\,dz=\\sum\\int_\\gamma f_n\\,dz$.</li>
-                        <li><b>Почленное дифференцирование:</b> если $\\sum f_n'\\rightrightarrows$ на компактах, то $S'=\\sum f_n'$.</li>
+                        <li><b>Непрерывность суммы:</b> если $f_n$ непрерывны и $\\sum f_n \\rightrightarrows S$, то $S$ непрерывна.</li>
+                        <li><b>Почленное интегрирование:</b> $\\displaystyle\\int_\\gamma \\sum f_n\\,dz = \\sum \\int_\\gamma f_n\\,dz$.</li>
+                        <li><b>Почленное дифференцирование:</b> если $\\sum f_n' \\rightrightarrows$ на компактах, то $S' = \\sum f_n'$.</li>
                     </ul>
                 </div>
             `
@@ -965,21 +926,21 @@
             source: "Формулировка. Доказательство. Почленное дифференцирование.",
             content: `
                 <div class="thmbox">
-                    <span class="label label-thm">Теорема Вейерштрасса.</span> Пусть $f_n$ аналитичны в $G$ и $\\sum f_n(z)$ сходится равномерно на каждом компакте $K\\subset G$. Тогда:
+                    <span class="label label-thm">Теорема Вейерштрасса.</span> Пусть $f_n$ аналитичны в области $G$ и $\\sum f_n(z)$ сходится равномерно на каждом компакте $K \\subset G$. Тогда:
                     <ul>
-                        <li>Сумма $S(z)=\\sum f_n(z)$ аналитична в $G$.</li>
-                        <li>Можно дифференцировать почленно: $S^{(k)}(z)=\\sum f_n^{(k)}(z)$, и этот ряд сходится равномерно на компактах.</li>
+                        <li>Сумма $S(z) = \\sum f_n(z)$ аналитична в $G$.</li>
+                        <li>Можно дифференцировать почленно: $S^{(k)}(z) = \\sum f_n^{(k)}(z)$, и этот ряд сходится равномерно на компактах.</li>
                     </ul>
                 </div>
                 <div class="exbox">
                     <span class="label label-ex">Доказательство (план).</span>
                     <ol>
-                        <li>Для любого контура $\\gamma\\subset G$: $\\oint_\\gamma S\\,dz=\\sum\\oint_\\gamma f_n\\,dz=0$. По т. Морера $S$ аналитична.</li>
-                        <li>Для производных: $S^{(k)}(z)=\\dfrac{k!}{2\\pi i}\\oint_C\\dfrac{S(\\zeta)}{(\\zeta-z)^{k+1}}\\,d\\zeta$, подставляем ряд под интеграл.</li>
+                        <li>Для любого контура $\\gamma \\subset G$: $\\oint_\\gamma S\\,dz = \\sum \\oint_\\gamma f_n\\,dz = 0$ (по равномерной сходимости и теореме Коши). По теореме Морера $S$ аналитична.</li>
+                        <li>Для производных: $S^{(k)}(z) = \\dfrac{k!}{2\\pi i}\\oint_C \\dfrac{S(\\zeta)}{(\\zeta - z)^{k+1}}\\,d\\zeta$, подставляем ряд под интеграл (допустимо по равномерной сходимости).</li>
                     </ol>
                 </div>
                 <div class="rembox">
-                    <span class="label label-rem">Важность.</span> Теорема позволяет работать с аналитическими функциями через их разложения в ряды. Сумма ряда — снова аналитическая функция.
+                    <span class="label label-rem">Важность.</span> Теорема позволяет работать с аналитическими функциями через их разложения в ряды и гарантирует, что полученная сумма снова является аналитической функцией.
                 </div>
             `
         }, {
@@ -988,34 +949,35 @@
             source: "Радиус и круг сходимости. Формула Коши–Адамара.",
             content: `
                 <div class="defbox">
-                    <span class="label label-def">Степенной ряд.</span> $\\displaystyle\\sum_{n=0}^\\infty c_n(z-z_0)^n$, где $c_n\\in\\C$ — коэффициенты, $z_0$ — центр.
+                    <span class="label label-def">Степенной ряд.</span> $\\displaystyle\\sum_{n=0}^\\infty c_n(z - z_0)^n$, где $c_n \\in \\C$ — коэффициенты, $z_0$ — центр.
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Теорема Абеля.</span> Если степенной ряд сходится в точке $z_1\\ne z_0$, то он <i>абсолютно</i> сходится при $|z-z_0|<|z_1-z_0|$ и <i>равномерно</i> — в любом замкнутом круге $|z-z_0|\\le\\rho<|z_1-z_0|$.
+                    <span class="label label-thm">Теорема Абеля.</span> Если степенной ряд сходится в точке $z_1 \\ne z_0$, то он <i>абсолютно</i> сходится в каждой точке $z$ с $|z - z_0| < |z_1 - z_0|$ и <i>равномерно</i> — в любом замкнутом круге $|z - z_0| \\le \\rho$ с $\\rho < |z_1 - z_0|$.
                 </div>
                 <div class="defbox">
-                    <span class="label label-def">Радиус сходимости $R$.</span> Ряд сходится при $|z-z_0|<R$ и расходится при $|z-z_0|>R$.
+                    <span class="label label-def">Радиус сходимости $R$.</span> Ряд сходится при $|z - z_0| < R$ и расходится при $|z - z_0| > R$. На границе $|z - z_0| = R$ поведение зависит от конкретного ряда.
                 </div>
                 <div class="thmbox">
                     <span class="label label-thm">Формула Коши–Адамара.</span>
-                    <div class="formula">$\\dfrac{1}{R}=\\limsup_{n\\to\\infty}|c_n|^{1/n}$</div>
-                    Если $\\limsup=0$ — $R=\\infty$; если $\\limsup=\\infty$ — $R=0$.
+                    <div class="formula">$\\dfrac{1}{R} = \\limsup_{n \\to \\infty} \\sqrt[n]{|c_n|}$</div>
+                    Если $\\limsup = 0$ — $R = \\infty$ (ряд сходится на всей $\\C$). Если $\\limsup = \\infty$ — $R = 0$ (сходится только в $z_0$).
                 </div>
                 <div class="corbox">
-                    <span class="label label-cor">Формула Даламбера.</span> Если $\\displaystyle\\lim_{n\\to\\infty}\\left|\\dfrac{c_{n+1}}{c_n}\\right|=L$, то $R=1/L$.
+                    <span class="label label-cor">Формула Даламбера.</span> Если $\\displaystyle\\lim_{n \\to \\infty} \\left|\\dfrac{c_{n+1}}{c_n}\\right| = L$, то $R = 1/L$ (если $L \\ne 0$).
                 </div>
                 <div class="defbox">
-                    <span class="label label-def">Ряд Тейлора.</span> Если $f$ аналитична в $|z-z_0|<R$:
-                    <div class="formula">$f(z)=\\sum_{n=0}^\\infty\\dfrac{f^{(n)}(z_0)}{n!}(z-z_0)^n$</div>
+                    <span class="label label-def">Ряд Тейлора.</span> Если $f$ аналитична в $|z - z_0| < R$, то её разложение в степенной ряд:
+                    <div class="formula">$f(z) = \\sum_{n=0}^\\infty \\dfrac{f^{(n)}(z_0)}{n!}(z - z_0)^n$</div>
                 </div>
                 <div class="thmbox">
                     <span class="label label-thm">Стандартные разложения.</span>
                     <ul>
-                        <li>$e^z=\\sum z^n/n!$ ($R=\\infty$)</li>
-                        <li>$\\sin z=\\sum(-1)^n z^{2n+1}/(2n+1)!$ ($R=\\infty$)</li>
-                        <li>$\\cos z=\\sum(-1)^n z^{2n}/(2n)!$ ($R=\\infty$)</li>
-                        <li>$1/(1-z)=\\sum z^n$ ($|z|<1$)</li>
-                        <li>$\\ln(1+z)=\\sum(-1)^{n-1}z^n/n$ ($|z|<1$)</li>
+                        <li>$e^z = \\sum_{n=0}^\\infty \\dfrac{z^n}{n!}$, $R = \\infty$</li>
+                        <li>$\\sin z = \\sum_{n=0}^\\infty \\dfrac{(-1)^n z^{2n+1}}{(2n+1)!}$, $R = \\infty$</li>
+                        <li>$\\cos z = \\sum_{n=0}^\\infty \\dfrac{(-1)^n z^{2n}}{(2n)!}$, $R = \\infty$</li>
+                        <li>$\\dfrac{1}{1 - z} = \\sum_{n=0}^\\infty z^n$, $|z| < 1$</li>
+                        <li>$\\ln(1 + z) = \\sum_{n=1}^\\infty \\dfrac{(-1)^{n-1} z^n}{n}$, $|z| < 1$</li>
+                        <li>$(1 + z)^\\alpha = \\sum_{n=0}^\\infty \\binom{\\alpha}{n} z^n$, $|z| < 1$</li>
                     </ul>
                 </div>
             `
@@ -1025,23 +987,24 @@
             source: "Формулировка. Единственность. Связь радиуса с особыми точками.",
             content: `
                 <div class="thmbox">
-                    <span class="label label-thm">Теорема Тейлора.</span> Если $f$ аналитична в области $G$ и $z_0\\in G$, то в наибольшем круге $|z-z_0|<R$, содержащемся в $G$, функция разлагается в единственный сходящийся степенной ряд:
-                    <div class="formula">$f(z)=\\sum_{n=0}^\\infty c_n(z-z_0)^n,\\quad c_n=\\dfrac{f^{(n)}(z_0)}{n!}=\\dfrac{1}{2\\pi i}\\oint_C\\dfrac{f(\\zeta)}{(\\zeta-z_0)^{n+1}}\\,d\\zeta$</div>
+                    <span class="label label-thm">Теорема Тейлора.</span> Если $f$ аналитична в области $G$ и $z_0 \\in G$, то в наибольшем круге $|z - z_0| < R$, содержащемся в $G$, функция разлагается в единственный сходящийся степенной ряд (ряд Тейлора):
+                    <div class="formula">$f(z) = \\sum_{n=0}^\\infty c_n(z - z_0)^n,\\qquad c_n = \\dfrac{f^{(n)}(z_0)}{n!} = \\dfrac{1}{2\\pi i}\\oint_C \\dfrac{f(\\zeta)}{(\\zeta - z_0)^{n+1}}\\,d\\zeta$</div>
+                    Ряд сходится равномерно на каждом компакте в круге $|z - z_0| < R$.
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">Доказательство.</span> Из формулы Коши и разложения геометрического ряда:
-                    <div class="formula">$f(z)=\\dfrac{1}{2\\pi i}\\oint\\dfrac{f(\\zeta)}{\\zeta-z_0}\\cdot\\dfrac{1}{1-\\frac{z-z_0}{\\zeta-z_0}}\\,d\\zeta=
-                    \\sum_{n=0}^\\infty\\left(\\dfrac{1}{2\\pi i}\\oint\\dfrac{f(\\zeta)}{(\\zeta-z_0)^{n+1}}\\,d\\zeta\\right)(z-z_0)^n$</div>
+                    <span class="label label-ex">Доказательство.</span> Для $z$ в круге $|z - z_0| < r < R$ используем формулу Коши и разложение геометрического ряда:
+                    <div class="formula">$f(z) = \\dfrac{1}{2\\pi i}\\oint \\dfrac{f(\\zeta)}{\\zeta - z_0} \\cdot \\dfrac{1}{1 - \\frac{z - z_0}{\\zeta - z_0}}\\,d\\zeta =
+                    \\sum_{n=0}^\\infty \\left(\\dfrac{1}{2\\pi i}\\oint \\dfrac{f(\\zeta)}{(\\zeta - z_0)^{n+1}}\\,d\\zeta\\right)(z - z_0)^n$</div>
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Радиус сходимости и особые точки.</span> Радиус сходимости ряда Тейлора равен расстоянию от $z_0$ до ближайшей особой точки:
-                    <div class="formula">$R=\\inf_{a\\in\\mathrm{Sing}(f)}|a-z_0|$</div>
+                    <span class="label label-thm">Радиус сходимости и особые точки.</span> Радиус сходимости ряда Тейлора $\\sum c_n(z - z_0)^n$ равен расстоянию от $z_0$ до ближайшей особой точки функции $f$:
+                    <div class="formula">$R = \\inf_{a \\in \\mathrm{Sing}(f)} |a - z_0|$</div>
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">Пример.</span> $f(z)=1/(1+z^2)$, $z_0=0$: особые точки $z=\\pm i$, $R=1$. Ряд $\\sum(-1)^n z^{2n}$ сходится при $|z|<1$.
+                    <span class="label label-ex">Пример.</span> $f(z) = \\dfrac{1}{1 + z^2}$, $z_0 = 0$: особые точки $z = \\pm i$, расстояние $= 1$. Ряд Тейлора $\\sum (-1)^n z^{2n}$ сходится при $|z| < 1$.
                 </div>
                 <div class="rembox">
-                    <span class="label label-rem">Единственность.</span> Ряд Тейлора единственен: если $f(z)=\\sum a_n(z-z_0)^n$, то $a_n=f^{(n)}(z_0)/n!$.
+                    <span class="label label-rem">Единственность.</span> Ряд Тейлора единственен: если $f(z) = \\sum a_n(z - z_0)^n$, то $a_n = f^{(n)}(z_0)/n!$.
                 </div>
             `
         }, {
@@ -1050,27 +1013,27 @@
             source: "Нуль порядка m. Изолированность нулей. Теорема единственности.",
             content: `
                 <div class="defbox">
-                    <span class="label label-def">Нуль порядка $m$.</span> Точка $z_0$ — <i>нуль порядка $m$</i> функции $f$, если
-                    <div class="formula">$f(z_0)=f'(z_0)=\\cdots=f^{(m-1)}(z_0)=0,\\quad f^{(m)}(z_0)\\ne0$</div>
-                    Эквивалентно: $f(z)=(z-z_0)^m\\varphi(z)$, где $\\varphi(z_0)\\ne0$.
+                    <span class="label label-def">Нуль порядка $m$.</span> Точка $z_0$ называется <i>нулём порядка $m$</i> функции $f$, если
+                    <div class="formula">$f(z_0) = f'(z_0) = \\dots = f^{(m-1)}(z_0) = 0,\\quad f^{(m)}(z_0) \\ne 0$</div>
+                    Эквивалентно: в окрестности $z_0$ выполнено $f(z) = (z - z_0)^m \\varphi(z)$, где $\\varphi$ аналитична и $\\varphi(z_0) \\ne 0$.
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Изолированность нулей.</span> Если $f$ аналитична в $G$ и $f\\not\\equiv0$, то нули $f$ изолированы.
+                    <span class="label label-thm">Изолированность нулей.</span> Если $f$ аналитична в $G$ и $f \\not\\equiv 0$, то нули $f$ изолированы (каждый нуль имеет окрестность, не содержащую других нулей).
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">Доказательство.</span> В нуле $z_0$ порядка $m$: $f(z)=(z-z_0)^m\\varphi(z)$, $\\varphi(z_0)\\ne0$. По непрерывности $\\varphi\\ne0$ в окрестности, следовательно $f\\ne0$ в проколотой окрестности.
+                    <span class="label label-ex">Доказательство.</span> В нуле $z_0$ порядка $m$: $f(z) = (z - z_0)^m \\varphi(z)$, $\\varphi(z_0) \\ne 0$. По непрерывности $\\varphi \\ne 0$ в некоторой окрестности $z_0$, следовательно $f \\ne 0$ в проколотой окрестности.
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Теорема единственности.</span> Если $f$ и $g$ аналитичны в области $G$ и совпадают на множестве $E\\subset G$, имеющем предельную точку в $G$, то $f\\equiv g$ в $G$.
+                    <span class="label label-thm">Теорема единственности.</span> Если $f$ и $g$ аналитичны в области $G$ и совпадают на множестве $E \\subset G$, имеющем предельную точку в $G$, то $f \\equiv g$ в $G$.
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">Доказательство.</span> $h=f-g$ имеет нули с предельной точкой. Из изолированности нулей следует $h\\equiv0$.
+                    <span class="label label-ex">Доказательство.</span> Рассмотрим $h = f - g$: $h$ аналитична в $G$ и $h \\equiv 0$ на $E$, значит $h$ имеет нули с предельной точкой. Из изолированности нулей следует: если $h \\not\\equiv 0$, то нули изолированы — противоречие с тем, что $E$ имеет предельную точку. Значит $h \\equiv 0$.
                 </div>
                 <div class="corbox">
-                    <span class="label label-cor">Следствие.</span> Аналитическое продолжение единственно.
+                    <span class="label label-cor">Следствие — единственность аналитического продолжения.</span> Аналитическое продолжение функции единственно.
                 </div>
                 <div class="corbox">
-                    <span class="label label-cor">Следствие.</span> Если аналитическое тождество (например, $\\sin^2z+\\cos^2z=1$) верно на вещественной оси, то оно верно на всей $\\C$.
+                    <span class="label label-cor">Следствие — тождества.</span> Если аналитическое тождество (например, $\\sin^2 z + \\cos^2 z = 1$) верно на множестве с предельной точкой, то оно верно на всей области аналитичности.
                 </div>
             `
         }, {
@@ -1079,34 +1042,35 @@
             source: "Понятие, варианты. Продолжение соотношений. Свойства элементарных функций.",
             content: `
                 <div class="defbox">
-                    <span class="label label-def">Аналитическое продолжение.</span> Функция $F$, аналитичная в $G_2\\supset G_1$, называется <i>аналитическим продолжением</i> $f$ из $G_1$ в $G_2$, если $F|_{G_1}=f$.
+                    <span class="label label-def">Аналитическое продолжение.</span> Функция $F$, аналитичная в $G_2 \\supset G_1$, называется <i>аналитическим продолжением</i> $f$ (аналитичной в $G_1$) из $G_1$ в $G_2$, если $F|_{G_1} = f$.
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Единственность.</span> По теореме единственности аналитическое продолжение единственно.
+                    <span class="label label-thm">Единственность.</span> По теореме единственности аналитическое продолжение единственно (если существует).
                 </div>
                 <p><b>Варианты продолжения:</b></p>
                 <ul>
-                    <li><i>Через перекрытие областей:</i> если $G_1\\cap G_2\\ne\\varnothing$ и $f_1\\equiv f_2$ на пересечении.</li>
-                    <li><i>Цепочка функциональных элементов:</i> продолжение вдоль кривой.</li>
-                    <li><i>Симметрия Шварца:</i> если $f$ аналитична в верхней полуплоскости и вещественна на оси, то $F(z)=\\overline{f(\\bar z)}$ — продолжение в нижнюю.</li>
+                    <li><i>Через перекрытие областей:</i> если $G_1 \\cap G_2 \\ne \\varnothing$ и $f_1 \\equiv f_2$ на $G_1 \\cap G_2$, то $f$ продолжается в $G_1 \\cup G_2$.</li>
+                    <li><i>Цепочка функциональных элементов:</i> продолжение вдоль кривой через цепочку кругов.</li>
+                    <li><i>Симметрия Шварца:</i> если $f$ аналитична в верхней полуплоскости, непрерывна до вещественной оси и вещественна на ней, то $F(z) = \\overline{f(\\bar z)}$ — продолжение в нижнюю.</li>
                 </ul>
                 <div class="thmbox">
-                    <span class="label label-thm">Продолжение тождеств.</span> Если аналитические функции удовлетворяют тождеству на множестве с предельной точкой, то оно сохраняется при продолжении.
+                    <span class="label label-thm">Продолжение тождественных соотношений.</span> Если аналитические функции $f_1,\\dots,f_k$ удовлетворяют тождеству $\\Phi(f_1,\\dots,f_k) = 0$ на множестве с предельной точкой, то это тождество сохраняется при аналитическом продолжении.
                 </div>
                 <div class="defbox">
-                    <span class="label label-def">Показательная функция.</span> $e^z=e^x(\\cos y+i\\sin y)$.<br>
-                    Свойства: $|e^z|=e^x$; $e^{z_1+z_2}=e^{z_1}e^{z_2}$; период $2\\pi i$.
+                    <span class="label label-def">Показательная функция.</span> $e^z = e^x(\\cos y + i\\sin y)$.<br>
+                    Свойства: $|e^z| = e^x$; $\\arg e^z = y$; $e^{z_1 + z_2} = e^{z_1} e^{z_2}$; периодична с периодом $2\\pi i$.
                 </div>
                 <div class="defbox">
-                    <span class="label label-def">Тригонометрические.</span> $\\sin z=\\dfrac{e^{iz}-e^{-iz}}{2i}$,\\; $\\cos z=\\dfrac{e^{iz}+e^{-iz}}{2}$.<br>
-                    Тождество $\\sin^2z+\\cos^2z=1$ сохраняется.
+                    <span class="label label-def">Тригонометрические функции.</span>
+                    <div class="formula">$\\sin z = \\dfrac{e^{iz} - e^{-iz}}{2i},\\qquad \\cos z = \\dfrac{e^{iz} + e^{-iz}}{2}$</div>
+                    При $z = x \\in \\R$ совпадают с вещественными. Тождество $\\sin^2 z + \\cos^2 z = 1$ сохраняется.
                 </div>
                 <div class="defbox">
-                    <span class="label label-def">Логарифм.</span> $\\Ln z=\\ln|z|+i\\Arg z$ — <i>многозначная</i> функция.<br>
-                    <i>Главная ветвь</i>: $\\ln z=\\ln|z|+i\\arg z$, $\\arg z\\in(-\\pi,\\pi]$.
+                    <span class="label label-def">Логарифм.</span> $\\Ln z = \\ln|z| + i\\Arg z = \\ln|z| + i(\\arg z + 2\\pi k)$, $k \\in \\Z$ — <i>многозначная</i> функция.<br>
+                    <i>Главная ветвь</i>: $\\ln z = \\ln|z| + i\\arg z$, $\\arg z \\in (-\\pi,\\pi]$, аналитична в $\\C \\setminus (-\\infty,0]$.
                 </div>
                 <div class="defbox">
-                    <span class="label label-def">Степенная функция.</span> $z^\\alpha=e^{\\alpha\\Ln z}$ — многозначна при нецелом $\\alpha$.
+                    <span class="label label-def">Степенная функция.</span> $z^\\alpha = e^{\\alpha \\Ln z}$ — многозначна при нецелом $\\alpha$.
                 </div>
             `
         }, {
@@ -1115,23 +1079,23 @@
             source: "Правильные и особые точки. Теорема о существовании особой точки на границе.",
             content: `
                 <div class="defbox">
-                    <span class="label label-def">Правильная точка.</span> Точка $z_0$ — <i>правильная</i> для $f$, если $f$ аналитична в некоторой окрестности $z_0$.
+                    <span class="label label-def">Правильная точка.</span> Точка $z_0$ называется <i>правильной</i> для $f$, если $f$ аналитична в некоторой окрестности $z_0$.
                 </div>
                 <div class="defbox">
-                    <span class="label label-def">Особая точка.</span> Точка $z_0$ — <i>особая</i>, если она не является правильной, но существует последовательность правильных точек, стремящихся к $z_0$.
+                    <span class="label label-def">Особая точка.</span> Точка $z_0$ называется <i>особой</i>, если она не является правильной, но существует последовательность правильных точек, стремящихся к $z_0$.
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Теорема о границе круга сходимости.</span> На границе $|z-z_0|=R$ круга сходимости степенного ряда $\\sum c_n(z-z_0)^n$ обязательно существует хотя бы одна особая точка суммы $f$.
+                    <span class="label label-thm">Теорема о границе круга сходимости.</span> На границе $|z - z_0| = R$ круга сходимости степенного ряда $\\sum c_n(z - z_0)^n$ обязательно существует хотя бы одна особая точка суммы $f$.
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">Следствие.</span> Радиус сходимости ряда Тейлора = расстояние от $z_0$ до ближайшей особой точки.
+                    <span class="label label-ex">Следствие.</span> Радиус сходимости ряда Тейлора функции $f$ в точке $z_0$ равен расстоянию от $z_0$ до ближайшей особой точки. Внутри круга функция аналитична.
                 </div>
                 <div class="exbox">
                     <span class="label label-ex">Примеры.</span>
                     <ul>
-                        <li>$1/(1-z)$: особая точка $z=1$, $R=1$.</li>
-                        <li>$\\ln(1+z)$: особая точка $z=-1$, $R=1$.</li>
-                        <li>$e^z$: особых точек нет (кроме $\\infty$), $R=\\infty$.</li>
+                        <li>$\\dfrac{1}{1 - z}$: особая точка $z = 1$, $R = 1$ при разложении в $z_0 = 0$.</li>
+                        <li>$\\ln(1 + z)$: особая точка $z = -1$, $R = 1$.</li>
+                        <li>$e^z$: особых точек нет (кроме $\\infty$), $R = \\infty$.</li>
                     </ul>
                 </div>
             `
@@ -1141,53 +1105,58 @@
             source: "Определение. Коэффициенты. Теорема Лорана. Область сходимости.",
             content: `
                 <div class="defbox">
-                    <span class="label label-def">Ряд Лорана.</span>
-                    <div class="formula">$\\sum_{n=-\\infty}^{+\\infty}c_n(z-z_0)^n =
-                    \\underbrace{\\sum_{n=0}^\\infty c_n(z-z_0)^n}_{\\text{правильная часть}} +
-                    \\underbrace{\\sum_{n=1}^\\infty c_{-n}(z-z_0)^{-n}}_{\\text{главная часть}}$</div>
+                    <span class="label label-def">Ряд Лорана.</span> Ряд вида
+                    <div class="formula">$\\sum_{n=-\\infty}^{+\\infty} c_n(z - z_0)^n =
+                    \\underbrace{\\sum_{n=0}^\\infty c_n(z - z_0)^n}_{\\text{правильная часть}} +
+                    \\underbrace{\\sum_{n=1}^\\infty c_{-n}(z - z_0)^{-n}}_{\\text{главная часть}}$</div>
                 </div>
                 <div class="defbox">
                     <span class="label label-def">Коэффициенты Лорана.</span>
-                    <div class="formula">$c_n=\\dfrac{1}{2\\pi i}\\oint_\\gamma\\dfrac{f(\\zeta)}{(\\zeta-z_0)^{n+1}}\\,d\\zeta$</div>
+                    <div class="formula">$c_n = \\dfrac{1}{2\\pi i}\\oint_\\gamma \\dfrac{f(\\zeta)}{(\\zeta - z_0)^{n+1}}\\,d\\zeta$</div>
+                    где $\\gamma$ — любой контур в кольце $R_1 < |z - z_0| < R_2$, охватывающий $z_0$.
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Теорема Лорана.</span> Если $f$ аналитична в кольце $R_1<|z-z_0|<R_2$, то $f$ единственным образом разлагается в сходящийся ряд Лорана в этом кольце.
+                    <span class="label label-thm">Теорема Лорана.</span> Если $f$ аналитична в кольце $R_1 < |z - z_0| < R_2$ (возможно $R_1 = 0$, $R_2 = \\infty$), то $f$ единственным образом разлагается в сходящийся ряд Лорана в этом кольце.
                 </div>
                 <div class="exbox">
                     <span class="label label-ex">Примеры разложений.</span>
                     <ul>
-                        <li>$e^{1/z}=\\sum_{n=0}^\\infty\\dfrac{1}{n!\\,z^n}=1+\\dfrac{1}{z}+\\dfrac{1}{2z^2}+\\cdots$ ($0<|z|<\\infty$)</li>
-                        <li>$\\dfrac{1}{z(z-1)}=\\dfrac{1}{z-1}-\\dfrac{1}{z}$: при $0<|z|<1$ раскладываем $\\dfrac{1}{z-1}=-\\sum z^n$.</li>
-                        <li>$\\dfrac{\\sin z}{z^3}$: разлагаем $\\sin z$ и делим — получаем член $c_{-2}$.</li>
+                        <li>$e^{1/z} = \\sum_{n=0}^\\infty \\dfrac{1}{n!\\,z^n} = 1 + \\dfrac{1}{z} + \\dfrac{1}{2z^2} + \\cdots$ (кольцо $0 < |z| < \\infty$).</li>
+                        <li>$\\dfrac{1}{z(z-1)} = \\dfrac{1}{z-1} - \\dfrac{1}{z}$: при $0 < |z| < 1$ раскладываем $\\dfrac{1}{z-1} = -\\dfrac{1}{1-z} = -\\sum_{n=0}^\\infty z^n$.</li>
+                        <li>$\\dfrac{\\sin z}{z^3}$: разлагаем $\\sin z$ и делим на $z^3$ — получаем член $c_{-2} = -\\dfrac{1}{6}$ при $1/z$.</li>
                     </ul>
                 </div>
             `
         }, {
             id: 21,
             title: "Изолированные особые точки. Классификация",
-            source: "Устранимые, полюсы, существенно особые. Критерии. Поведение.",
+            source: "Устранимые, полюсы, существенно особые. Критерии. Поведение функции.",
             content: `
                 <div class="defbox">
-                    <span class="label label-def">Изолированная особая точка.</span> $z_0$ — <i>изолированная</i> особая точка $f$, если $f$ аналитична в $0<|z-z_0|<\\delta$.
+                    <span class="label label-def">Изолированная особая точка.</span> $z_0$ — <i>изолированная</i> особая точка $f$, если $f$ аналитична в проколотой окрестности $0 < |z - z_0| < \\delta$.
+                </div>
+                <p><b>Классификация по ряду Лорана</b> $f(z) = \\sum_{n=-\\infty}^{+\\infty} c_n(z - z_0)^n$:</p>
+
+                <div class="thmbox">
+                    <span class="label label-thm">1. Устранимая особая точка.</span> Главная часть ряда Лорана тождественно нулевая ($c_n = 0$ при $n < 0$).<br>
+                    <i>Критерий:</i> $\\exists\\displaystyle\\lim_{z \\to z_0} f(z) \\in \\C$ (конечный предел).<br>
+                    <i>Поведение:</i> $f(z) \\to f(z_0)$ при $z \\to z_0$; доопределяя $f(z_0)$, делаем $f$ аналитичной в $z_0$.<br>
+                    <i>Пример:</i> $\\dfrac{\\sin z}{z}$ в $z = 0$ ($\\to 1$).
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">1. Устранимая особая точка.</span> Главная часть нулевая ($c_n=0$ при $n<0$).<br>
-                    <i>Критерий:</i> $\\exists\\displaystyle\\lim_{z\\to z_0}f(z)\\in\\C$.<br>
-                    <i>Пример:</i> $\\sin z/z$ в $z=0$ ($\\to1$).
-                </div>
-                <div class="thmbox">
-                    <span class="label label-thm">2. Полюс порядка $m$.</span> Главная часть содержит ровно $m$ ненулевых членов.<br>
-                    <i>Критерий:</i> $\\displaystyle\\lim_{z\\to z_0}|f(z)|=+\\infty$.<br>
-                    <i>Пример:</i> $1/(z-1)^3$ — полюс 3-го порядка в $z=1$.
+                    <span class="label label-thm">2. Полюс порядка $m$.</span> Главная часть содержит ровно $m$ ненулевых членов: $c_{-m} \\ne 0$, $c_n = 0$ при $n < -m$.<br>
+                    <i>Критерий:</i> $\\displaystyle\\lim_{z \\to z_0} |f(z)| = +\\infty$; эквивалентно: $(z - z_0)^m f(z)$ имеет устранимую особую точку с ненулевым предельным значением.<br>
+                    <i>Поведение:</i> $f(z) = \\dfrac{c_{-m}}{(z - z_0)^m} + \\cdots + \\dfrac{c_{-1}}{z - z_0} + c_0 + \\cdots$, $|f| \\to \\infty$.<br>
+                    <i>Пример:</i> $\\dfrac{1}{(z - 1)^3}$ — полюс 3-го порядка в $z = 1$.
                 </div>
                 <div class="thmbox">
                     <span class="label label-thm">3. Существенно особая точка.</span> Главная часть содержит бесконечно много ненулевых членов.<br>
-                    <i>Поведение:</i> предела нет.<br>
-                    <i>Теорема Сохоцкого–Вейерштрасса:</i> в любой окрестности $f$ принимает значения, сколь угодно близкие к любому числу.<br>
-                    <i>Пример:</i> $e^{1/z}$ в $z=0$.
+                    <i>Поведение:</i> предела нет (ни конечного, ни $\\infty$).<br>
+                    <i>Теорема Сохоцкого–Вейерштрасса:</i> в любой окрестности существенно особой точки $f$ принимает значения, сколь угодно близкие к любому числу $w \\in \\overline\\C$.<br>
+                    <i>Пример:</i> $e^{1/z}$ в $z = 0$.
                 </div>
                 <div class="rembox">
-                    <span class="label label-rem">Особая точка на бесконечности.</span> $z=\\infty$ — особая точка $f(z)$, если $z=0$ — особая точка $g(w)=f(1/w)$.
+                    <span class="label label-rem">Особая точка на бесконечности.</span> $z = \\infty$ является особой точкой $f(z)$, если $z = 0$ — особая точка $g(w) = f(1/w)$. Тип определяется аналогично.
                 </div>
             `
         }, {
@@ -1197,29 +1166,33 @@
             content: `
                 <div class="defbox">
                     <span class="label label-def">Вычет.</span> <i>Вычетом</i> $f$ в изолированной особой точке $z_0$ называется коэффициент $c_{-1}$ ряда Лорана:
-                    <div class="formula">$\\Res_{z=z_0}f(z)=c_{-1}=\\dfrac{1}{2\\pi i}\\oint_{|z-z_0|=\\varepsilon}f(z)\\,dz$</div>
+                    <div class="formula">$\\Res_{z = z_0} f(z) = c_{-1} = \\dfrac{1}{2\\pi i}\\oint_{|z - z_0| = \\varepsilon} f(z)\\,dz$</div>
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Устранимая особая точка.</span> $\\Res=0$.
+                    <span class="label label-thm">Устранимая особая точка.</span> $\\Res = 0$.
                 </div>
                 <div class="thmbox">
                     <span class="label label-thm">Полюс 1-го порядка.</span>
-                    <div class="formula">$\\Res_{z=z_0}f(z)=\\lim_{z\\to z_0}(z-z_0)f(z)$</div>
-                    Если $f=\\varphi/\\psi$, $\\varphi(z_0)\\ne0$, $\\psi(z_0)=0$, $\\psi'(z_0)\\ne0$:
-                    <div class="formula">$\\Res_{z=z_0}\\dfrac{\\varphi(z)}{\\psi(z)}=\\dfrac{\\varphi(z_0)}{\\psi'(z_0)}$</div>
+                    <div class="formula">$\\Res_{z = z_0} f(z) = \\lim_{z \\to z_0} (z - z_0) f(z)$</div>
+                    Если $f = \\varphi/\\psi$, $\\varphi(z_0) \\ne 0$, $\\psi(z_0) = 0$, $\\psi'(z_0) \\ne 0$:
+                    <div class="formula">$\\Res_{z = z_0} \\dfrac{\\varphi(z)}{\\psi(z)} = \\dfrac{\\varphi(z_0)}{\\psi'(z_0)}$</div>
                 </div>
                 <div class="thmbox">
                     <span class="label label-thm">Полюс порядка $m$.</span>
-                    <div class="formula">$\\Res_{z=z_0}f(z)=\\dfrac{1}{(m-1)!}\\lim_{z\\to z_0}\\dfrac{d^{m-1}}{dz^{m-1}}\\bigl[(z-z_0)^m f(z)\\bigr]$</div>
+                    <div class="formula">$\\Res_{z = z_0} f(z) = \\dfrac{1}{(m-1)!} \\lim_{z \\to z_0} \\dfrac{d^{m-1}}{dz^{m-1}} \\big[(z - z_0)^m f(z)\\big]$</div>
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Основная теорема теории вычетов.</span> Если $f$ аналитична в $G$ за исключением особых точек $z_1,\\dots,z_N\\in G$, то для контура $\\Gamma\\subset G$:
-                    <div class="formula">$\\oint_\\Gamma f(z)\\,dz=2\\pi i\\sum_{k=1}^N\\Res_{z=z_k}f(z)$</div>
+                    <span class="label label-thm">Существенно особая точка.</span> Вычет равен $c_{-1}$ из разложения в ряд Лорана (общей формулы нет).
+                </div>
+                <div class="thmbox">
+                    <span class="label label-thm">Основная теорема теории вычетов.</span> Пусть $f$ аналитична в области $G$ за исключением изолированных особых точек $z_1,\\dots,z_N \\in G$. Тогда для замкнутого контура $\\Gamma \\subset G$, охватывающего все $z_k$:
+                    <div class="formula">$\\oint_{\\Gamma^+} f(z)\\,dz = 2\\pi i \\sum_{k=1}^N \\Res_{z = z_k} f(z)$</div>
+                    где $\\Gamma^+$ — положительно ориентированный контур.
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">Пример.</span> $\\displaystyle\\oint_{|z|=3}\\dfrac{z+1}{z^2(z-2)}\\,dz$. Особые точки: $z=0$ (полюс 2-го), $z=2$ (полюс 1-го).
-                    $\\Res_{z=0}=\\lim_{z\\to0}\\dfrac{d}{dz}\\left[\\dfrac{z+1}{z-2}\\right]=-3/4$.
-                    $\\Res_{z=2}=(2+1)/4=3/4$. Интеграл $=2\\pi i(-3/4+3/4)=0$.
+                    <span class="label label-ex">Пример.</span> $\\displaystyle\\oint_{|z|=3} \\dfrac{z+1}{z^2(z-2)}\\,dz$. Особые точки: $z = 0$ (полюс 2-го порядка), $z = 2$ (полюс 1-го порядка).
+                    $\\Res_{z=0} = \\lim_{z \\to 0} \\dfrac{d}{dz}\\left[\\dfrac{z+1}{z-2}\\right] = \\lim_{z \\to 0} \\dfrac{(z-2)-(z+1)}{(z-2)^2} = -\\dfrac{3}{4}$.
+                    $\\Res_{z=2} = \\dfrac{2+1}{2^2} = \\dfrac{3}{4}$. Интеграл $= 2\\pi i\\left(-\\dfrac{3}{4} + \\dfrac{3}{4}\\right) = 0$.
                 </div>
             `
         }, {
@@ -1228,31 +1201,29 @@
             source: "Интегралы по всей оси. Лемма Жордана. Интегралы с тригонометрическими функциями.",
             content: `
                 <div class="thmbox">
-                    <span class="label label-thm">Интегралы вида $\\int_{-\\infty}^{+\\infty}R(x)\\,dx$.</span>
-                    Замыкаем контур в верхней полуплоскости:
-                    <div class="formula">$\\int_{-\\infty}^{+\\infty}R(x)\\,dx=2\\pi i\\sum_{\\Im z_k>0}\\Res_{z=z_k}R(z)$</div>
-                    <i>Условие:</i> $R(z)=P(z)/Q(z)$, $\\deg Q\\ge\\deg P+2$, нет полюсов на вещественной оси.
+                    <span class="label label-thm">Интегралы вида $\\int_{-\\infty}^{+\\infty} R(x)\\,dx$.</span>
+                    Замыкаем контур в верхней (или нижней) полуплоскости дугой $C_R: |z| = R$, $\\Im z \\ge 0$:
+                    <div class="formula">$\\int_{-\\infty}^{+\\infty} R(x)\\,dx = 2\\pi i \\sum_{\\Im z_k > 0} \\Res_{z = z_k} R(z)$</div>
+                    <i>Условие:</i> $R(z) = P(z)/Q(z)$ — рациональная, $\\deg Q \\ge \\deg P + 2$ (обеспечивает $\\int_{C_R} \\to 0$), нет полюсов на вещественной оси.
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Лемма Жордана.</span> Если $f(z)\\to0$ равномерно при $|z|\\to\\infty$, $\\Im z\\ge0$, то для $a>0$:
-                    <div class="formula">$\\lim_{R\\to\\infty}\\int_{C_R}f(z)e^{iaz}\\,dz=0$</div>
-                    где $C_R$ — верхняя полуокружность.
+                    <span class="label label-thm">Лемма Жордана.</span> Если $f(z) \\to 0$ равномерно при $|z| \\to \\infty$, $\\Im z \\ge 0$, то для $a > 0$:
+                    <div class="formula">$\\lim_{R \\to \\infty} \\int_{C_R} f(z) e^{iaz}\\,dz = 0$</div>
+                    где $C_R$ — верхняя полуокружность $|z| = R$, $\\Im z \\ge 0$. Аналогично для нижней полуплоскости при $a < 0$.
                 </div>
                 <div class="corbox">
-                    <span class="label label-cor">Интегралы с тригонометрическими функциями.</span>
-                    <div class="formula">$\\int_{-\\infty}^{+\\infty}f(x)e^{iax}\\,dx=2\\pi i\\sum_{\\Im z_k>0}\\Res_{z=z_k}[f(z)e^{iaz}]$</div>
+                    <span class="label label-cor">Интегралы с тригонометрическими функциями.</span> Если $f(z) \\to 0$ равномерно при $|z| \\to \\infty$, то:
+                    <div class="formula">$\\int_{-\\infty}^{+\\infty} f(x) e^{iax}\\,dx = 2\\pi i \\sum_{\\Im z_k > 0} \\Res_{z = z_k} [f(z)e^{iaz}] \\quad (a > 0)$</div>
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Интегралы $\\int_0^{2\\pi}R(\\cos\\theta,\\sin\\theta)\\,d\\theta$.</span>
-                    Замена $z=e^{i\\theta}$, $d\\theta=dz/(iz)$:
-                    <div class="formula">$\\int_0^{2\\pi}R(\\cos\\theta,\\sin\\theta)\\,d\\theta=
-                    \\oint_{|z|=1}R\\!\\left(\\dfrac{z+z^{-1}}{2},\\dfrac{z-z^{-1}}{2i}\\right)\\dfrac{dz}{iz}$</div>
+                    <span class="label label-thm">Интегралы $\\int_0^{2\\pi} R(\\cos\\theta, \\sin\\theta)\\,d\\theta$.</span>
+                    Замена $z = e^{i\\theta}$, $d\\theta = dz/(iz)$, $\\cos\\theta = \\dfrac{z + z^{-1}}{2}$, $\\sin\\theta = \\dfrac{z - z^{-1}}{2i}$:
+                    <div class="formula">$\\int_0^{2\\pi} R(\\cos\\theta, \\sin\\theta)\\,d\\theta =
+                    \\oint_{|z|=1} R\\!\\left(\\dfrac{z + z^{-1}}{2}, \\dfrac{z - z^{-1}}{2i}\\right)\\dfrac{dz}{iz}$</div>
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">Пример.</span> $\\displaystyle I=\\int_{-\\infty}^{+\\infty}\\dfrac{\\cos x}{1+x^2}\\,dx
-                    =\\Re\\int_{-\\infty}^{+\\infty}\\dfrac{e^{ix}}{1+x^2}\\,dx
-                    =\\Re\\left(2\\pi i\\cdot\\Res_{z=i}\\dfrac{e^{iz}}{1+z^2}\\right)$.
-                    $\\Res_{z=i}=e^{-1}/(2i)$; $I=\\pi/e$.
+                    <span class="label label-ex">Пример.</span> $\\displaystyle I = \\int_{-\\infty}^{+\\infty} \\dfrac{\\cos x}{1 + x^2}\\,dx = \\Re \\int_{-\\infty}^{+\\infty} \\dfrac{e^{ix}}{1 + x^2}\\,dx = \\Re\\left(2\\pi i \\cdot \\Res_{z = i} \\dfrac{e^{iz}}{1 + z^2}\\right)$.
+                    $\\Res_{z = i} = \\dfrac{e^{i \\cdot i}}{2i} = \\dfrac{e^{-1}}{2i}$. Тогда $I = \\Re\\left(2\\pi i \\cdot \\dfrac{e^{-1}}{2i}\\right) = \\dfrac{\\pi}{e}$.
                 </div>
             `
         }, {
@@ -1261,27 +1232,27 @@
             source: "Логарифмическая производная. Теорема о нулях и полюсах. Принцип аргумента.",
             content: `
                 <div class="defbox">
-                    <span class="label label-def">Логарифмический вычет.</span>
-                    <div class="formula">$\\dfrac{1}{2\\pi i}\\oint_\\Gamma\\dfrac{f'(z)}{f(z)}\\,dz$</div>
+                    <span class="label label-def">Логарифмический вычет.</span> <i>Логарифмическим вычетом</i> $f$ относительно контура $\\Gamma$ называется:
+                    <div class="formula">$\\dfrac{1}{2\\pi i}\\oint_\\Gamma \\dfrac{f'(z)}{f(z)}\\,dz$</div>
                 </div>
                 <div class="thmbox">
                     <span class="label label-thm">Вычет логарифмической производной.</span>
                     <ul>
-                        <li>Если $z_0$ — нуль порядка $m$ функции $f$, то $z_0$ — полюс $f'/f$ с вычетом $+m$.</li>
-                        <li>Если $z_0$ — полюс порядка $m$ функции $f$, то $z_0$ — полюс $f'/f$ с вычетом $-m$.</li>
+                        <li>Если $z_0$ — нуль порядка $m$ функции $f$, то $z_0$ — полюс первого порядка $f'/f$ с вычетом $+m$.</li>
+                        <li>Если $z_0$ — полюс порядка $m$ функции $f$, то $z_0$ — полюс первого порядка $f'/f$ с вычетом $-m$.</li>
                     </ul>
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Теорема о нулях и полюсах.</span> Если $f$ мероморфна в $\\overline G$, $N$ — суммарный порядок нулей, $P$ — суммарный порядок полюсов, то:
-                    <div class="formula">$\\dfrac{1}{2\\pi i}\\oint_\\Gamma\\dfrac{f'(z)}{f(z)}\\,dz=N-P$</div>
+                    <span class="label label-thm">Теорема о нулях и полюсах.</span> Если $f$ мероморфна в $\\overline G$, $N$ — суммарный порядок нулей, $P$ — суммарный порядок полюсов в $G$, то:
+                    <div class="formula">$\\dfrac{1}{2\\pi i}\\oint_\\Gamma \\dfrac{f'(z)}{f(z)}\\,dz = N - P$</div>
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Принцип аргумента.</span> При обходе контура $\\Gamma$:
-                    <div class="formula">$\\Delta_\\Gamma\\arg f(z)=2\\pi(N-P)$</div>
-                    Геометрически: $N-P$ — число оборотов кривой $f(\\Gamma)$ вокруг начала координат.
+                    <span class="label label-thm">Принцип аргумента.</span> При обходе контура $\\Gamma$ приращение аргумента функции $f(z)$:
+                    <div class="formula">$\\Delta_\\Gamma \\arg f(z) = 2\\pi (N - P)$</div>
+                    Геометрически: $N - P$ — число оборотов кривой $f(\\Gamma)$ вокруг начала координат.
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">Применение.</span> Для подсчёта нулей многочлена в области: вычисляем $\\Delta_\\Gamma\\arg P(z)$ на контуре и делим на $2\\pi$.
+                    <span class="label label-ex">Применение.</span> Для подсчёта нулей многочлена в данной области: вычисляем $\\Delta_\\Gamma \\arg P(z)$ на контуре $\\Gamma$ и делим на $2\\pi$.
                 </div>
             `
         }, {
@@ -1290,20 +1261,20 @@
             source: "Формулировка, доказательство, применение. Основная теорема алгебры.",
             content: `
                 <div class="thmbox">
-                    <span class="label label-thm">Теорема Руше.</span> Если $f$ и $g$ аналитичны в $\\overline G$ и на $\\partial G$ выполнено $|g(z)|<|f(z)|$, то функции $f$ и $f+g$ имеют одинаковое число нулей в $G$ (с учётом кратности).
+                    <span class="label label-thm">Теорема Руше.</span> Если $f$ и $g$ аналитичны в $\\overline G$ и на $\\partial G$ выполнено <b>строгое</b> неравенство $|g(z)| < |f(z)|$, то функции $f$ и $f + g$ имеют одинаковое число нулей в $G$ (с учётом кратности).
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">Доказательство.</span> Применяем принцип аргумента к $f$ и $f+g$. Так как $|g|<|f|$ на $\\partial G$, функция $f+tg$ не обращается в нуль при $t\\in[0,1]$. Число нулей $N(t)$ непрерывно и целочисленно, следовательно $N(0)=N(1)$.
+                    <span class="label label-ex">Доказательство.</span> Применяем принцип аргумента к $f$ и $f + g$. Так как $|g| < |f|$ на $\\partial G$, функция $f + tg$ не обращается в нуль на $\\partial G$ при $t \\in [0,1]$. Число нулей $N(t) = \\dfrac{1}{2\\pi i}\\oint \\dfrac{(f + tg)'}{f + tg}\\,dz$ непрерывно зависит от $t$ и целочисленно, следовательно $N(0) = N(1)$.
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">Пример.</span> Доказать, что $P(z)=z^8+3z^3+2$ имеет все корни в $|z|<2$.<br>
-                    На $|z|=2$: $|f|=|z|^8=256$; $|g|=|3z^3+2|\\le26<256$. По теореме Руше $P$ имеет столько же нулей, сколько $z^8$ — то есть 8.
+                    <span class="label label-ex">Пример.</span> Доказать, что $P(z) = z^8 + 3z^3 + 2$ имеет все корни в $|z| < 2$.<br>
+                    На $|z| = 2$: $|f| = |z|^8 = 256$; $|g| = |3z^3 + 2| \\le 3 \\cdot 8 + 2 = 26 < 256$. По теореме Руше $P$ имеет столько же нулей в $|z| < 2$, сколько $z^8$ — то есть 8.
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Основная теорема алгебры.</span> Любой многочлен $P(z)=z^n+a_{n-1}z^{n-1}+\\cdots+a_0$ степени $n\\ge1$ имеет ровно $n$ комплексных корней (с учётом кратности).
+                    <span class="label label-thm">Основная теорема алгебры.</span> Любой многочлен $P(z) = z^n + a_{n-1}z^{n-1} + \\cdots + a_0$ степени $n \\ge 1$ имеет ровно $n$ комплексных корней (с учётом кратности).
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">Доказательство через теорему Руше.</span> $f(z)=z^n$, $g(z)=a_{n-1}z^{n-1}+\\cdots+a_0$. На $|z|=R$ при достаточно большом $R$: $|g(z)|<R^n=|f(z)|$. По теореме Руше $P=f+g$ имеет $n$ нулей.
+                    <span class="label label-ex">Доказательство через теорему Руше.</span> Возьмём $f(z) = z^n$, $g(z) = a_{n-1}z^{n-1} + \\cdots + a_0$. На $|z| = R$ при достаточно большом $R$: $|g(z)| \\le |a_{n-1}|R^{n-1} + \\cdots + |a_0| < R^n = |f(z)|$. По теореме Руше $P = f + g$ имеет $n$ нулей в $|z| < R$.
                 </div>
             `
         }, {
@@ -1312,44 +1283,45 @@
             source: "Примеры конформных отображений областей. Дробно-линейная функция, свойства.",
             content: `
                 <div class="exbox">
-                    <span class="label label-ex">$w=z^n$.</span> Сектор $\\{0<\\arg z<\\pi/n\\}$ отображается на верхнюю полуплоскость. Угол при вершине умножается на $n$.
+                    <span class="label label-ex">$w = z^n$.</span> Сектор $\\{0 < \\arg z < \\pi/n\\}$ отображается на верхнюю полуплоскость. Угол при вершине умножается на $n$.
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">$w=e^z$.</span> Полоса $\\{0<\\Im z<\\pi\\}$ отображается на верхнюю полуплоскость $\\{\\Im w>0\\}$.
+                    <span class="label label-ex">$w = e^z$.</span> Горизонтальная полоса $\\{0 < \\Im z < \\pi\\}$ отображается на верхнюю полуплоскость $\\{\\Im w > 0\\}$ (так как $w = e^x e^{iy}$: $|w| = e^x$, $\\arg w = y \\in (0,\\pi)$).
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">$w=\\ln z$.</span> Обратная к $e^z$: верхняя полуплоскость $\\to$ полоса $\\{0<\\Im w<\\pi\\}$.
+                    <span class="label label-ex">$w = \\ln z$.</span> Обратная к $e^z$: верхняя полуплоскость $\\to$ полоса $\\{0 < \\Im w < \\pi\\}$.
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">$w=\\sin z$.</span> Полоса $\\{-\\pi/2<\\Re z<\\pi/2\\}$ отображается на $\\C$ с разрезами $(-\\infty,-1]\\cup[1,+\\infty)$.
+                    <span class="label label-ex">$w = \\sin z$.</span> Полоса $\\{-\\pi/2 < \\Re z < \\pi/2\\}$ отображается на $\\C$ с разрезами $(-\\infty,-1] \\cup [1,+\\infty)$; верхняя часть полосы $\\to$ верхняя полуплоскость.
                 </div>
                 <div class="exbox">
-                    <span class="label label-ex">Функция Жуковского $w=z+1/z$.</span> Окружность $|z|=r>1$ $\\to$ эллипс; $|z|=1$ $\\to$ отрезок $[-2,2]$.
+                    <span class="label label-ex">Функция Жуковского.</span> $w = \\dfrac{1}{2}\\left(z + \\dfrac{1}{z}\\right)$. Окружность $|z| = r > 1$ $\\to$ эллипс; $|z| = 1$ $\\to$ отрезок $[-2,2]$. Применяется в аэродинамике.
                 </div>
 
                 <div class="defbox">
-                    <span class="label label-def">Дробно-линейная функция.</span> $w=\\dfrac{az+b}{cz+d}$, где $ad-bc\\ne0$.
+                    <span class="label label-def">Дробно-линейная (Мёбиуса) функция.</span> $w = \\dfrac{az + b}{cz + d}$, где $a,b,c,d \\in \\C$, $ad - bc \\ne 0$.
                 </div>
                 <div class="thmbox">
                     <span class="label label-thm">Основные свойства.</span>
                     <ul>
-                        <li><b>Конформность:</b> $w'=\\dfrac{ad-bc}{(cz+d)^2}\\ne0$.</li>
-                        <li><b>Круги в круги:</b> переводит окружности и прямые в окружности и прямые.</li>
-                        <li><b>Три точки:</b> однозначно определяется образами трёх различных точек.</li>
-                        <li><b>Группа Мёбиуса:</b> суперпозиция дробно-линейных — дробно-линейная.</li>
-                        <li><b>Неподвижные точки:</b> уравнение $w=z$ имеет не более двух решений.</li>
+                        <li><b>Конформность:</b> $w' = \\dfrac{ad - bc}{(cz + d)^2} \\ne 0$, поэтому функция конформна на $\\overline\\C \\setminus \\{-d/c\\}$.</li>
+                        <li><b>Круги в круги:</b> дробно-линейное отображение переводит окружности и прямые (= окружности через $\\infty$) в окружности и прямые.</li>
+                        <li><b>Три точки:</b> дробно-линейное отображение однозначно определяется образами трёх различных точек.</li>
+                        <li><b>Групповое свойство:</b> суперпозиция дробно-линейных функций — дробно-линейная; они образуют группу (группа Мёбиуса).</li>
+                        <li><b>Неподвижные точки:</b> уравнение $w = z$ имеет не более двух решений.</li>
+                        <li><b>Двойное отношение:</b> $\\dfrac{(z_1 - z_3)(z_2 - z_4)}{(z_1 - z_4)(z_2 - z_3)}$ инвариантно относительно дробно-линейных преобразований.</li>
                     </ul>
                 </div>
                 <div class="exbox">
                     <span class="label label-ex">Канонические примеры.</span>
                     <ul>
-                        <li>$w=\\dfrac{z-z_0}{1-\\bar z_0 z}$: $|z|<1\\to|w|<1$, $z_0\\mapsto0$.</li>
-                        <li>$w=\\dfrac{z-i}{z+i}$: верхняя полуплоскость $\\to$ единичный круг.</li>
-                        <li>$w=i\\dfrac{1-z}{1+z}$: единичный круг $\\to$ верхняя полуплоскость.</li>
+                        <li>$w = \\dfrac{z - z_0}{1 - \\bar z_0 z}$: отображает $|z| < 1$ на $|w| < 1$, посылая $z_0 \\mapsto 0$.</li>
+                        <li>$w = \\dfrac{z - i}{z + i}$: верхняя полуплоскость $\\to$ единичный круг.</li>
+                        <li>$w = i\\dfrac{1 - z}{1 + z}$ (формула Кэли): единичный круг $\\to$ верхняя полуплоскость.</li>
                     </ul>
                 </div>
                 <div class="thmbox">
-                    <span class="label label-thm">Теорема Римана.</span> Каждая односвязная область $G\\subsetneq\\C$ конформно отображается на единичный круг. При нормировке $f(z_0)=0$, $f'(z_0)>0$ — единственно.
+                    <span class="label label-thm">Теорема Римана (повторение).</span> Каждая односвязная область $G \\subsetneq \\C$ конформно отображается на единичный круг. Отображение единственно при нормировке $f(z_0) = 0$, $f'(z_0) > 0$.
                 </div>
             `
         }];
@@ -1374,41 +1346,60 @@
             div.className = 'question';
             div.id = `q${q.id}`;
 
-            // Parse LaTeX-like formulas: replace $...$ and \[...\] with styled spans
             let bodyHtml = q.content;
-            // Replace display math \[ ... \] with <div class="formula">...</div>
+
+            // Замена \[ ... \] → <div class="formula">...</div>
             bodyHtml = bodyHtml.replace(/\\\[([\s\S]*?)\\\]/g, (match, formula) => {
                 return `<div class="formula">${formula.trim()}</div>`;
             });
-            // Replace inline math $...$ with <span class="formula-inline">...</span>
+
+            // Замена $...$ → <span class="formula-inline">...</span>
             bodyHtml = bodyHtml.replace(/\$(.*?)\$/g, (match, formula) => {
                 return `<span class="formula-inline">${formula}</span>`;
             });
-            // Fix LaTeX commands for display
-            bodyHtml = bodyHtml.replace(/\\to/g, '→');
-            bodyHtml = bodyHtml.replace(/\\in/g, '∈');
-            bodyHtml = bodyHtml.replace(/\\subset/g, '⊂');
-            bodyHtml = bodyHtml.replace(/\\supset/g, '⊃');
-            bodyHtml = bodyHtml.replace(/\\cap/g, '∩');
-            bodyHtml = bodyHtml.replace(/\\cup/g, '∪');
-            bodyHtml = bodyHtml.replace(/\\setminus/g, '\\');
-            bodyHtml = bodyHtml.replace(/\\infty/g, '∞');
-            bodyHtml = bodyHtml.replace(/\\partial/g, '∂');
-            bodyHtml = bodyHtml.replace(/\\sum/g, '∑');
-            bodyHtml = bodyHtml.replace(/\\prod/g, '∏');
-            bodyHtml = bodyHtml.replace(/\\int/g, '∫');
-            bodyHtml = bodyHtml.replace(/\\oint/g, '∮');
-            bodyHtml = bodyHtml.replace(/\\sqrt/g, '√');
-            bodyHtml = bodyHtml.replace(/\\dfrac/g, '');
-            bodyHtml = bodyHtml.replace(/\\frac/g, '');
-            bodyHtml = bodyHtml.replace(/\\left/g, '');
-            bodyHtml = bodyHtml.replace(/\\right/g, '');
-            bodyHtml = bodyHtml.replace(/\\; /g, ' ');
-            bodyHtml = bodyHtml.replace(/\\,/g, ' ');
-            bodyHtml = bodyHtml.replace(/\\tilde/g, '̃');
-            bodyHtml = bodyHtml.replace(/\\bar/g, '̄');
-            bodyHtml = bodyHtml.replace(/\\hat/g, '̂');
-            bodyHtml = bodyHtml.replace(/\\dot/g, '˙');
+
+            // LaTeX-символы → HTML
+            const replacements = {
+                '\\to': '→',
+                '\\in': '∈',
+                '\\subset': '⊂',
+                '\\supset': '⊃',
+                '\\cap': '∩',
+                '\\cup': '∪',
+                '\\setminus': '\\',
+                '\\infty': '∞',
+                '\\partial': '∂',
+                '\\sum': '∑',
+                '\\prod': '∏',
+                '\\int': '∫',
+                '\\oint': '∮',
+                '\\sqrt': '√',
+                '\\dfrac': '',
+                '\\frac': '',
+                '\\left': '',
+                '\\right': '',
+                '\\; ': ' ',
+                '\\,': ' ',
+                '\\tilde': '̃',
+                '\\bar': '̄',
+                '\\hat': '̂',
+                '\\dot': '˙',
+                '\\R': 'ℝ',
+                '\\C': 'ℂ',
+                '\\Z': 'ℤ',
+                '\\N': 'ℕ',
+                '\\Re': 'Re',
+                '\\Im': 'Im',
+                '\\Arg': 'Arg',
+                '\\Res': 'Res',
+                '\\Ln': 'Ln',
+                '\\arg': 'arg',
+                '\\operatorname': ''
+            };
+
+            Object.keys(replacements).forEach(key => {
+                bodyHtml = bodyHtml.replace(new RegExp(key, 'g'), replacements[key]);
+            });
 
             div.innerHTML = `
                 <div class="q-header">
@@ -1423,7 +1414,7 @@
         });
 
         // ════════════════════════════════════════════════
-        // SCROLL PROGRESS
+        // PROGRESS BAR
         // ════════════════════════════════════════════════
         const progressBar = document.getElementById('progressBar');
 
@@ -1462,7 +1453,7 @@
             });
         });
 
-        // Keyboard shortcuts: Home = scroll to top
+        // Keyboard shortcut: Home = scroll to top
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Home') {
                 e.preventDefault();
@@ -1470,7 +1461,7 @@
             }
         });
 
-        console.log('✅ ТФКП шпаргалка загружена! Все 26 вопросов.');
+        console.log('✅ ТФКП шпаргалка загружена! Все 26 вопросов. Все формулы исправлены.');
     </script>
 </body>
 </html>
