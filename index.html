@@ -1,717 +1,263 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ТФКП - Шпаргалка к экзамену</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<title>ТФКП — Шпаргалка к экзамену</title>
+<style>
+  @page { margin: 0; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'DejaVu Serif', Georgia, serif;
+    color: #221c16;
+    margin: 0;
+    font-size: 10.3pt;
+    line-height: 1.42;
+  }
+  .pagepad { padding: 0 34px; }
 
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: #f0f2f5;
-            color: #1a1a2e;
-            padding: 20px;
-        }
+  /* ---------- COVER / HEADER ---------- */
+  .cover {
+    background: linear-gradient(160deg, #1b140f 0%, #2c2018 60%, #3a2a1c 100%);
+    color: #f1e9da;
+    padding: 30px 34px 18px 34px;
+  }
+  .cover .kicker {
+    font-family: 'DejaVu Sans Mono', monospace;
+    font-size: 8.3pt;
+    letter-spacing: 3px;
+    color: #c9a36a;
+  }
+  .cover h1 {
+    font-family: Georgia, 'DejaVu Serif', serif;
+    font-size: 23pt;
+    margin: 6px 0 4px 0;
+    font-weight: 700;
+    color: #fbf3e4;
+  }
+  .cover .byline {
+    font-style: italic;
+    color: #cdbfa9;
+    font-size: 9.6pt;
+    margin-bottom: 4px;
+  }
+  .cover .scope {
+    font-size: 8.6pt;
+    color: #a9967c;
+    border-top: 1px solid #4a3a2a;
+    margin-top: 10px;
+    padding-top: 8px;
+  }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-            overflow: hidden;
-        }
+  /* tab strip of chapters */
+  .tabstrip {
+    background: #140f0b;
+    color: #cbb892;
+    font-family: 'DejaVu Sans Mono', monospace;
+    font-size: 7.6pt;
+    letter-spacing: 1px;
+    padding: 7px 34px;
+  }
+  .tabstrip span { margin-right: 18px; }
 
-        /* Header */
-        .header {
-            background: #1a1a2e;
-            color: white;
-            padding: 30px 40px 20px;
-            text-align: center;
-        }
+  /* ---------- TOC ---------- */
+  .toc { padding: 18px 34px 6px 34px; }
+  .toc h2 { font-size: 12.5pt; color: #6e1f17; margin: 0 0 8px 0; }
+  .toc table { width: 100%; border-collapse: collapse; font-size: 9.3pt; }
+  .toc td { padding: 2.5px 4px; vertical-align: top; }
+  .toc td.num {
+    width: 22px; color: #8a4a2a; font-weight: bold;
+    font-family: 'DejaVu Sans Mono', monospace;
+  }
+  .toc td.chap { width: 95px; color: #9a8a72; font-size: 8pt; font-style: italic; }
+  .toc a { color: #221c16; text-decoration: none; }
 
-        .header h1 {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            letter-spacing: 1px;
-        }
+  /* ---------- SECTIONS ---------- */
+  .qsection {
+    padding: 16px 34px 4px 34px;
+    page-break-before: always;
+  }
+  .qhead {
+    border-bottom: 2px solid #6e1f17;
+    padding-bottom: 6px;
+    margin-bottom: 10px;
+  }
+  .qhead .qnum {
+    font-family: 'DejaVu Sans Mono', monospace;
+    color: #b06a2e;
+    font-size: 9pt;
+    letter-spacing: 1px;
+  }
+  .qhead h2 {
+    font-size: 14.5pt;
+    color: #3a261a;
+    margin: 2px 0 1px 0;
+  }
+  .qhead .chapref {
+    font-size: 8.3pt;
+    color: #998a72;
+    font-style: italic;
+  }
 
-        .header .subtitle {
-            font-size: 14px;
-            color: #aaaacc;
-            font-style: italic;
-        }
+  h3.sub { font-size: 11pt; color: #6e1f17; margin: 14px 0 5px 0; }
 
-        .header .meta {
-            font-size: 12px;
-            color: #8888aa;
-            margin-top: 8px;
-        }
+  p { margin: 5px 0; text-align: justify; }
 
-        /* TOC */
-        .toc {
-            background: #f8f9fc;
-            padding: 20px 40px;
-            border-bottom: 2px solid #e8eaf0;
-        }
+  .formula-box {
+    background: #f7f3ec;
+    border-left: 3px solid #b06a2e;
+    padding: 7px 12px;
+    margin: 8px 0;
+    text-align: center;
+    font-family: 'DejaVu Serif', serif;
+    font-size: 10.6pt;
+  }
+  .formula-box .fnum { float: right; color: #a9967c; font-size: 8.5pt; }
 
-        .toc h2 {
-            font-size: 16px;
-            color: #2d6a4f;
-            margin-bottom: 12px;
-        }
+  .def, .thm, .cor, .note, .example, .remark {
+    margin: 9px 0;
+    padding: 7px 11px;
+    border-radius: 2px;
+    font-size: 9.8pt;
+  }
+  .def {
+    background: #f7e9e6;
+    border-left: 3px solid #8a3b2e;
+  }
+  .def .label, .thm .label {
+    display: block;
+    font-family: 'DejaVu Sans Mono', monospace;
+    font-size: 8.3pt;
+    letter-spacing: 1.5px;
+    color: #6e1f17;
+    font-weight: bold;
+    margin-bottom: 3px;
+  }
+  .thm {
+    background: #fdeceb;
+    border-left: 3px solid #b3261c;
+  }
+  .cor {
+    background: #fdf3df;
+    border: 1px dashed #c99a3a;
+    border-left: none; border-right: none;
+    padding: 7px 11px;
+  }
+  .cor .label {
+    font-family: 'DejaVu Sans Mono', monospace;
+    font-size: 8.3pt;
+    letter-spacing: 1.5px;
+    color: #97701f;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 3px;
+  }
+  .note, .remark {
+    background: #f0eee9;
+    color: #4a4338;
+    font-style: italic;
+    font-size: 9.2pt;
+    border-left: 3px solid #b7ad99;
+  }
+  .note .label, .remark .label {
+    font-style: normal;
+    font-weight: bold;
+    font-family: 'DejaVu Sans Mono', monospace;
+    font-size: 8pt;
+    color: #6a6354;
+    display: block;
+    margin-bottom: 3px;
+  }
+  .example {
+    background: #eaf0ee;
+    border-left: 3px solid #3f7a5e;
+  }
+  .example .label {
+    display: block;
+    font-family: 'DejaVu Sans Mono', monospace;
+    font-size: 8.3pt;
+    color: #2c5c46;
+    font-weight: bold;
+    margin-bottom: 3px;
+  }
 
-        .toc-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 6px 20px;
-        }
+  ul, ol { margin: 4px 0 4px 18px; padding: 0; }
+  li { margin: 2px 0; }
 
-        .toc a {
-            color: #0f3460;
-            text-decoration: none;
-            font-size: 13px;
-            padding: 3px 0;
-            display: block;
-            border-bottom: 1px solid transparent;
-            transition: all 0.2s;
-        }
+  table.sumtable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8.8pt;
+    margin: 8px 0;
+  }
+  table.sumtable th {
+    background: #3a261a;
+    color: #f1e9da;
+    padding: 5px 7px;
+    text-align: left;
+    font-size: 8.2pt;
+  }
+  table.sumtable td {
+    border-bottom: 1px solid #ddd5c6;
+    padding: 5px 7px;
+    vertical-align: top;
+  }
+  table.sumtable tr:nth-child(even) td { background: #f8f6f1; }
 
-        .toc a:hover {
-            color: #e94560;
-            border-bottom-color: #e94560;
-        }
+  sup, sub { font-size: 75%; }
 
-        /* Content */
-        .content {
-            padding: 30px 40px 50px;
-        }
-
-        /* Question */
-        .question {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #e8eaf0;
-        }
-
-        .question:last-child {
-            border-bottom: none;
-        }
-
-        .question-number {
-            font-size: 18px;
-            font-weight: 700;
-            color: #e94560;
-            margin-bottom: 4px;
-        }
-
-        .question-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #1a1a2e;
-            margin-bottom: 12px;
-            line-height: 1.4;
-        }
-
-        .question-body {
-            font-size: 14px;
-            line-height: 1.7;
-            color: #2d2d44;
-        }
-
-        .question-body p {
-            margin-bottom: 6px;
-        }
-
-        .question-body .def {
-            font-style: italic;
-            color: #1a3a5c;
-            padding-left: 12px;
-            border-left: 3px solid #4361ee;
-            margin: 6px 0 8px;
-        }
-
-        .question-body .thm {
-            font-weight: 600;
-            color: #0f3460;
-            padding-left: 12px;
-            border-left: 3px solid #0f3460;
-            margin: 6px 0 8px;
-        }
-
-        .question-body .formula {
-            font-weight: 600;
-            color: #0d2137;
-            text-align: center;
-            padding: 8px 12px;
-            background: #eef2ff;
-            border-radius: 6px;
-            margin: 4px 0 10px;
-            font-size: 15px;
-        }
-
-        .question-body .note {
-            font-style: italic;
-            color: #888888;
-            padding-left: 12px;
-            font-size: 13px;
-            margin: 4px 0 6px;
-        }
-
-        .question-body .section {
-            font-weight: 600;
-            color: #2d6a4f;
-            margin: 8px 0 4px;
-            font-size: 14px;
-        }
-
-        .question-body b {
-            color: #16213e;
-        }
-
-        .question-body i {
-            color: #555;
-        }
-
-        .question-body .example {
-            background: #f8f9fc;
-            padding: 8px 14px;
-            border-radius: 6px;
-            margin: 6px 0;
-            border: 1px solid #e8eaf0;
-        }
-
-        .question-body .example::before {
-            content: "📌 Пример: ";
-            font-weight: 600;
-            color: #2d6a4f;
-        }
-
-        .question-body ul, .question-body ol {
-            padding-left: 24px;
-            margin: 4px 0 8px;
-        }
-
-        .question-body li {
-            margin-bottom: 2px;
-        }
-
-        .question-body sup {
-            font-size: 0.7em;
-        }
-
-        /* Tags */
-        .tag {
-            display: inline-block;
-            font-size: 11px;
-            padding: 2px 10px;
-            border-radius: 12px;
-            margin: 2px 4px 2px 0;
-            background: #eef2ff;
-            color: #4361ee;
-            font-weight: 600;
-        }
-
-        .tag-important {
-            background: #fce4ec;
-            color: #c62828;
-        }
-
-        .tag-formula {
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            body { padding: 10px; }
-            .header { padding: 20px; }
-            .header h1 { font-size: 24px; }
-            .toc { padding: 15px 20px; }
-            .toc-grid { grid-template-columns: 1fr 1fr; }
-            .content { padding: 20px; }
-            .question-title { font-size: 14px; }
-            .question-body { font-size: 13px; }
-        }
-
-        @media (max-width: 480px) {
-            .toc-grid { grid-template-columns: 1fr; }
-            .header h1 { font-size: 20px; }
-        }
-
-        /* Print */
-        @media print {
-            body { background: white; padding: 0; }
-            .container { box-shadow: none; border-radius: 0; }
-            .toc { break-after: avoid; }
-            .question { break-inside: avoid; }
-            .question-body .example { background: #f5f5f5; }
-        }
-
-        /* Scroll to top button */
-        .scroll-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #1a1a2e;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 48px;
-            height: 48px;
-            font-size: 20px;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            transition: all 0.3s;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-        }
-
-        .scroll-top:hover {
-            background: #e94560;
-            transform: scale(1.05);
-        }
-
-        .scroll-top.visible {
-            display: flex;
-        }
-    </style>
+  .footer-note {
+    margin-top: 16px;
+    padding-top: 6px;
+    border-top: 1px solid #ddd5c6;
+    font-size: 7.6pt;
+    color: #a9967c;
+    text-align: right;
+    font-style: italic;
+  }
+</style>
 </head>
 <body>
-    <div class="container" id="top">
-        <!-- Header -->
-        <div class="header">
-            <h1>📐 ТФКП</h1>
-            <div class="subtitle">Теория функций комплексного переменного</div>
-            <div class="meta">Все 26 вопросов к экзамену • Свешников А.Г., Тихонов А.Н.</div>
-        </div>
 
-        <!-- Table of Contents -->
-        <div class="toc">
-            <h2>📑 Содержание</h2>
-            <div class="toc-grid" id="toc"></div>
-        </div>
+<div class="cover">
+  <div class="kicker">ТЕОРИЯ&nbsp; ФУНКЦИЙ&nbsp; КОМПЛЕКСНОЙ&nbsp; ПЕРЕМЕННОЙ</div>
+  <h1>Шпаргалка к экзамену</h1>
+  <div class="byline">Полный курс — 26 экзаменационных вопросов · 2 курс, 4 семестр</div>
+  <div class="scope">По программе курса ТФКП (структура и обозначения — по Свешников А.Г., Тихонов А.Н. «Теория функций комплексного переменного», Физматлит, 2005). Разделы 15, 16, 20–22 приведены по тексту учебника; остальные — по стандартному изложению курса в том же оформлении.</div>
+</div>
+<div class="tabstrip">
+  <span>ГЛ.1 ЧИСЛА И ФУНКЦИИ</span><span>ГЛ.2 РЯДЫ И ИНТЕГРАЛ</span><span>ГЛ.3 ПРОДОЛЖЕНИЕ</span><span>ГЛ.4 ОСОБЫЕ ТОЧКИ</span><span>ГЛ.5 ВЫЧЕТЫ</span><span>ГЛ.6 ОТОБРАЖЕНИЯ</span>
+</div>
 
-        <!-- Content -->
-        <div class="content" id="content">
-            <!-- Questions will be rendered here by JavaScript -->
-        </div>
-    </div>
-
-    <!-- Scroll to top button -->
-    <button class="scroll-top" id="scrollTopBtn" onclick="scrollToTop()">↑</button>
-
-    <script>
-        // ═══════════════════════════════════════════════════════════════
-        // ДАННЫЕ: 26 ВОПРОСОВ
-        // ═══════════════════════════════════════════════════════════════
-        const questions = [
-            {
-                id: 1,
-                title: "Комплексные числа, действия над ними. Алгебраическая, геометрическая, тригонометрическая, показательная интерпретация. Модуль и аргумент. Возведение в степень и извлечение корней. Стереографическое проектирование.",
-                content: `
-                    <p><b>Определение:</b> Комплексное число z = x + iy, где x,y ∈ R, i² = -1.</p>
-                    <p><b>Алгебраическая форма:</b> z = x + iy. Сложение: (x+iy)+(u+iv)=(x+u)+i(y+v). Умножение: (x+iy)(u+iv)=(xu-yv)+i(xv+yu). Деление: z/w = (zw̄)/(|w|²).</p>
-                    <p><b>Геометрическая:</b> z ↔ точка (x,y) на плоскости. <b>Тригонометрическая:</b> z = r(cos φ + i sin φ). <b>Показательная (формула Эйлера):</b> z = re<sup>iφ</sup>, где r = |z| = √(x²+y²), φ = arg z = arctg(y/x).</p>
-                    <p><b>Модуль:</b> |z| = √(x²+y²). <b>Аргумент:</b> arg z = φ (многозначен; Arg z ∈ (-π, π]).</p>
-                    <p><b>Умножение в тригонометрической форме:</b> z₁z₂ = r₁r₂[cos(φ₁+φ₂)+i sin(φ₁+φ₂)].</p>
-                    <div class="formula"><b>Формула Муавра (степень):</b> z<sup>n</sup> = r<sup>n</sup>(cos nφ + i sin nφ)</div>
-                    <p><b>Корни n-й степени:</b> ⁿ√z = r<sup>1/n</sup>[cos((φ+2πk)/n) + i sin((φ+2πk)/n)], k = 0,1,…,n-1.</p>
-                    <p><b>Стереографическое проектирование:</b> Взаимно однозначное соответствие между комплексной плоскостью C и сферой Римана S² \\ {N} (N — северный полюс). Точка z = ∞ соответствует полюсу N. Расширенная плоскость C̄ = C ∪ {∞}.</p>
-                    <div class="example">Найти ∛(−1). r=1, φ=π. w<sub>k</sub> = cos((π+2πk)/3) + i sin((π+2πk)/3), k=0,1,2. w₀ = 1/2 + i√3/2, w₁ = −1, w₂ = 1/2 − i√3/2.</div>
-                `
-            },
-            {
-                id: 2,
-                title: "Последовательности комплексных чисел, сходимость. Теоремы о сходящихся последовательностях.",
-                content: `
-                    <div class="def"><b>Определение:</b> Последовательность {z_n} сходится к z₀ (lim z_n = z₀), если ∀ε>0 ∃N: |z_n − z₀| < ε при n > N.</div>
-                    <p><b>Критерий через действительную и мнимую части:</b> z_n = x_n + iy_n → z₀ = x₀+iy₀ ⟺ x_n → x₀ и y_n → y₀.</p>
-                    <div class="section">Теоремы:</div>
-                    <ul>
-                        <li>Предел единственен.</li>
-                        <li>Сходящаяся последовательность ограничена.</li>
-                        <li>Если z_n → a и w_n → b, то z_n ± w_n → a ± b, z_n·w_n → a·b, z_n/w_n → a/b (b ≠ 0).</li>
-                        <li><b>Критерий Коши:</b> {z_n} сходится ⟺ ∀ε>0 ∃N: |z_m−z_n| < ε при m,n > N.</li>
-                    </ul>
-                    <div class="note">Пример расходящейся последовательности: z_n = i<sup>n</sup>. При n=0,1,2,3: 1, i, −1, −i — не сходится.</div>
-                `
-            },
-            {
-                id: 3,
-                title: "Множества на комплексной плоскости. Кривые, контуры. Области односвязные и многосвязные. Примеры.",
-                content: `
-                    <p><b>Основные понятия:</b> Окрестность точки z₀: {z : |z−z₀| < ε}. Внутренняя точка, граничная точка, открытое/замкнутое множество.</p>
-                    <p><b>Область:</b> открытое связное непустое множество. <b>Граница области:</b> ∂G.</p>
-                    <p><b>Кривая:</b> непрерывное отображение [a,b] → C. <b>Контур:</b> кусочно-гладкая замкнутая кривая.</p>
-                    <p><b>Односвязная область:</b> область, в которой каждый замкнутый контур стягиваем в точку (не имеет «дыр»). <i>Пример:</i> круг, полуплоскость.</p>
-                    <p><b>Многосвязная область:</b> содержит «дыры». <i>Пример:</i> кольцо 1 < |z| < 2 (двусвязная), плоскость без нескольких точек.</p>
-                    <div class="def">Примеры границ: ∂D(0,1) = {z: |z|=1} — окружность. ∂{z: Re z > 0} = {z: Re z = 0} — мнимая ось.</div>
-                `
-            },
-            {
-                id: 4,
-                title: "Функции комплексного переменного, примеры. Предел в точке. Непрерывность.",
-                content: `
-                    <p><b>Функция:</b> f: D ⊂ C → C, f(z) = u(x,y) + iv(x,y). <i>Примеры:</i> z², e<sup>z</sup>, sin z, 1/z, Ln z.</p>
-                    <div class="def"><b>Предел:</b> lim f(z) = w₀ при z→z₀, если ∀ε>0 ∃δ>0: 0<|z−z₀|<δ ⟹ |f(z)−w₀|<ε.</div>
-                    <p><b>Эквивалентность:</b> lim f(z) = u₀+iv₀ ⟺ lim u(x,y) = u₀ и lim v(x,y) = v₀ при (x,y)→(x₀,y₀).</p>
-                    <p><b>Непрерывность:</b> f непрерывна в z₀, если lim_{z→z₀} f(z) = f(z₀). Непрерывность сохраняется при сложении, умножении, композиции.</p>
-                    <div class="example">f(z) = Re z. f(x+iy) = x. lim_{z→0} f(z) = 0, f непрерывна в 0.</div>
-                `
-            },
-            {
-                id: 5,
-                title: "Дифференцируемость. Условия Коши-Римана. Достаточные условия. Аналитическая функция.",
-                content: `
-                    <div class="formula"><b>Производная:</b> f'(z₀) = lim_{Δz→0} [f(z₀+Δz)−f(z₀)]/Δz</div>
-                    <p><b>Условия Коши-Римана (необходимые):</b> Если f = u+iv дифференцируема в z₀, то</p>
-                    <div class="formula">∂u/∂x = ∂v/∂y,   ∂u/∂y = −∂v/∂x</div>
-                    <p><b>Достаточные условия:</b> Если u,v имеют непрерывные частные производные в окрестности z₀ и выполнены У.К.-Р., то f дифференцируема в z₀.</p>
-                    <div class="def"><b>Аналитическая функция:</b> f аналитична в области G, если дифференцируема в каждой точке G.</div>
-                    <div class="thm"><b>Теорема:</b> f = u+iv аналитична в G ⟺ u,v имеют непрерывные частные производные и выполнены условия Коши-Римана в каждой точке G.</div>
-                    <p><i>Примеры:</i> e<sup>z</sup>, z<sup>n</sup>, sin z — аналитичны на C; 1/z — аналитична на C\\{0}; f̄(z) = x−iy — нигде не аналитична.</p>
-                `
-            },
-            {
-                id: 6,
-                title: "Основные свойства аналитических функций. Модуль и аргумент производной. Конформное отображение.",
-                content: `
-                    <p><b>Свойства:</b> Сумма, разность, произведение, частное (знаменатель ≠ 0), композиция аналитических функций — аналитические функции.</p>
-                    <p><b>Производная:</b> f'(z₀) = ∂u/∂x + i∂v/∂x = ∂v/∂y − i∂u/∂y.</p>
-                    <p><b>Модуль производной:</b> |f'(z₀)| = √((∂u/∂x)²+(∂v/∂x)²) — коэффициент линейного растяжения в точке z₀.</p>
-                    <p><b>Аргумент производной:</b> arg f'(z₀) — угол поворота касательного вектора к кривой при отображении.</p>
-                    <div class="def"><b>Конформное отображение:</b> отображение f сохраняет углы между кривыми (по величине и ориентации). Аналитическая функция с f'(z₀) ≠ 0 является конформной в точке z₀.</div>
-                `
-            },
-            {
-                id: 7,
-                title: "Интеграл по комплексной переменной. Свойства. Вычисление.",
-                content: `
-                    <div class="def"><b>Определение:</b> Пусть γ — кривая z=z(t), t∈[a,b]. Тогда</div>
-                    <div class="formula">∫_γ f(z) dz = ∫_a^b f(z(t)) z'(t) dt</div>
-                    <p><b>Связь с вещественными интегралами:</b> ∫_γ f dz = ∫_γ (u dx − v dy) + i ∫_γ (v dx + u dy).</p>
-                    <div class="section">Свойства:</div>
-                    <ul>
-                        <li>Линейность: ∫(αf+βg)dz = α∫f dz + β∫g dz.</li>
-                        <li>Аддитивность по контуру: ∫_{γ₁+γ₂} = ∫_{γ₁} + ∫_{γ₂}.</li>
-                        <li>При смене направления: ∫_{−γ} = −∫_γ.</li>
-                        <li>Оценка: |∫_γ f dz| ≤ max|f(z)| · L(γ), где L — длина кривой.</li>
-                    </ul>
-                    <p><b>Первообразная:</b> если F'(z) = f(z), то ∫_{z₁}^{z₂} f dz = F(z₂) − F(z₁).</p>
-                `
-            },
-            {
-                id: 8,
-                title: "Теорема Коши.",
-                content: `
-                    <div class="thm"><b>Теорема Коши (для односвязной области):</b> Если f аналитична в односвязной области G, то для любого замкнутого контура γ ⊂ G:</div>
-                    <div class="formula">∮_γ f(z) dz = 0</div>
-                    <p><b>Следствие (независимость от пути):</b> В односвязной области ∫_{z₁}^{z₂} f dz не зависит от пути интегрирования.</p>
-                    <p><b>Теорема Коши для многосвязной области:</b> Если f аналитична в области G, ограниченной внешним контуром Γ и внутренними γ₁,…,γ_n, то ∮_Γ f dz = ∑ ∮_{γ_k} f dz (все контуры — в положительном направлении).</p>
-                `
-            },
-            {
-                id: 9,
-                title: "Интегральная формула Коши.",
-                content: `
-                    <div class="thm"><b>Теорема:</b> Если f аналитична в замкнутой области Ḡ с границей Γ, а z₀ — точка внутри G, то:</div>
-                    <div class="formula">f(z₀) = 1/(2πi) ∮_Γ f(ζ)/(ζ−z₀) dζ</div>
-                    <p><b>Смысл:</b> Значение аналитической функции внутри контура полностью определяется её значениями на контуре.</p>
-                    <p><b>Обобщение (производные):</b> f<sup>(n)</sup>(z₀) = n!/(2πi) ∮_Γ f(ζ)/(ζ−z₀)<sup>n+1</sup> dζ.</p>
-                `
-            },
-            {
-                id: 10,
-                title: "Принцип максимума модуля аналитической функции.",
-                content: `
-                    <div class="thm"><b>Теорема (принцип максимума модуля):</b> Если f аналитична в ограниченной области G и непрерывна на Ḡ, то максимум |f(z)| достигается на границе ∂G, а не во внутренней точке (если только f не является константой).</div>
-                    <p><b>Следствие (принцип минимума):</b> Если f не обращается в нуль в G, то минимум |f(z)| тоже достигается на ∂G.</p>
-                    <p><b>Применение:</b> оценка аналитических функций, доказательство единственности.</p>
-                `
-            },
-            {
-                id: 11,
-                title: "Бесконечная дифференцируемость аналитической функции. Интегральное представление производных.",
-                content: `
-                    <div class="thm"><b>Теорема:</b> Если f аналитична в области G, то она бесконечно дифференцируема в G, и все производные f<sup>(n)</sup> тоже аналитичны в G.</div>
-                    <div class="section">Интегральное представление производных (формула Коши):</div>
-                    <div class="formula">f<sup>(n)</sup>(z₀) = n!/(2πi) ∮_Γ f(ζ)/(ζ−z₀)<sup>n+1</sup> dζ</div>
-                    <p><b>Оценка производных (неравенство Коши):</b> |f<sup>(n)</sup>(z₀)| ≤ n! M / r<sup>n</sup>, где M = max|f| на круге |z−z₀|=r.</p>
-                `
-            },
-            {
-                id: 12,
-                title: "Теорема Морера. Теорема Лиувилля.",
-                content: `
-                    <div class="thm"><b>Теорема Морера (обратная к теореме Коши):</b> Если f непрерывна в односвязной области G и ∮_γ f dz = 0 для любого замкнутого контура γ ⊂ G, то f аналитична в G.</div>
-                    <div class="thm"><b>Теорема Лиувилля:</b> Если f аналитична и ограничена на всей плоскости C (т.е. f целая и |f(z)| ≤ M), то f ≡ const.</div>
-                    <p><b>Следствие:</b> Каждая целая функция, не являющаяся константой, неограничена. Используется для доказательства основной теоремы алгебры.</p>
-                `
-            },
-            {
-                id: 13,
-                title: "Числовые ряды. Функциональные ряды. Равномерная сходимость. Основные утверждения.",
-                content: `
-                    <p><b>Числовой ряд:</b> ∑c_n сходится, если частичные суммы S_N → S ∈ C. Абсолютная сходимость: ∑|c_n| < ∞.</p>
-                    <p><b>Функциональный ряд:</b> ∑f_n(z). <b>Равномерная сходимость</b> на E: sup_{z∈E}|S_N(z)−S(z)| → 0.</p>
-                    <div class="thm"><b>Признак Вейерштрасса (M-тест):</b> Если |f_n(z)| ≤ M_n на E и ∑M_n < ∞, то ∑f_n(z) сходится равномерно и абсолютно.</div>
-                    <div class="section">Следствия равномерной сходимости:</div>
-                    <ul>
-                        <li>Если f_n непрерывны и ряд сходится равномерно, то сумма непрерывна.</li>
-                        <li>Почленное интегрирование: ∫_γ ∑f_n dz = ∑∫_γ f_n dz.</li>
-                        <li>Почленное дифференцирование — возможно при дополнительных условиях.</li>
-                    </ul>
-                `
-            },
-            {
-                id: 14,
-                title: "Теорема Вейерштрасса о рядах аналитических функций.",
-                content: `
-                    <div class="thm"><b>Теорема:</b> Если функции f_n аналитичны в области G и ряд ∑f_n(z) сходится равномерно на каждом компакте K ⊂ G, то:</div>
-                    <ol>
-                        <li>сумма S(z) = ∑f_n(z) аналитична в G;</li>
-                        <li>ряд производных ∑f'_n(z) сходится равномерно на компактах и S'(z) = ∑f'_n(z);</li>
-                        <li>аналогично для производных любого порядка: S<sup>(k)</sup>(z) = ∑f_n<sup>(k)</sup>(z).</li>
-                    </ol>
-                    <p><b>Значение:</b> позволяет дифференцировать аналитические ряды почленно.</p>
-                `
-            },
-            {
-                id: 15,
-                title: "Степенные ряды. Теорема Абеля. Радиус и круг сходимости. Формула Коши-Адамара. Ряд Тейлора.",
-                content: `
-                    <div class="def"><b>Степенной ряд:</b> ∑_{n=0}^∞ c_n(z−z₀)<sup>n</sup></div>
-                    <div class="thm"><b>Теорема Абеля:</b> Если ряд сходится в точке z₁ ≠ z₀, то он абсолютно сходится в любой точке z: |z−z₀| < |z₁−z₀|, и равномерно в круге радиуса ρ < |z₁−z₀|.</div>
-                    <p><b>Радиус сходимости R:</b> внутри круга |z−z₀| < R — сходится, вне — расходится. На границе — зависит от конкретного ряда.</p>
-                    <div class="section">Формула Коши-Адамара:</div>
-                    <div class="formula">1/R = lim sup_{n→∞} |c_n|<sup>1/n</sup></div>
-                    <p><b>Ряд Тейлора:</b> разложение аналитической функции в степенной ряд; коэффициенты: c_n = f<sup>(n)</sup>(z₀)/n!</p>
-                `
-            },
-            {
-                id: 16,
-                title: "Теорема Тейлора.",
-                content: `
-                    <div class="thm"><b>Теорема:</b> Если f аналитична в круге |z−z₀| < R, то в этом круге f разлагается в единственный сходящийся степенной ряд:</div>
-                    <div class="formula">f(z) = ∑_{n=0}^∞ c_n(z−z₀)<sup>n</sup>,   c_n = f<sup>(n)</sup>(z₀)/n!</div>
-                    <div class="note">Замечание: Радиус сходимости ряда Тейлора ≥ расстояния от z₀ до ближайшей особой точки.</div>
-                    <div class="section">Примеры (стандартные разложения):</div>
-                    <ul>
-                        <li>e<sup>z</sup> = ∑ z<sup>n</sup>/n!   (R=∞)</li>
-                        <li>sin z = ∑ (−1)<sup>n</sup>z<sup>2n+1</sup>/(2n+1)!   (R=∞)</li>
-                        <li>cos z = ∑ (−1)<sup>n</sup>z<sup>2n</sup>/(2n)!   (R=∞)</li>
-                        <li>1/(1−z) = ∑ z<sup>n</sup>   (|z|<1)</li>
-                        <li>1/(1+z²) = ∑ (−1)<sup>n</sup>z<sup>2n</sup>   (|z|<1)</li>
-                    </ul>
-                `
-            },
-            {
-                id: 17,
-                title: "Нули аналитической функции, кратность. Теорема единственности.",
-                content: `
-                    <div class="def"><b>Нуль порядка m:</b> точка z₀ — нуль порядка m функции f, если f(z₀)=f'(z₀)=…=f<sup>(m-1)</sup>(z₀)=0, f<sup>(m)</sup>(z₀)≠0.</div>
-                    <p><b>Представление:</b> в окрестности нуля порядка m: f(z) = (z−z₀)<sup>m</sup>·φ(z), где φ аналитична и φ(z₀) ≠ 0.</p>
-                    <div class="thm"><b>Теорема единственности:</b> Если f и g аналитичны в области G и совпадают на множестве, имеющем предельную точку в G, то f ≡ g в G.</div>
-                    <p><b>Следствие:</b> Нули аналитической (не тождественно нулевой) функции изолированы.</p>
-                `
-            },
-            {
-                id: 18,
-                title: "Понятие аналитического продолжения. Варианты. Продолжение соотношений. Свойства элементарных функций.",
-                content: `
-                    <div class="def"><b>Аналитическое продолжение:</b> функция F аналитична в G₂⊃G₁ и F|_{G₁} = f — F является аналитическим продолжением f из G₁ в G₂.</div>
-                    <p><b>Единственность:</b> аналитическое продолжение единственно (из теоремы единственности).</p>
-                    <p><b>Варианты продолжения:</b> через общую часть областей; с помощью цепочки функциональных элементов (диск + функция); вдоль кривой.</p>
-                    <p><b>Продолжение соотношений:</b> Если соотношение F(f₁,…,f_n) = 0 выполнено на множестве с предельной точкой, то оно выполнено всюду, куда продолжены функции. <i>Пример:</i> тождество e<sup>z₁+z₂</sup>=e<sup>z₁</sup>e<sup>z₂</sup>, sin²z+cos²z=1 верны на C.</p>
-                    <div class="section">Элементарные функции:</div>
-                    <ul>
-                        <li>e<sup>z</sup> = e<sup>x</sup>(cos y + i sin y); периодична с периодом 2πi.</li>
-                        <li>sin z = (e<sup>iz</sup>−e<sup>−iz</sup>)/(2i), cos z = (e<sup>iz</sup>+e<sup>−iz</sup>)/2.</li>
-                        <li>Ln z = ln|z| + i Arg z — многозначная; ln z = ln|z| + i arg z — ветвь.</li>
-                    </ul>
-                `
-            },
-            {
-                id: 19,
-                title: "Правильные и особые точки. Теорема о существовании особой точки на границе круга сходимости.",
-                content: `
-                    <div class="def"><b>Правильная точка:</b> z₀ — правильная, если f аналитична в некоторой окрестности z₀.</div>
-                    <div class="def"><b>Особая точка:</b> z₀ — особая, если f не аналитична в z₀, но любая окрестность z₀ содержит точки аналитичности.</div>
-                    <div class="thm"><b>Теорема о границе круга сходимости:</b> На границе круга сходимости степенного ряда |z−z₀|=R обязательно существует хотя бы одна особая точка функции f, к которой сходится данный ряд.</div>
-                    <p><b>Следствие:</b> Радиус сходимости ряда Тейлора = расстояние от z₀ до ближайшей особой точки.</p>
-                `
-            },
-            {
-                id: 20,
-                title: "Ряд Лорана, сходимость. Теорема Лорана.",
-                content: `
-                    <div class="def"><b>Ряд Лорана:</b> ∑_{n=−∞}^∞ c_n(z−z₀)<sup>n</sup> = ∑_{n=0}^∞ c_n(z−z₀)<sup>n</sup> + ∑_{n=1}^∞ c_{−n}(z−z₀)<sup>−n</sup></div>
-                    <p><i>Правильная часть:</i> ряд с неотрицательными степенями. <i>Главная часть:</i> ряд с отрицательными степенями.</p>
-                    <div class="formula"><b>Коэффициенты Лорана:</b> c_n = 1/(2πi) ∮_C f(ζ)/(ζ−z₀)<sup>n+1</sup> dζ</div>
-                    <div class="thm"><b>Теорема Лорана:</b> Если f аналитична в кольце R₁ < |z−z₀| < R₂, то в этом кольце f единственным образом раскладывается в ряд Лорана.</div>
-                    <p><b>Область сходимости:</b> ряд Лорана сходится равномерно на компактах внутри кольца.</p>
-                `
-            },
-            {
-                id: 21,
-                title: "Изолированные особые точки. Классификация. Теоремы о поведении аналитической функции в окрестности изолированной особой точки.",
-                content: `
-                    <div class="def"><b>Изолированная особая точка:</b> z₀ — особая, и f аналитична в кольце 0 < |z−z₀| < R.</div>
-                    <div class="section">Классификация по ряду Лорана:</div>
-                    <p><b>1. Устранимая особая точка:</b> главная часть = 0. При z→z₀ существует конечный предел. Если доопределить f(z₀) = lim f(z), функция станет аналитической.</p>
-                    <p><b>2. Полюс порядка m:</b> главная часть содержит ровно m ненулевых членов. При z→z₀: |f(z)|→∞. Вид: f(z) = ψ(z)/(z−z₀)<sup>m</sup>, ψ(z₀)≠0.</p>
-                    <p><b>3. Существенно особая точка:</b> главная часть содержит бесконечно много членов. Предела нет. Теорема Сохоцкого-Вейерштрасса: f(z) приближается к любому наперёд заданному числу.</p>
-                    <div class="note">Критерий полюса: z₀ — полюс ⟺ 1/f(z) имеет устранимую особую точку в z₀ со значением 0.</div>
-                `
-            },
-            {
-                id: 22,
-                title: "Вычет. Определение и вычисление. Основная теорема.",
-                content: `
-                    <div class="def"><b>Определение:</b> Вычет f в изолированной особой точке z₀ — коэффициент c_{−1} ряда Лорана:</div>
-                    <div class="formula">Res[f, z₀] = c_{−1} = 1/(2πi) ∮_γ f(ζ) dζ</div>
-                    <div class="section">Формулы вычисления:</div>
-                    <p><b>Полюс 1-го порядка:</b> Res[f, z₀] = lim_{z→z₀}(z−z₀)f(z).</p>
-                    <div class="formula"><b>Дробь φ/ψ (ψ(z₀)=0, ψ'(z₀)≠0):</b> Res = φ(z₀)/ψ'(z₀)</div>
-                    <div class="formula"><b>Полюс порядка m:</b> Res[f,z₀] = 1/(m−1)! · lim_{z→z₀} d<sup>m-1</sup>/dz<sup>m-1</sup>[(z−z₀)<sup>m</sup>f(z)]</div>
-                    <p><b>Существенно особая точка:</b> вычет = c_{−1} из ряда Лорана.</p>
-                    <div class="thm"><b>Основная теорема теории вычетов:</b> Если f аналитична в G, кроме изолированных особых точек z₁,…,z_N, то:</div>
-                    <div class="formula">∮_Γ f dz = 2πi ∑_{k=1}^N Res[f, z_k]</div>
-                    <div class="example">Для f(z) = sin z/z⁴, вычет в z=0: sin z = z − z³/6 + z⁵/120 − ..., f(z) = 1/z³ − 1/(6z) + ..., поэтому Res[f,0] = −1/6.</div>
-                `
-            },
-            {
-                id: 23,
-                title: "Вычисление интегралов с помощью вычетов. Лемма Жордана.",
-                content: `
-                    <p><b>Основной метод:</b> по теореме о вычетах ∮_Γ f dz = 2πi ∑ Res.</p>
-                    <p><b>Интегралы вида ∫_{-∞}^∞ f(x) dx:</b> замыкаем контур в верхней (нижней) полуплоскости, используем вычеты в полюсах f в верхней (нижней) п/п.</p>
-                    <div class="thm"><b>Лемма Жордана:</b> Если f(z)→0 равномерно при |z|→∞, то для a>0:</div>
-                    <div class="formula">lim_{R→∞} ∫_{C_R} f(z)e<sup>iaz</sup> dz = 0</div>
-                    <p>где C_R — верхняя полуокружность |z|=R. Аналогично для нижней при a < 0.</p>
-                    <p><b>Применение:</b> ∫_{-∞}^∞ f(x)e<sup>iax</sup> dx = 2πi ∑ Res (полюсы в верх. п/п, a>0).</p>
-                    <p><b>Интегралы ∫₀^{2π} R(cos θ, sin θ) dθ:</b> замена z=e<sup>iθ</sup>, cos θ=(z+1/z)/2, dz=iz dθ → контурный интеграл по |z|=1.</p>
-                `
-            },
-            {
-                id: 24,
-                title: "Логарифмический вычет. Теорема о нулях и полюсах. Принцип аргумента.",
-                content: `
-                    <div class="def"><b>Логарифмический вычет:</b> вычет f'/f в точке z₀:</div>
-                    <div class="formula">Res[f'/f, z₀] = m (нуль порядка m),  или  −m (полюс порядка m)</div>
-                    <div class="thm"><b>Теорема о нулях и полюсах:</b> Если f аналитична в Ḡ за исключением полюсов, N — число нулей, P — число полюсов (с учётом кратности), то:</div>
-                    <div class="formula">1/(2πi) ∮_Γ f'(z)/f(z) dz = N − P</div>
-                    <div class="thm"><b>Принцип аргумента:</b> При обходе контура Γ аргумент f(z) получает приращение 2π(N−P):</div>
-                    <div class="formula">ΔΓ arg f(z) = 2π(N − P)</div>
-                    <p><b>Геометрический смысл:</b> Число оборотов кривой f(Γ) вокруг начала координат равно N−P.</p>
-                `
-            },
-            {
-                id: 25,
-                title: "Теорема Руше. Основная теорема высшей алгебры.",
-                content: `
-                    <div class="thm"><b>Теорема Руше:</b> Если f и g аналитичны в Ḡ и |g(z)| < |f(z)| на ∂G, то f и f+g имеют одинаковое число нулей внутри G.</div>
-                    <p><b>Применение:</b> подбирается «главная» часть f, остаток g оценивается как меньший.</p>
-                    <div class="thm"><b>Основная теорема высшей алгебры:</b> Любой многочлен P(z) степени n имеет ровно n корней (с учётом кратности).</div>
-                    <p><b>Доказательство через теорему Руше:</b> f(z) = z<sup>n</sup>, g(z) = a_{n-1}z<sup>n-1</sup>+…+a₀. На |z|=R при достаточно большом R: |g|<|f|. Следовательно, P(z)=f+g имеет n нулей — как f(z)=z<sup>n</sup>.</p>
-                `
-            },
-            {
-                id: 26,
-                title: "Конформное отображение. Примеры. Дробно-линейная функция, свойства.",
-                content: `
-                    <div class="def"><b>Конформное отображение:</b> биективное аналитическое отображение f: G→G' с f'≠0 везде. Сохраняет углы между кривыми по величине и ориентации.</div>
-                    <div class="section">Примеры конформных отображений:</div>
-                    <ul>
-                        <li><b>w = z<sup>n</sup>:</b> угол при вершине умножается на n; сектор 0 < arg z < π/n → верхняя полуплоскость.</li>
-                        <li><b>w = e<sup>z</sup>:</b> полоса 0 < Im z < π → верхняя полуплоскость.</li>
-                        <li><b>w = sin z:</b> полоса −π/2 < Re z < π/2 → верхняя полуплоскость.</li>
-                        <li><b>w = z+1/z (Жуковский):</b> окружность → эллипс/отрезок.</li>
-                    </ul>
-                    <div class="section">Дробно-линейная (Мёбиуса) функция:</div>
-                    <div class="formula">w = (az+b)/(cz+d),   ad−bc ≠ 0</div>
-                    <div class="section">Свойства:</div>
-                    <ul>
-                        <li>Конформна на C̄ (с учётом точки ∞).</li>
-                        <li>Переводит окружности и прямые в окружности и прямые.</li>
-                        <li>Определяется тремя точками: любые три различные точки → любые три различные точки.</li>
-                        <li>Группа: композиция дробно-линейных — дробно-линейная.</li>
-                        <li>Имеет 2 неподвижные точки (или одну кратную): az+b=z(cz+d).</li>
-                    </ul>
-                    <div class="def">Пример дробно-линейного отображения: w = (z−i)/(z+i) переводит верхнюю полуплоскость в единичный круг.</div>
-                    <div class="thm"><b>Теорема Римана об отображении:</b> Любая односвязная область (не совпадающая с C) конформно отображается на единичный круг.</div>
-                `
-            }
-        ];
-
-        // ═══════════════════════════════════════════════════════════════
-        // РЕНДЕРИНГ
-        // ═══════════════════════════════════════════════════════════════
-
-        // Создаём TOC
-        const tocContainer = document.getElementById('toc');
-        questions.forEach(q => {
-            const link = document.createElement('a');
-            link.href = `#q${q.id}`;
-            link.textContent = `${q.id}. ${q.title.slice(0, 60)}${q.title.length > 60 ? '...' : ''}`;
-            tocContainer.appendChild(link);
-        });
-
-        // Создаём контент
-        const contentContainer = document.getElementById('content');
-        questions.forEach(q => {
-            const div = document.createElement('div');
-            div.className = 'question';
-            div.id = `q${q.id}`;
-            
-            div.innerHTML = `
-                <div class="question-number">Вопрос ${q.id}</div>
-                <div class="question-title">${q.title}</div>
-                <div class="question-body">${q.content}</div>
-            `;
-            
-            contentContainer.appendChild(div);
-        });
-
-        // ═══════════════════════════════════════════════════════════════
-        // SCROLL TO TOP
-        // ═══════════════════════════════════════════════════════════════
-
-        const scrollBtn = document.getElementById('scrollTopBtn');
-
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 500) {
-                scrollBtn.classList.add('visible');
-            } else {
-                scrollBtn.classList.remove('visible');
-            }
-        });
-
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Smooth scroll for TOC links
-        document.querySelectorAll('.toc a').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const target = document.querySelector(link.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-
-        console.log('✅ ТФКП шпаргалка загружена!');
-    </script>
+<div class="toc">
+<h2>Содержание — 26 вопросов</h2>
+<table>
+<tr><td class="num">1</td><td><a href="#q1">Комплексные числа, действия над ними. Алгебраическая, геометрическая, тригонометрическая, показательная формы. Модуль и аргумент. Степени и корни. Стереографическая проекция</a></td><td class="chap">Гл. 1</td></tr>
+<tr><td class="num">2</td><td><a href="#q2">Последовательности комплексных чисел, сходимость. Теоремы о сходящихся последовательностях</a></td><td class="chap">Гл. 1</td></tr>
+<tr><td class="num">3</td><td><a href="#q3">Множества на комплексной плоскости. Кривые, контуры. Односвязные и многосвязные области</a></td><td class="chap">Гл. 1</td></tr>
+<tr><td class="num">4</td><td><a href="#q4">Функции комплексного переменного. Предел в точке. Непрерывность</a></td><td class="chap">Гл. 1</td></tr>
+<tr><td class="num">5</td><td><a href="#q5">Дифференцируемость в точке. Условия Коши–Римана. Аналитическая функция</a></td><td class="chap">Гл. 1</td></tr>
+<tr><td class="num">6</td><td><a href="#q6">Основные свойства аналитических функций. Модуль и аргумент производной. Конформное отображение</a></td><td class="chap">Гл. 1</td></tr>
+<tr><td class="num">7</td><td><a href="#q7">Интеграл по комплексной переменной. Свойства. Вычисление</a></td><td class="chap">Гл. 1</td></tr>
+<tr><td class="num">8</td><td><a href="#q8">Теорема Коши</a></td><td class="chap">Гл. 1</td></tr>
+<tr><td class="num">9</td><td><a href="#q9">Интегральная формула Коши</a></td><td class="chap">Гл. 1</td></tr>
+<tr><td class="num">10</td><td><a href="#q10">Принцип максимума модуля аналитической функции</a></td><td class="chap">Гл. 1</td></tr>
+<tr><td class="num">11</td><td><a href="#q11">Бесконечная дифференцируемость аналитической функции. Интегральное представление производных</a></td><td class="chap">Гл. 1</td></tr>
+<tr><td class="num">12</td><td><a href="#q12">Теорема Мореры. Теорема Лиувилля</a></td><td class="chap">Гл. 1</td></tr>
+<tr><td class="num">13</td><td><a href="#q13">Числовые ряды. Функциональные ряды. Равномерная сходимость. Основные утверждения</a></td><td class="chap">Гл. 2</td></tr>
+<tr><td class="num">14</td><td><a href="#q14">Теорема Вейерштрасса о рядах аналитических функций</a></td><td class="chap">Гл. 2</td></tr>
+<tr><td class="num">15</td><td><a href="#q15">Степенные ряды. Теорема Абеля. Радиус и круг сходимости. Формула Коши–Адамара. Ряд Тейлора</a></td><td class="chap">Гл. 2, §2</td></tr>
+<tr><td class="num">16</td><td><a href="#q16">Теорема Тейлора</a></td><td class="chap">Гл. 2, §2</td></tr>
+<tr><td class="num">17</td><td><a href="#q17">Нули аналитической функции, кратность. Теорема единственности</a></td><td class="chap">Гл. 3</td></tr>
+<tr><td class="num">18</td><td><a href="#q18">Аналитическое продолжение. Варианты. Продолжение соотношений. Свойства элементарных функций</a></td><td class="chap">Гл. 3</td></tr>
+<tr><td class="num">19</td><td><a href="#q19">Правильные и особые точки. Теорема о существовании особой точки на границе круга сходимости</a></td><td class="chap">Гл. 3–4</td></tr>
+<tr><td class="num">20</td><td><a href="#q20">Ряд Лорана, сходимость. Теорема Лорана</a></td><td class="chap">Гл. 4, §1</td></tr>
+<tr><td class="num">21</td><td><a href="#q21">Изолированные особые точки. Классификация. Поведение функции в окрестности особой точки</a></td><td class="chap">Гл. 4, §2</td></tr>
+<tr><td class="num">22</td><td><a href="#q22">Вычет. Определение и вычисление. Основная теорема теории вычетов</a></td><td class="chap">Гл. 5, §1</td></tr>
+<tr><td class="num">23</td><td><a href="#q23">Вычисление интегралов с помощью вычетов. Лемма Жордана</a></td><td class="chap">Гл. 5, §2</td></tr>
+<tr><td class="num">24</td><td><a href="#q24">Логарифмический вычет. Теорема о нулях и полюсах. Принцип аргумента</a></td><td class="chap">Гл. 5, §3</td></tr>
+<tr><td class="num">25</td><td><a href="#q25">Теорема Руше. Основная теорема высшей алгебры</a></td><td class="chap">Гл. 5, §3</td></tr>
+<tr><td class="num">26</td><td><a href="#q26">Конформные отображения. Примеры. Дробно-линейная функция, свойства</a></td><td class="chap">Гл. 6</td></tr>
+</table>
+</div>
 </body>
 </html>
