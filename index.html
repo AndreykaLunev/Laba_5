@@ -1348,8 +1348,8 @@
 
             let bodyHtml = q.content;
 
-            // Замена \[ ... \] → <div class="formula">...</div>
-            bodyHtml = bodyHtml.replace(/\\\[([\s\S]*?)\\\]/g, (match, formula) => {
+            // Замена $$ ... $$ → <div class="formula">...</div>
+            bodyHtml = bodyHtml.replace(/\\$$([\s\S]*?)\\$$/g, (match, formula) => {
                 return `<div class="formula">${formula.trim()}</div>`;
             });
 
