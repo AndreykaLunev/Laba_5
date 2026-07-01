@@ -3,1960 +3,812 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ТФКП — ответы к экзамену</title>
-
+<title>Доска | Подготовка к экзамену по общей физике</title>
 <script>
 window.MathJax = {
-    tex: {
-        inlineMath: [['$', '$'], ['\\(', '\\)']],
-        displayMath: [['$$', '$$'], ['\\[', '\\]']]
-    }
+  tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
 };
 </script>
-
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Bitter:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+:root{
+  --board:#1f2b23;
+  --board-2:#26352b;
+  --board-3:#2c3d32;
+  --chalk:#efe9d8;
+  --chalk-dim:#aab8ab;
+  --mech:#e8c15b;
+  --mech-dim:#5a4d2c;
+  --thermo:#e0876f;
+  --thermo-dim:#5a3a2f;
+  --electro:#7fc1e8;
+  --electro-dim:#2c4c5a;
+  --rule:rgba(239,233,216,0.14);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
 body{
-    max-width:1000px;
-    margin:auto;
-    padding:25px;
-    font-family:Arial,sans-serif;
-    line-height:1.6;
-    background:#f7f7f7;
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(255,255,255,0.05), transparent 45%),
+    repeating-linear-gradient(0deg, transparent, transparent 27px, var(--rule) 28px),
+    var(--board);
+  color:var(--chalk);
+  font-family:'Inter',sans-serif;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--mech);color:#20291a;}
+
+/* texture: chalk dust */
+body::before{
+  content:"";
+  position:fixed; inset:0; pointer-events:none; opacity:.05; z-index:0;
+  background-image:radial-gradient(circle,#fff 1px,transparent 1px);
+  background-size:3px 3px;
 }
 
-h1{
-    text-align:center;
+a{color:inherit;}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px;position:relative;z-index:1;}
+
+/* ---------- HERO ---------- */
+header.hero{padding:56px 0 34px;border-bottom:2px dashed var(--rule);}
+.eyebrow{
+  font-family:'Caveat',cursive;font-size:1.3rem;color:var(--mech);
+  letter-spacing:.02em;
+}
+h1.title{
+  font-family:'Caveat',cursive;
+  font-weight:700;
+  font-size:clamp(2.6rem,6vw,4.6rem);
+  line-height:1;
+  margin:.2rem 0 .6rem;
+  transform:rotate(-0.6deg);
+}
+.hero-sub{
+  font-family:'Bitter',serif;
+  color:var(--chalk-dim);
+  max-width:640px;
+  font-size:1.02rem;
+  line-height:1.55;
+}
+.hero-meta{
+  display:flex; gap:28px; flex-wrap:wrap; margin-top:22px;
+}
+.meta-chip{
+  border:1.5px dashed var(--rule);
+  border-radius:10px;
+  padding:10px 16px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.78rem;
+  color:var(--chalk-dim);
+}
+.meta-chip b{color:var(--chalk);font-weight:600;}
+.countdown{color:var(--thermo)!important;}
+.countdown b{color:var(--thermo)!important;}
+
+/* progress bar - session only */
+.progress-row{margin-top:22px;display:flex;align-items:center;gap:14px;}
+.progress-track{flex:1;height:10px;border-radius:6px;background:var(--board-3);border:1px solid var(--rule);overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--mech),var(--thermo),var(--electro));width:0%;transition:width .4s;}
+.progress-label{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--chalk-dim);white-space:nowrap;}
+
+/* ---------- SEARCH / FILTER ---------- */
+.controls{
+  display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+  padding:20px 0; position:sticky; top:0; z-index:20;
+  background:linear-gradient(var(--board) 78%, transparent);
+  backdrop-filter:blur(2px);
+}
+#search{
+  flex:1; min-width:200px;
+  background:var(--board-2); border:1.5px solid var(--rule); border-radius:9px;
+  color:var(--chalk); padding:11px 14px; font-family:'Inter',sans-serif; font-size:.92rem;
+  outline:none;
+}
+#search:focus{border-color:var(--mech);}
+.filter-btn{
+  background:transparent; border:1.5px solid var(--rule); color:var(--chalk-dim);
+  padding:10px 14px; border-radius:9px; cursor:pointer; font-family:'Inter',sans-serif;
+  font-size:.84rem; font-weight:500; transition:.15s;
+}
+.filter-btn[data-active="true"]{color:#1a231c;}
+.filter-btn[data-group="mech"][data-active="true"]{background:var(--mech);border-color:var(--mech);}
+.filter-btn[data-group="thermo"][data-active="true"]{background:var(--thermo);border-color:var(--thermo);}
+.filter-btn[data-group="electro"][data-active="true"]{background:var(--electro);border-color:var(--electro);}
+.filter-btn[data-group="all"][data-active="true"]{background:var(--chalk);border-color:var(--chalk);}
+
+/* ---------- LAYOUT ---------- */
+.layout{display:grid; grid-template-columns:250px 1fr; gap:34px; padding-bottom:80px;}
+@media (max-width:900px){.layout{grid-template-columns:1fr;} nav.tabs{display:none;}}
+
+nav.tabs{position:sticky; top:92px; align-self:start; max-height:calc(100vh - 110px); overflow-y:auto; padding-right:6px;}
+nav.tabs::-webkit-scrollbar{width:5px;}
+nav.tabs::-webkit-scrollbar-thumb{background:var(--rule);border-radius:4px;}
+.tab-group-label{
+  font-family:'JetBrains Mono',monospace; font-size:.68rem; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--chalk-dim); margin:18px 0 8px; opacity:.7;
+}
+.tab-group-label:first-child{margin-top:0;}
+.tab-item{
+  display:flex; align-items:center; gap:10px;
+  padding:7px 10px 7px 8px; border-radius:7px; cursor:pointer;
+  font-size:.84rem; color:var(--chalk-dim); line-height:1.3;
+  border-left:3px solid transparent;
+  transition:.12s;
+}
+.tab-item:hover{background:var(--board-2); color:var(--chalk);}
+.tab-item.active{background:var(--board-2); color:var(--chalk); font-weight:600;}
+.tab-flag{width:6px;height:20px;border-radius:2px;flex-shrink:0;}
+.tab-flag.mech{background:var(--mech);}
+.tab-flag.thermo{background:var(--thermo);}
+.tab-flag.electro{background:var(--electro);}
+.tab-item.done{opacity:.45;}
+.tab-item.done .tab-num::after{content:" ✓";}
+
+/* ---------- CARDS ---------- */
+main#content{min-width:0;}
+.topic{
+  background:var(--board-2);
+  border:1.5px solid var(--rule);
+  border-radius:16px;
+  padding:30px 32px 26px;
+  margin-bottom:26px;
+  position:relative;
+  scroll-margin-top:100px;
+}
+.topic::before{
+  content:"";
+  position:absolute; left:-1.5px; top:16px; bottom:16px; width:5px; border-radius:4px;
+}
+.topic.mech::before{background:var(--mech);}
+.topic.thermo::before{background:var(--thermo);}
+.topic.electro::before{background:var(--electro);}
+
+.topic-head{display:flex; align-items:flex-start; justify-content:space-between; gap:16px;}
+.topic-num{
+  font-family:'Caveat',cursive; font-weight:700; font-size:2.1rem; line-height:1;
+}
+.topic.mech .topic-num{color:var(--mech);}
+.topic.thermo .topic-num{color:var(--thermo);}
+.topic.electro .topic-num{color:var(--electro);}
+
+.topic h2{
+  font-family:'Bitter',serif; font-weight:600; font-size:1.28rem; line-height:1.35;
+  margin:2px 0 4px;
+}
+.topic .badges{display:flex; gap:6px; margin-top:6px; flex-wrap:wrap;}
+.badge{
+  font-family:'JetBrains Mono',monospace; font-size:.66rem; padding:3px 8px; border-radius:20px;
+  border:1px solid var(--rule); color:var(--chalk-dim);
+}
+.mark-btn{
+  flex-shrink:0; width:34px; height:34px; border-radius:50%;
+  border:1.5px solid var(--rule); background:transparent; color:var(--chalk-dim);
+  cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center;
+  transition:.15s;
+}
+.mark-btn:hover{border-color:var(--chalk);color:var(--chalk);}
+.mark-btn.on{background:var(--mech); border-color:var(--mech); color:#1a231c;}
+
+.topic-body{margin-top:16px; font-size:.94rem; line-height:1.68; color:var(--chalk);}
+.topic-body p{margin:0 0 10px;}
+.topic-body strong{color:var(--chalk);font-weight:600;}
+
+.formula-box{
+  background:var(--board-3);
+  border:1px dashed var(--rule);
+  border-radius:10px;
+  padding:14px 18px;
+  margin:12px 0;
+  font-size:1.02rem;
+  overflow-x:auto;
+}
+.formula-note{font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--chalk-dim); margin-top:6px;}
+
+.qa{border-top:1px dashed var(--rule); margin-top:16px; padding-top:14px;}
+.qa-item{margin-bottom:12px;}
+.qa-q{font-weight:600; color:var(--chalk); font-size:.9rem; margin-bottom:3px;}
+.qa-q::before{content:"Q · "; opacity:.5; font-family:'JetBrains Mono',monospace; font-size:.75rem;}
+.qa-a{color:var(--chalk-dim); font-size:.88rem;}
+
+svg.diagram{width:100%; max-width:420px; display:block; margin:14px auto;}
+.diagram-caption{text-align:center; font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--chalk-dim); margin-top:-6px;}
+
+footer{
+  border-top:2px dashed var(--rule); padding:26px 0 50px; text-align:center;
+  font-family:'JetBrains Mono',monospace; font-size:.76rem; color:var(--chalk-dim);
 }
 
-h2{
-    margin-top:45px;
-    padding-bottom:6px;
-    border-bottom:2px solid #3366cc;
-}
+.hidden{display:none!important;}
+mjx-container{color:var(--chalk)!important;}
 
-.math{
-    overflow-x:auto;
+/* ---------- MINIMUM SECTION ---------- */
+.min-section{margin:44px 0 10px;}
+.min-header{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:6px;}
+.min-header h2{
+  font-family:'Caveat',cursive; font-weight:700; font-size:2.3rem; margin:0; color:var(--chalk);
 }
+.min-sub{color:var(--chalk-dim); font-size:.88rem; font-family:'Bitter',serif; max-width:640px; margin:0 0 18px;}
+.min-progress-row{display:flex; align-items:center; gap:12px; margin-bottom:20px;}
+.min-progress-track{flex:1; max-width:320px; height:8px; border-radius:6px; background:var(--board-3); border:1px solid var(--rule); overflow:hidden;}
+.min-progress-fill{height:100%; background:var(--electro); width:0%; transition:.4s;}
+.min-progress-label{font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--chalk-dim); white-space:nowrap;}
 
-code{
-    background:#eee;
-    padding:2px 5px;
+.jumpgrid{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;}
+.jump{
+  width:30px; height:30px; border-radius:7px; border:1px solid var(--rule);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--chalk-dim);
+  cursor:pointer; background:transparent; transition:.12s;
 }
+.jump:hover{border-color:var(--chalk); color:var(--chalk);}
+.jump.mech{border-color:var(--mech-dim);}
+.jump.thermo{border-color:var(--thermo-dim);}
+.jump.electro{border-color:var(--electro-dim);}
+.jump.solved{background:var(--board-3); color:var(--chalk); position:relative;}
+.jump.solved::after{content:"✓"; position:absolute; top:-6px; right:-4px; font-size:.6rem; color:var(--electro);}
+
+.qmin-list{display:flex; flex-direction:column; gap:10px;}
+.qmin{
+  background:var(--board-2); border:1.5px solid var(--rule); border-radius:12px;
+  padding:16px 20px; scroll-margin-top:100px;
+}
+.qmin::before{content:none;}
+.qmin-top{display:flex; align-items:flex-start; gap:12px; cursor:pointer;}
+.qmin-n{
+  font-family:'JetBrains Mono',monospace; font-size:.78rem; color:var(--chalk-dim);
+  border:1px solid var(--rule); border-radius:6px; padding:2px 7px; flex-shrink:0; margin-top:2px;
+}
+.qmin.mech .qmin-n{color:var(--mech);}
+.qmin.thermo .qmin-n{color:var(--thermo);}
+.qmin.electro .qmin-n{color:var(--electro);}
+.qmin-qtext{flex:1; font-size:.92rem; line-height:1.5; color:var(--chalk); font-weight:500;}
+.qmin-toggle{flex-shrink:0; color:var(--chalk-dim); font-size:.85rem; font-family:'JetBrains Mono',monospace; margin-top:2px;}
+.qmin-answer{
+  margin-top:12px; padding-top:12px; border-top:1px dashed var(--rule);
+  font-size:.88rem; color:var(--chalk-dim); line-height:1.6; display:none;
+}
+.qmin.open .qmin-answer{display:block;}
+.qmin.open .qmin-toggle::before{content:"▾ скрыть";}
+.qmin:not(.open) .qmin-toggle::before{content:"▸ ответ";}
+.qmin-know{
+  margin-top:10px; display:inline-flex; align-items:center; gap:6px;
+  font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--chalk-dim);
+  border:1px dashed var(--rule); border-radius:20px; padding:4px 10px; cursor:pointer;
+}
+.qmin-know.on{color:#1a231c; background:var(--electro); border-color:var(--electro);}
 </style>
-
 </head>
 <body>
 
-<h1>Теория функций комплексного переменного</h1>
-
-<hr>
-
-<h2>1. Комплексные числа</h2>
-
-<p><b>Комплексное число</b></p>
-
-$$
-z=a+bi,\qquad i^2=-1.
-$$
-
-где
-
-$$
-a=\operatorname{Re}z,\qquad
-b=\operatorname{Im}z.
-$$
-
-Комплексное число изображается точкой плоскости.
-
-<h3>Действия</h3>
-
-Сложение
-
-$$
-(a+bi)+(c+di)=(a+c)+(b+d)i.
-$$
-
-Умножение
-
-$$
-(a+bi)(c+di)=
-(ac-bd)+(ad+bc)i.
-$$
-
-Деление
-
-$$
-\frac{a+bi}{c+di}
-=
-\frac{(ac+bd)+(bc-ad)i}
-{c^2+d^2},
-\qquad c+di\neq0.
-$$
-
-<h3>Комплексно-сопряжённое число</h3>
-
-$$
-\overline z=a-bi.
-$$
-
-Свойства
-
-$$
-z\overline z=|z|^2,
-$$
-
-$$
-\overline{z+w}
-=
-\overline z+\overline w,
-$$
-
-$$
-\overline{zw}
-=
-\overline z\,\overline w.
-$$
-
-<h3>Модуль</h3>
-
-$$
-|z|
-=
-\sqrt{a^2+b^2}.
-$$
-
-Свойства
-
-$$
-|zw|=|z||w|,
-$$
-
-$$
-\left|\frac zw\right|
-=
-\frac{|z|}{|w|},
-$$
-
-$$
-|z+w|
-\le
-|z|+|w|.
-$$
-
-<h3>Аргумент</h3>
-
-$$
-z=r(\cos\varphi+i\sin\varphi),
-$$
-
-где
-
-$$
-r=|z|,
-\qquad
-\varphi=\arg z.
-$$
-
-Главное значение
-
-$$
--\pi<\operatorname{Arg}z\le\pi.
-$$
-
-<h3>Показательная форма</h3>
-
-По формуле Эйлера
-
-$$
-e^{i\varphi}
-=
-\cos\varphi+i\sin\varphi.
-$$
-
-Следовательно,
-
-$$
-z=re^{i\varphi}.
-$$
-
-<h3>Формула Муавра</h3>
-
-$$
-(re^{i\varphi})^n
-=
-r^ne^{in\varphi}.
-$$
-
-или
-
-$$
-z^n
-=
-r^n
-(\cos n\varphi+i\sin n\varphi).
-$$
-
-<h3>Извлечение корней</h3>
-
-Если
-
-$$
-z=re^{i\varphi},
-$$
-
-то
-
-$$
-w_k
-=
-\sqrt[n]{r}
-\left(
-\cos\frac{\varphi+2\pi k}{n}
-+
-i\sin\frac{\varphi+2\pi k}{n}
-\right),
-\qquad
-k=0,\ldots,n-1.
-$$
-
-Корни расположены в вершинах правильного n-угольника.
-
-<h3>Стереографическая проекция</h3>
-
-Комплексная плоскость дополняется бесконечно удалённой точкой и отображается на сферу Римана. Северный полюс соответствует бесконечности.
-
-<hr>
-
-<h2>2. Последовательности комплексных чисел</h2>
-
-Последовательность
-
-$$
-z_n=x_n+iy_n.
-$$
-
-<h3>Определение предела</h3>
-
-$$
-\lim_{n\to\infty}z_n=z_0,
-$$
-
-если
-
-$$
-|z_n-z_0|\to0.
-$$
-
-Это равносильно условиям
-
-$$
-x_n\to x_0,
-$$
-
-$$
-y_n\to y_0.
-$$
-
-<h3>Свойства сходящихся последовательностей</h3>
-
-Если
-
-$$
-z_n\to z,
-\qquad
-w_n\to w,
-$$
-
-то
-
-$$
-z_n+w_n\to z+w,
-$$
-
-$$
-z_nw_n\to zw,
-$$
-
-$$
-\frac{z_n}{w_n}
-\to
-\frac zw,
-\qquad
-w\neq0.
-$$
-
-Также верны свойства:
-
-<ul>
-
-<li>предел единственный;</li>
-
-<li>сходящаяся последовательность ограничена;</li>
-
-<li>любая подпоследовательность имеет тот же предел;</li>
-
-<li>если последовательность фундаментальна, то она сходится.</li>
-
-</ul>
-<hr>
-
-<h2>3. Множества на комплексной плоскости. Кривые, контуры. Односвязные и многосвязные области</h2>
-
-<p><b>Окрестность точки</b></p>
-
-$$
-B(z_0,\varepsilon)=
-\{z:|z-z_0|<\varepsilon\}.
-$$
-
-Точка называется <b>внутренней</b>, если существует её окрестность, полностью принадлежащая множеству.
-
-Точка называется <b>граничной</b>, если любая её окрестность содержит точки множества и его дополнения.
-
-<p><b>Открытое множество</b> — множество, состоящее только из внутренних точек.</p>
-
-<p><b>Замкнутое множество</b> — множество, содержащее все свои граничные точки.</p>
-
-<p><b>Область</b> — открытое связное множество.</p>
-
-<h3>Кривые</h3>
-
-Кривая задаётся параметрически
-
-$$
-z=z(t),
-\qquad
-a\le t\le b.
-$$
-
-Если функция имеет непрерывную производную, то кривая называется гладкой.
-
-Контур — кусочно-гладкая ориентированная кривая.
-
-Замкнутый контур удовлетворяет условию
-
-$$
-z(a)=z(b).
-$$
-
-<h3>Односвязные области</h3>
-
-Область называется односвязной, если любой замкнутый контур можно непрерывно стянуть в точку, не выходя за пределы области.
-
-Примеры
-
-$$
-|z|<1,
-$$
-
-$$
-\operatorname{Re}z>0,
-$$
-
-$$
-\mathbb{C}\setminus(-\infty,0].
-$$
-
-<h3>Двусвязные области</h3>
-
-Имеют одну "дыру".
-
-Примеры
-
-$$
-1<|z|<2,
-$$
-
-$$
-\mathbb{C}\setminus\{0\},
-$$
-
-$$
-0<|z-a|<r.
-$$
-
-<h3>Многосвязные области</h3>
-
-Имеют несколько отверстий.
-
-Например,
-
-$$
-\mathbb{C}\setminus
-\{a_1,a_2,\ldots,a_n\}.
-$$
-
-Такие области не являются односвязными.
-
-<hr>
-
-<h2>4. Функции комплексного переменного. Предел. Непрерывность</h2>
-
-Комплекснозначная функция имеет вид
-
-$$
-w=f(z).
-$$
-
-Пусть
-
-$$
-z=x+iy.
-$$
-
-Тогда
-
-$$
-f(z)=u(x,y)+iv(x,y),
-$$
-
-где
-
-$$
-u(x,y)=\operatorname{Re}f(z),
-$$
-
-$$
-v(x,y)=\operatorname{Im}f(z).
-$$
-
-<h3>Предел функции</h3>
-
-Число
-
-$$
-A
-$$
-
-называется пределом функции в точке
-
-$$
-z_0,
-$$
-
-если
-
-$$
-\lim_{z\to z_0}f(z)=A,
-$$
-
-то есть
-
-$$
-|f(z)-A|\rightarrow0.
-$$
-
-Предел существует только тогда, когда он одинаков при любом способе приближения к точке.
-
-<h3>Непрерывность</h3>
-
-Функция непрерывна в точке
-
-$$
-z_0,
-$$
-
-если
-
-$$
-\lim_{z\to z_0}f(z)=f(z_0).
-$$
-
-Свойства непрерывных функций:
-
-<ul>
-
-<li>сумма непрерывных функций непрерывна;</li>
-
-<li>произведение непрерывных функций непрерывно;</li>
-
-<li>частное непрерывно, если знаменатель не обращается в нуль.</li>
-
-</ul>
-
-Примеры непрерывных функций:
-
-$$
-z^n,
-$$
-
-$$
-e^z,
-$$
-
-$$
-\sin z,
-$$
-
-$$
-\cos z.
-$$
-
-<hr>
-
-<h2>5. Дифференцируемость. Условия Коши—Римана. Аналитическая функция</h2>
-
-Производная определяется формулой
-
-$$
-f'(z_0)=
-\lim_{\Delta z\to0}
-\frac{f(z_0+\Delta z)-f(z_0)}
-{\Delta z}.
-$$
-
-Предел должен существовать независимо от направления стремления
-
-$$
-\Delta z\rightarrow0.
-$$
-
-Пусть
-
-$$
-f(z)=u(x,y)+iv(x,y).
-$$
-
-Тогда необходимые условия Коши—Римана имеют вид
-
-$$
-\frac{\partial u}{\partial x}
-=
-\frac{\partial v}{\partial y},
-$$
-
-$$
-\frac{\partial u}{\partial y}
-=
--
-\frac{\partial v}{\partial x}.
-$$
-
-Если частные производные непрерывны и выполнены условия Коши—Римана, то функция дифференцируема.
-
-<h3>Аналитическая функция</h3>
-
-Функция называется аналитической в области, если она дифференцируема в каждой её точке.
-
-Необходимое и достаточное условие аналитичности:
-
-<ul>
-
-<li>существуют непрерывные частные производные;</li>
-
-<li>выполняются условия Коши—Римана.</li>
-
-</ul>
-
-Производная может вычисляться по формулам
-
-$$
-f'(z)
-=
-u_x+iv_x,
-$$
-
-или
-
-$$
-f'(z)
-=
-v_y-iu_y.
-$$
-
-<h3>Якобиан</h3>
-
-Для аналитической функции
-
-$$
-J_f=u_x^2+v_x^2.
-$$
-
-Следовательно,
-
-$$
-|f'(z)|
-=
-\sqrt{u_x^2+v_x^2}
-=
-\sqrt{J_f}.
-$$
-
-Это показывает, что производная характеризует локальное растяжение отображения.
-
-<hr>
-<hr>
-
-<h2>6. Основные свойства аналитических функций. Модуль и аргумент производной. Конформное отображение</h2>
-
-Пусть функция
-
-$$
-f(z)=u(x,y)+iv(x,y)
-$$
-
-аналитична в области \(D\).
-
-<h3>Основные свойства</h3>
-
-<ul>
-
-<li>имеет производную в каждой точке области;</li>
-
-<li>имеет производные всех порядков;</li>
-
-<li>представляется рядом Тейлора;</li>
-
-<li>удовлетворяет условиям Коши—Римана;</li>
-
-<li>вещественная и мнимая части являются гармоническими функциями.</li>
-
-</ul>
-
-<h3>Модуль производной</h3>
-
-$$
-|f'(z)|
-=
-\sqrt{u_x^2+v_x^2}
-=
-\sqrt{J_f}.
-$$
-
-Производная характеризует коэффициент локального растяжения.
-
-<h3>Аргумент производной</h3>
-
-Если
-
-$$
-f'(z)\neq0,
-$$
-
-то
-
-$$
-\arg f'(z)
-$$
-
-равен углу поворота касательного вектора.
-
-Следовательно, аналитическая функция сохраняет углы между пересекающимися кривыми.
-
-<h3>Конформное отображение</h3>
-
-Отображение называется конформным, если оно сохраняет углы и их ориентацию.
-
-Достаточное условие
-
-$$
-f(z)
-$$
-
-аналитична и
-
-$$
-f'(z)\neq0.
-$$
-
-Примеры
-
-$$
-f(z)=az+b,
-$$
-
-$$
-f(z)=z^2,
-$$
-
-$$
-f(z)=e^z.
-$$
-
-<hr>
-
-<h2>7. Интеграл по комплексной переменной</h2>
-
-Пусть контур
-
-$$
-\Gamma:\quad z=z(t),
-\qquad
-a\le t\le b.
-$$
-
-Тогда
-
-$$
-dz=z'(t)\,dt.
-$$
-
-Интеграл определяется формулой
-
-$$
-\int_\Gamma f(z)\,dz
-=
-\int_a^b
-f(z(t))
-z'(t)\,dt.
-$$
-
-Если
-
-$$
-f=u+iv,
-$$
-
-то
-
-$$
-dz=dx+i\,dy.
-$$
-
-После раскрытия получается
-
-$$
-\int_\Gamma f(z)\,dz
-=
-\int_\Gamma
-(u\,dx-v\,dy)
-+
-i
-\int_\Gamma
-(v\,dx+u\,dy).
-$$
-
-<h3>Свойства</h3>
-
-<ul>
-
-<li>линейность;</li>
-
-<li>аддитивность по контуру;</li>
-
-<li>смена ориентации меняет знак интеграла;</li>
-
-<li>интеграл не зависит от параметризации.</li>
-
-</ul>
-
-<h3>Оценка</h3>
-
-Если
-
-$$
-|f(z)|\le M,
-$$
-
-то
-
-$$
-\left|
-\int_\Gamma f(z)\,dz
-\right|
-\le
-ML,
-$$
-
-где
-
-$$
-L
-$$
-
-— длина контура.
-
-<hr>
-
-<h2>8. Теорема Коши</h2>
-
-Пусть функция
-
-$$
-f(z)
-$$
-
-аналитична в односвязной области
-
-$$
-D.
-$$
-
-Тогда для любого замкнутого контура
-
-$$
-\Gamma\subset D
-$$
-
-справедливо
-
-$$
-\oint_\Gamma
-f(z)\,dz
-=
-0.
-$$
-
-Это одна из основных теорем теории функций комплексного переменного.
-
-Следствия
-
-<ul>
-
-<li>интеграл не зависит от пути интегрирования;</li>
-
-<li>существует первообразная;</li>
-
-<li>замкнутый интеграл аналитической функции равен нулю.</li>
-
-</ul>
-
-Если имеются особые точки внутри контура, то теорема Коши уже неприменима.
-
-<hr>
-
-<h2>9. Интегральная формула Коши</h2>
-
-Пусть
-
-$$
-f(z)
-$$
-
-аналитична внутри и на контуре
-
-$$
-\Gamma,
-$$
-
-а
-
-$$
-z_0
-$$
-
-лежит внутри контура.
-
-Тогда
-
-$$
-f(z_0)
-=
-\frac1{2\pi i}
-\oint_\Gamma
-\frac{f(\zeta)}
-{\zeta-z_0}
-\,d\zeta.
-$$
-
-Из неё выводится формула для производных
-
-$$
-f^{(n)}(z_0)
-=
-\frac{n!}{2\pi i}
-\oint_\Gamma
-\frac{f(\zeta)}
-{(\zeta-z_0)^{n+1}}
-\,d\zeta.
-$$
-
-Следствия
-
-<ul>
-
-<li>аналитическая функция бесконечно дифференцируема;</li>
-
-<li>значения функции внутри области определяются значениями на её границе.</li>
-
-</ul>
-
-<hr>
-
-<h2>10. Принцип максимума модуля</h2>
-
-Пусть функция
-
-$$
-f(z)
-$$
-
-аналитична в области
-
-$$
-D.
-$$
-
-Если
-
-$$
-|f(z)|
-$$
-
-достигает максимума во внутренней точке области, то
-
-$$
-f(z)\equiv const.
-$$
-
-Следовательно,
-
-максимум модуля аналитической функции достигается только на границе области.
-
-<h3>Следствия</h3>
-
-<ul>
-
-<li>аналитическая функция не может иметь внутреннего максимума модуля;</li>
-
-<li>если модуль постоянен, то функция постоянна;</li>
-
-<li>принцип широко применяется при доказательстве теорем Лиувилля и Руше.</li>
-
-</ul>
-
-<hr>
-<hr>
-
-<h2>11. Бесконечная дифференцируемость аналитической функции. Интегральное представление производных</h2>
-
-Пусть функция
-
-$$
-f(z)
-$$
-
-аналитична в области
-
-$$
-D.
-$$
-
-Из интегральной формулы Коши следует, что функция имеет производные всех порядков.
-
-Для любой точки
-
-$$
-z_0\in D
-$$
-
-и любого натурального
-
-$$
-n
-$$
-
-имеет место формула
-
-$$
-f^{(n)}(z_0)=
-\frac{n!}{2\pi i}
-\oint\limits_\Gamma
-\frac{f(\zeta)}
-{(\zeta-z_0)^{n+1}}
-\,d\zeta.
-$$
-
-Следствия:
-
-<ul>
-
-<li>аналитическая функция бесконечно дифференцируема;</li>
-
-<li>все производные также аналитичны;</li>
-
-<li>функция полностью определяется своими значениями на границе контура.</li>
-
-</ul>
-
-<hr>
-
-<h2>12. Теоремы Морера и Лиувилля</h2>
-
-<h3>Теорема Морера</h3>
-
-Если функция
-
-$$
-f(z)
-$$
-
-непрерывна в области
-
-$$
-D
-$$
-
-и для любого замкнутого контура
-
-$$
-\Gamma\subset D
-$$
-
-выполняется
-
-$$
-\oint\limits_\Gamma
-f(z)\,dz=0,
-$$
-
-то функция аналитична в области.
-
-Теорема является обратной к теореме Коши.
-
-<h3>Теорема Лиувилля</h3>
-
-Если функция аналитична на всей комплексной плоскости и ограничена
-
-$$
-|f(z)|\le M,
-$$
-
-то
-
-$$
-f(z)\equiv const.
-$$
-
-Следствие:
-
-Основная теорема алгебры выводится из теоремы Лиувилля.
-
-<hr>
-
-<h2>13. Числовые и функциональные ряды. Равномерная сходимость</h2>
-
-<h3>Числовой ряд</h3>
-
-$$
-\sum_{n=1}^{\infty}a_n.
-$$
-
-Сходится, если существует предел частичных сумм
-
-$$
-S_n=
-\sum_{k=1}^{n}a_k.
-$$
-
-<h3>Функциональный ряд</h3>
-
-$$
-\sum_{n=1}^{\infty}f_n(z).
-$$
-
-<h3>Равномерная сходимость</h3>
-
-Ряд сходится равномерно на множестве
-
-$$
-E,
-$$
-
-если
-
-$$
-\forall\varepsilon>0
-\quad
-\exists N:
-$$
-
-при
-
-$$
-n>N
-$$
-
-выполняется
-
-$$
-|S(z)-S_n(z)|<\varepsilon
-$$
-
-для всех
-
-$$
-z\in E.
-$$
-
-<h3>Признак Вейерштрасса</h3>
-
-Если
-
-$$
-|f_n(z)|\le M_n
-$$
-
-и числовой ряд
-
-$$
-\sum M_n
-$$
-
-сходится,
-
-то функциональный ряд сходится равномерно.
-
-При равномерной сходимости допускается почленное интегрирование и переход к пределу.
-
-<hr>
-
-<h2>14. Теорема Вейерштрасса о рядах аналитических функций</h2>
-
-Пусть ряд
-
-$$
-\sum_{n=0}^{\infty}f_n(z)
-$$
-
-равномерно сходится на каждом компакте области
-
-$$
-D,
-$$
-
-и каждая функция
-
-$$
-f_n(z)
-$$
-
-аналитична.
-
-Тогда:
-
-<ul>
-
-<li>сумма ряда аналитична;</li>
-
-<li>ряд можно почленно дифференцировать;</li>
-
-<li>ряд можно почленно интегрировать.</li>
-
-</ul>
-
-Следовательно,
-
-$$
-\left(
-\sum f_n
-\right)'
-=
-\sum f_n'.
-$$
-
-<hr>
-
-<h2>15. Степенные ряды. Теорема Абеля. Радиус сходимости. Формула Коши—Адамара. Ряд Тейлора</h2>
-
-Степенной ряд имеет вид
-
-$$
-\sum_{n=0}^{\infty}
-a_n(z-z_0)^n.
-$$
-
-<h3>Теорема Абеля</h3>
-
-Если ряд сходится при некотором
-
-$$
-|z-z_0|=R,
-$$
-
-то он сходится абсолютно при
-
-$$
-|z-z_0|<R.
-$$
-
-Если расходится,
-
-то расходится и при
-
-$$
-|z-z_0|>R.
-$$
-
-Число
-
-$$
-R
-$$
-
-называется радиусом сходимости.
-
-<h3>Формула Коши—Адамара</h3>
-
-$$
-R=
-\frac{1}
-{\displaystyle
-\limsup_{n\to\infty}
-\sqrt[n]{|a_n|}}.
-$$
-
-Круг
-
-$$
-|z-z_0|<R
-$$
-
-называется кругом сходимости.
-
-<h3>Ряд Тейлора</h3>
-
-Если функция аналитична,
-
-то
-
-$$
-f(z)=
-\sum_{n=0}^{\infty}
-\frac{f^{(n)}(z_0)}
-{n!}
-(z-z_0)^n.
-$$
-
-Коэффициенты ряда
-
-$$
-a_n=
-\frac{f^{(n)}(z_0)}
-{n!}.
-$$
-
-<hr>
-<hr>
-
-<h2>16. Теорема Тейлора</h2>
-
-Пусть функция
-
-$$
-f(z)
-$$
-
-аналитична в круге
-
-$$
-|z-z_0|<R.
-$$
-
-Тогда она представляется рядом Тейлора
-
-$$
-f(z)=
-\sum_{n=0}^{\infty}
-\frac{f^{(n)}(z_0)}{n!}(z-z_0)^n.
-$$
-
-Коэффициенты вычисляются по формуле
-
-$$
-a_n=
-\frac{f^{(n)}(z_0)}{n!}.
-$$
-
-Ряд сходится к функции во всём круге аналитичности.
-
-Следствие:
-
-аналитическая функция полностью определяется всеми своими производными в одной точке.
-
-<hr>
-
-<h2>17. Нули аналитической функции. Кратность. Теорема единственности</h2>
-
-Точка
-
-$$
-z_0
-$$
-
-называется нулём функции,
-
-если
-
-$$
-f(z_0)=0.
-$$
-
-Если
-
-$$
-f(z)=
-(z-z_0)^m\varphi(z),
-$$
-
-где
-
-$$
-\varphi(z_0)\neq0,
-$$
-
-то
-
-$$
-m
-$$
-
-называется кратностью нуля.
-
-Эквивалентно
-
-$$
-f(z_0)=
-f'(z_0)=
-\cdots=
-f^{(m-1)}(z_0)=0,
-$$
-
-но
-
-$$
-f^{(m)}(z_0)\neq0.
-$$
-
-<h3>Теорема единственности</h3>
-
-Если две аналитические функции совпадают на множестве,
-
-имеющем предельную точку внутри области,
-
-то они совпадают во всей области.
-
-Следствия
-
-<ul>
-
-<li>нули аналитической функции изолированы;</li>
-
-<li>если множество нулей имеет предельную точку, то функция тождественно равна нулю.</li>
-
-</ul>
-
-<hr>
-
-<h2>18. Аналитическое продолжение</h2>
-
-Пусть функция
-
-$$
-f(z)
-$$
-
-аналитична в области
-
-$$
-D.
-$$
-
-Аналитическим продолжением называется аналитическая функция,
-
-совпадающая с исходной на общей части областей определения.
-
-Продолжение может быть
-
-<ul>
-
-<li>непосредственным;</li>
-
-<li>последовательным;</li>
-
-<li>по цепочке областей.</li>
-
-</ul>
-
-Если существуют два аналитических продолжения,
-
-то по теореме единственности они совпадают.
-
-Примеры
-
-$$
-e^z,
-$$
-
-$$
-\sin z,
-$$
-
-$$
-\cos z
-$$
-
-аналитичны на всей комплексной плоскости.
-
-Логарифм
-
-$$
-\ln z
-$$
-
-и
-
-$$
-\sqrt z
-$$
-
-являются многозначными функциями,
-
-поэтому требуют выбора ветви.
-
-<hr>
-
-<h2>19. Правильные и особые точки. Особая точка на границе круга сходимости</h2>
-
-Если функция аналитична в некоторой окрестности точки,
-
-то точка называется правильной.
-
-Если аналитичность нарушается,
-
-то точка называется особой.
-
-Основные виды особых точек рассматриваются позже.
-
-<h3>Теорема</h3>
-
-Если
-
-$$
-R
-$$
-
-—
-
-радиус сходимости ряда Тейлора,
-
-то на окружности
-
-$$
-|z-z_0|=R
-$$
-
-обязательно существует хотя бы одна особая точка функции.
-
-Иначе ряд можно было бы продолжить дальше,
-
-что противоречит определению радиуса сходимости.
-
-<hr>
-
-<h2>20. Ряд Лорана. Теорема Лорана</h2>
-
-Пусть функция аналитична в кольце
-
-$$
-r<|z-z_0|<R.
-$$
-
-Тогда она представляется рядом Лорана
-
-$$
-f(z)=
-\sum_{n=-\infty}^{\infty}
-a_n(z-z_0)^n.
-$$
-
-Или
-
-$$
-f(z)=
-\sum_{n=0}^{\infty}
-a_n(z-z_0)^n
-+
-\sum_{n=1}^{\infty}
-\frac{b_n}{(z-z_0)^n}.
-$$
-
-Коэффициенты вычисляются по формуле
-
-$$
-a_n=
-\frac1{2\pi i}
-\oint\limits_\Gamma
-\frac{f(\zeta)}
-{(\zeta-z_0)^{n+1}}
-\,d\zeta.
-$$
-
-<h3>Теорема Лорана</h3>
-
-Любая функция,
-
-аналитическая в кольце,
-
-единственным образом раскладывается в ряд Лорана,
-
-сходящийся во всём этом кольце.
-
-Часть с отрицательными степенями называется главной частью ряда.
-
-<hr>
-<hr>
-
-<h2>21. Изолированные особые точки. Классификация</h2>
-
-Пусть функция аналитична в проколотой окрестности точки
-
-$$
-0<|z-z_0|<R.
-$$
-
-Тогда
-
-$$
-z_0
-$$
-
-называется изолированной особой точкой.
-
-<h3>1. Устранимая особая точка</h3>
-
-Главная часть ряда Лорана отсутствует:
-
-$$
-f(z)=
-a_0+a_1(z-z_0)+\cdots
-$$
-
-или
-
-$$
-\lim_{z\to z_0}f(z)=A.
-$$
-
-Функцию можно доопределить значением
-
-$$
-f(z_0)=A.
-$$
-
-Пример
-
-$$
-\frac{\sin z}{z},
-\qquad
-z=0.
-$$
-
-После доопределения
-
-$$
-f(0)=1.
-$$
-
-<h3>2. Полюс</h3>
-
-Главная часть содержит конечное число членов
-
-$$
-\frac{b_m}{(z-z_0)^m}
-+\cdots+
-\frac{b_1}{z-z_0}.
-$$
-
-Если максимальная степень равна
-
-$$
-m,
-$$
-
-то полюс имеет порядок
-
-$$
-m.
-$$
-
-Эквивалентно
-
-$$
-\lim_{z\to z_0}|f(z)|=\infty.
-$$
-
-Примеры
-
-$$
-\frac1z,
-$$
-
-$$
-\frac1{z^3}.
-$$
-
-<h3>3. Существенная особая точка</h3>
-
-Главная часть содержит бесконечно много членов.
-
-Пример
-
-$$
-e^{1/z}.
-$$
-
-По теореме Сохоцкого функция в любой окрестности существенной особой точки принимает значения, сколь угодно близкие к любому комплексному числу.
-
-<hr>
-
-<h2>22. Вычет. Основная теорема теории вычетов</h2>
-
-Вычетом функции в изолированной особой точке называется коэффициент при
-
-$$
-\frac1{z-z_0}
-$$
-
-в ряде Лорана.
-
-Обозначение
-
-$$
-\operatorname{Res}_{z=z_0}f(z).
-$$
-
-<h3>Вычет в простом полюсе</h3>
-
-$$
-\operatorname{Res}_{z=z_0}f(z)
-=
-\lim_{z\to z_0}
-(z-z_0)f(z).
-$$
-
-<h3>Вычет в полюсе порядка \(m\)</h3>
-
-$$
-\operatorname{Res}_{z=z_0}f(z)
-=
-\frac1{(m-1)!}
-\lim_{z\to z_0}
-\frac{d^{m-1}}{dz^{m-1}}
-\left[
-(z-z_0)^m
-f(z)
-\right].
-$$
-
-<h3>Основная теорема о вычетах</h3>
-
-Если функция аналитична всюду внутри контура,
-
-кроме конечного числа особых точек,
-
-то
-
-$$
-\oint\limits_\Gamma
-f(z)\,dz
-=
-2\pi i
-\sum
-\operatorname{Res}f(z_k).
-$$
-
-Это основной инструмент вычисления комплексных интегралов.
-
-<hr>
-
-<h2>23. Вычисление интегралов с помощью вычетов. Лемма Жордана</h2>
-
-Если контур охватывает особые точки
-
-$$
-z_1,\ldots,z_n,
-$$
-
-то
-
-$$
-\oint_\Gamma
-f(z)\,dz
-=
-2\pi i
-\sum_{k=1}^{n}
-\operatorname{Res}_{z_k}f.
-$$
-
-Этим способом вычисляют многие несобственные интегралы.
-
-<h3>Лемма Жордана</h3>
-
-Пусть
-
-$$
-a>0,
-$$
-
-а
-
-$$
-f(z)
-$$
-
-достаточно быстро убывает.
-
-Тогда
-
-$$
-\lim_{R\to\infty}
-\int_{\Gamma_R}
-e^{iaz}
-f(z)\,dz
-=
-0,
-$$
-
-где
-
-$$
-\Gamma_R
-$$
-
-—
-
-полуокружность большого радиуса.
-
-Лемма позволяет заменять интеграл по замкнутому контуру интегралом по действительной оси.
-
-<hr>
-
-<h2>24. Логарифмический вычет. Теорема о нулях и полюсах. Принцип аргумента</h2>
-
-Логарифмической производной называется
-
-$$
-\frac{f'(z)}{f(z)}.
-$$
-
-Она имеет простые полюса в нулях и полюсах функции.
-
-<h3>Теорема о нулях и полюсах</h3>
-
-Если внутри контура находятся нули
-
-$$
-a_k
-$$
-
-кратностей
-
-$$
-m_k
-$$
-
-и полюса
-
-$$
-b_j
-$$
-
-порядков
-
-$$
-n_j,
-$$
-
-то
-
-$$
-\frac1{2\pi i}
-\oint_\Gamma
-\frac{f'(z)}{f(z)}
-\,dz
-=
-\sum m_k-\sum n_j.
-$$
-
-<h3>Принцип аргумента</h3>
-
-Изменение аргумента функции вдоль замкнутого контура равно
-
-$$
-2\pi
-(N-P),
-$$
-
-где
-
-$$
-N
-$$
-
-—
-
-число нулей,
-
-а
-
-$$
-P
-$$
-
-—
-
-число полюсов внутри контура.
-
-<hr>
-
-<h2>25. Теорема Руше. Основная теорема высшей алгебры</h2>
-
-<h3>Теорема Руше</h3>
-
-Пусть функции
-
-$$
-f(z)
-$$
-
-и
-
-$$
-g(z)
-$$
-
-аналитичны внутри контура и на нём.
-
-Если
-
-$$
-|g(z)|<|f(z)|
-$$
-
-на всём контуре,
-
-то функции
-
-$$
-f(z)
-$$
-
-и
-
-$$
-f(z)+g(z)
-$$
-
-имеют одинаковое число нулей внутри контура.
-
-Теорема широко используется для подсчёта корней.
-
-<h3>Основная теорема высшей алгебры</h3>
-
-Любой многочлен степени
-
-$$
-n\ge1
-$$
-
-имеет хотя бы один комплексный корень.
-
-Следовательно,
-
-многочлен степени
-
-$$
-n
-$$
-
-разлагается на линейные множители
-
-$$
-P(z)
-=
-a_n
-(z-z_1)
-(z-z_2)
-\cdots
-(z-z_n).
-$$
-
-<hr>
-
-<h2>26. Конформные отображения. Дробно-линейная функция</h2>
-
-Конформное отображение сохраняет углы и их ориентацию.
-
-Необходимое условие
-
-$$
-f'(z)\neq0.
-$$
-
-Примеры
-
-$$
-w=z+b,
-$$
-
-$$
-w=az,
-$$
-
-$$
-w=z^2,
-$$
-
-$$
-w=e^z.
-$$
-
-<h3>Дробно-линейная функция</h3>
-
-$$
-w=
-\frac{az+b}
-{cz+d},
-\qquad
-ad-bc\neq0.
-$$
-
-Свойства
-
-<ul>
-
-<li>аналитична всюду, кроме точки
-$$
-z=-\frac dc;
-$$
-</li>
-
-<li>отображает окружности и прямые в окружности или прямые;</li>
-
-<li>является взаимно однозначным конформным отображением расширенной комплексной плоскости.</li>
-
-</ul>
-
-<h3>Частные случаи</h3>
-
-Перенос
-
-$$
-w=z+a.
-$$
-
-Поворот
-
-$$
-w=e^{i\varphi}z.
-$$
-
-Растяжение
-
-$$
-w=kz.
-$$
-
-Инверсия
-
-$$
-w=\frac1z.
-$$
-
-<hr>
-
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">Экзамен по общей физике · весенний семестр 2026</div>
+    <h1 class="title">Доска подготовки</h1>
+    <p class="hero-sub">Все 24 темы билетов и полный список вопросов минимума — механика, термодинамика и молекулярная физика, электричество и магнетизм. Формулы, разборы и рисунки собраны по учебнику Савельева, в одном месте.</p>
+    <div class="hero-meta">
+      <div class="meta-chip countdown" id="countdown"><b>—</b> дней до экзамена</div>
+      <div class="meta-chip"><b>24</b> темы билетов</div>
+      <div class="meta-chip"><b>51</b> вопрос минимума</div>
+      <div class="meta-chip"><b>3</b> раздела: механика · термодинамика · электричество</div>
+    </div>
+    <div class="progress-row">
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-label" id="progressLabel">0 / 24 отмечено пройденным</div>
+    </div>
+  </header>
+
+  <div class="controls">
+    <input id="search" type="text" placeholder="Поиск по темам, вопросам, формулам… (например: «импульс», «конденсатор», «работа газа»)">
+    <button class="filter-btn" data-group="all" data-active="true">Всё</button>
+    <button class="filter-btn" data-group="mech" data-active="false">Механика</button>
+    <button class="filter-btn" data-group="thermo" data-active="false">Термодинамика</button>
+    <button class="filter-btn" data-group="electro" data-active="false">Электричество</button>
+  </div>
+
+  <div class="layout">
+    <nav class="tabs" id="tabs"></nav>
+    <main id="content"></main>
+  </div>
+
+  <footer>
+    Сделано для подготовки к экзамену 6 июля · источник — «Курс общей физики» И.В. Савельев, т.1 (Механика) и т.2 (Электричество и магнетизм) · отметки о прохождении сохраняются только на время сессии
+  </footer>
+</div>
+
+<script>
+/* ================== DATA ================== */
+const DIAG_TRAJ = `
+<svg class="diagram" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg">
+  <line x1="30" y1="190" x2="300" y2="190" stroke="#aab8ab" stroke-width="1.5"/>
+  <text x="305" y="195" fill="#aab8ab" font-family="Bitter" font-size="14" font-style="italic">X</text>
+  <line x1="30" y1="190" x2="30" y2="20" stroke="#aab8ab" stroke-width="1.5"/>
+  <text x="14" y="20" fill="#aab8ab" font-family="Bitter" font-size="14" font-style="italic">Y</text>
+  <line x1="30" y1="190" x2="10" y2="210" stroke="#aab8ab" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <text x="4" y="216" fill="#aab8ab" font-family="Bitter" font-size="13" font-style="italic">Z</text>
+  <path d="M 70 70 Q 160 10 220 110" fill="none" stroke="#efe9d8" stroke-width="2.2"/>
+  <circle cx="70" cy="70" r="3.5" fill="#e8c15b"/>
+  <text x="60" y="55" fill="#e8c15b" font-family="Bitter" font-size="15" font-style="italic">A</text>
+  <circle cx="220" cy="110" r="3.5" fill="#7fc1e8"/>
+  <text x="228" y="105" fill="#7fc1e8" font-family="Bitter" font-size="15" font-style="italic">B</text>
+  <line x1="30" y1="190" x2="70" y2="70" stroke="#e8c15b" stroke-width="1.6" marker-end="url(#arrY)"/>
+  <text x="42" y="120" fill="#e8c15b" font-family="Bitter" font-size="13" font-style="italic">r0</text>
+  <line x1="30" y1="190" x2="220" y2="110" stroke="#7fc1e8" stroke-width="1.6" marker-end="url(#arrY)"/>
+  <text x="115" y="165" fill="#7fc1e8" font-family="Bitter" font-size="13" font-style="italic">r</text>
+  <defs><marker id="arrY" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#efe9d8"/></marker></defs>
+</svg>`;
+
+const DIAG_CIRC = `
+<svg class="diagram" viewBox="0 0 340 300" xmlns="http://www.w3.org/2000/svg">
+  <path d="M 40 200 Q 70 60 220 60" fill="none" stroke="#efe9d8" stroke-width="2.2"/>
+  <circle cx="140" cy="180" r="2.5" fill="#aab8ab"/>
+  <text x="135" y="200" fill="#aab8ab" font-family="Bitter" font-size="14" font-style="italic">O</text>
+  <line x1="140" y1="180" x2="40" y2="200" stroke="#aab8ab" stroke-width="1.4" stroke-dasharray="3 3"/>
+  <text x="70" y="205" fill="#aab8ab" font-family="Bitter" font-size="13" font-style="italic">R</text>
+  <line x1="140" y1="180" x2="106" y2="88" stroke="#aab8ab" stroke-width="1.4" stroke-dasharray="3 3"/>
+  <text x="150" y="140" fill="#e0876f" font-family="Bitter" font-size="13" font-style="italic">Δr</text>
+  <text x="150" y="158" fill="#aab8ab" font-family="Bitter" font-size="12" font-style="italic">Δφ</text>
+  <circle cx="40" cy="200" r="3.5" fill="#e8c15b"/>
+  <text x="24" y="196" fill="#e8c15b" font-family="Bitter" font-size="15" font-style="italic">A</text>
+  <line x1="40" y1="200" x2="95" y2="185" stroke="#e8c15b" stroke-width="1.6" marker-end="url(#arrC)"/>
+  <text x="60" y="176" fill="#e8c15b" font-family="Bitter" font-size="12" font-style="italic">v0</text>
+  <circle cx="106" cy="88" r="3.5" fill="#7fc1e8"/>
+  <text x="112" y="80" fill="#7fc1e8" font-family="Bitter" font-size="15" font-style="italic">B</text>
+  <line x1="106" y1="88" x2="200" y2="72" stroke="#7fc1e8" stroke-width="1.6" marker-end="url(#arrC)"/>
+  <text x="200" y="60" fill="#7fc1e8" font-family="Bitter" font-size="12" font-style="italic">v0</text>
+  <line x1="106" y1="88" x2="150" y2="170" stroke="#efe9d8" stroke-width="1.4" marker-end="url(#arrC)"/>
+  <text x="112" y="150" fill="#efe9d8" font-family="Bitter" font-size="12" font-style="italic">v</text>
+  <line x1="200" y1="72" x2="150" y2="170" stroke="#e0876f" stroke-width="1.6" marker-end="url(#arrC)"/>
+  <text x="205" y="130" fill="#e0876f" font-family="Bitter" font-size="12" font-style="italic">Δv</text>
+  <circle cx="150" cy="170" r="2.5" fill="#aab8ab"/>
+  <text x="155" y="185" fill="#aab8ab" font-family="Bitter" font-size="13" font-style="italic">D</text>
+  <circle cx="200" cy="72" r="2.5" fill="#aab8ab"/>
+  <text x="205" y="66" fill="#aab8ab" font-family="Bitter" font-size="13" font-style="italic">C</text>
+  <defs><marker id="arrC" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#efe9d8"/></marker></defs>
+</svg>`;
+
+const T = [
+{n:1, g:'mech', title:'Кинематика. Материальная точка и абсолютно твёрдое тело. Кинематика точки', badges:['траектория','перемещение','скорость','ускорение'],
+diagram:DIAG_TRAJ, diagramCaption:'Радиус-вектор при движении точки из A в B',
+body:`
+<p><strong>Материальная точка</strong> — тело, размерами и формой которого можно пренебречь в данной задаче. <strong>Абсолютно твёрдое тело</strong> — тело, расстояния между любыми двумя точками которого не меняются при движении.</p>
+<p>Положение точки задаётся радиус-вектором $\\vec r(t)$. При переходе из точки A ($\\vec r_0$) в точку B ($\\vec r$):</p>
+<div class="formula-box">$$\\Delta\\vec r = \\vec r - \\vec r_0 \\quad\\text{— перемещение (вектор, кратчайшее расстояние)}$$
+$$s = \\int\\limits_{t_0}^{t} |\\vec v(t)|\\,dt \\quad\\text{— путь (скаляр, длина траектории)}$$</div>
+<p class="formula-note">Путь ≥ |перемещения|; равенство только для прямолинейного движения без разворотов.</p>
+<div class="formula-box">$$\\vec v(t)=\\frac{d\\vec r}{dt}, \\qquad \\vec r(t)=\\vec r_0+\\int\\limits_0^t \\vec v(t')\\,dt'$$</div>
+<p>Если задан закон изменения скорости $v(t)$, закон движения восстанавливается интегрированием — это площадь под графиком $v(t)$, прибавленная к начальному положению.</p>
+<p><strong>Движение тела, брошенного под углом α к горизонту</strong> с начальной скоростью $v_0$ (ось Y — вверх, ускорение свободного падения $g$ направлено вниз):</p>
+<div class="formula-box">
+$$r_X = v_0\\cos\\alpha\\cdot t \\qquad r_Y = v_0\\sin\\alpha\\cdot t - \\frac{g t^2}{2}$$
+$$v_X = v_0\\cos\\alpha = \\text{const} \\qquad v_Y = v_0\\sin\\alpha - g t$$
+$$a_X = 0 \\qquad a_Y = -g$$
+</div>
+<div class="qa">
+<div class="qa-item"><div class="qa-q">Что входит в понятие системы отсчёта?</div><div class="qa-a">Тело отсчёта, связанная с ним система координат и прибор для измерения времени (часы).</div></div>
+</div>`},
+
+{n:2, g:'mech', title:'Кинематика движения точки по окружности. Нормальное и тангенциальное ускорения', badges:['ω, ε','aₙ, aτ'],
+diagram:DIAG_CIRC, diagramCaption:'Дуга AB: разложение приращения скорости Δv',
+body:`
+<p>Угловая скорость $\\omega=\\dfrac{d\\varphi}{dt}$, угловое ускорение $\\varepsilon=\\dfrac{d\\omega}{dt}=\\dfrac{d^2\\varphi}{dt^2}$ — находится дифференцированием $\\varphi(t)$ дважды.</p>
+<div class="formula-box">$$v=\\omega R \\qquad \\text{(линейная скорость = угловая скорость × радиус)}$$</div>
+<p>Полное ускорение раскладывается на две взаимно перпендикулярные составляющие:</p>
+<div class="formula-box">
+$$a_\\tau=\\frac{dv}{dt} \\quad\\text{— тангенциальное (меняет модуль скорости, направлено по касательной)}$$
+$$a_n=\\frac{v^2}{R}=\\omega^2 R \\quad\\text{— нормальное/центростремительное (меняет направление, направлено к центру O)}$$
+</div>
+<p>Длина хорды перемещения: $\\Delta r = 2R\\sin(\\Delta\\varphi/2)$. В пределе малых $\\Delta\\varphi$: $\\sin(\\Delta\\varphi/2)\\approx \\Delta\\varphi/2$, поэтому $\\Delta r \\to R\\,\\Delta\\varphi$ и совпадает по направлению с $\\vec v$.</p>
+<div class="qa">
+<div class="qa-item"><div class="qa-q">Когда тангенциальное ускорение обращается в ноль?</div><div class="qa-a">При равномерном движении по окружности — модуль скорости не меняется, остаётся только центростремительное ускорение $a_n$, всегда направленное к центру O.</div></div>
+<div class="qa-item"><div class="qa-q">Связь ω и Δφ</div><div class="qa-a">Мгновенная угловая скорость — предел $\\omega=\\lim_{\\Delta t\\to0}\\dfrac{\\Delta\\varphi}{\\Delta t}$.</div></div>
+</div>`},
+
+{n:3, g:'mech', title:'Динамика. Инерциальные системы отсчёта. Первый закон Ньютона. Масса. Импульс', badges:['инертность','p=mv'],
+body:`
+<p><strong>Инертность</strong> — свойство тел сопротивляться изменению своей скорости. <strong>Масса</strong> — количественная мера инертности тела (в классической механике — также мера количества вещества).</p>
+<p><strong>Инерциальная система отсчёта</strong> — система, в которой свободное тело движется равномерно и прямолинейно (первый закон Ньютона). Неинерциальная — движущаяся с ускорением относительно инерциальной.</p>
+<div class="formula-box">$$\\frac{d\\vec p}{dt}=\\vec F \\qquad \\vec p = m\\vec v$$</div>
+<p>Единица измерения импульса — $\\text{кг·м/с}$.</p>
+<div class="formula-box">$$\\vec a = \\frac{\\vec F}{m}$$</div>
+<div class="qa">
+<div class="qa-item"><div class="qa-q">Если масса уменьшилась в 4 раза, а сила та же — как изменится ускорение?</div><div class="qa-a">$a = F/(m/4) = 4\\cdot(F/m) = 4a_0$.</div></div>
+<div class="qa-item"><div class="qa-q">Суммарный импульс системы из n частиц</div><div class="qa-a">$$\\vec P=\\sum_{i=1}^n \\vec p_i, \\qquad \\frac{d\\vec P}{dt}=\\vec F_{внеш}$$ — внутренние силы взаимодействия попарно компенсируются по третьему закону Ньютона и не меняют суммарный импульс.</div></div>
+</div>`},
+
+{n:4, g:'mech', title:'Второй и третий законы Ньютона. Закон сохранения импульса', badges:['F=ma','p=const'],
+body:`
+<div class="formula-box">$$\\vec F = m\\vec a \\quad\\text{(II закон)} \\qquad \\vec F_{12}=-\\vec F_{21} \\quad\\text{(III закон)}$$</div>
+<p><strong>Закон сохранения импульса:</strong> если сумма внешних сил, действующих на систему, равна нулю, суммарный импульс системы остаётся постоянным.</p>
+<div class="qa">
+<div class="qa-item"><div class="qa-q">Единица силы в СИ, ускорение тела 1 кг под действием силы 1 Н</div><div class="qa-a">Ньютон (Н) = кг·м/с². Тело массой 1 кг под действием силы 1 Н получает ускорение 1 м/с² (это и есть определение ньютона).</div></div>
+<div class="qa-item"><div class="qa-q">Тележка массой m сталкивается с покоящейся такой же тележкой, сцепка после удара имеет скорость 3v — какова была начальная скорость?</div><div class="qa-a">Сохранение импульса: $mv_0 = (m+m)\\cdot 3v \\Rightarrow v_0 = 6v$.</div></div>
+</div>`},
+
+{n:5, g:'mech', title:'Силы в механике: тяжесть, трение, упругость. Центр масс. Теорема о движении центра масс', badges:['mg','kΔl','ЦМ'],
+body:`
+<p><strong>Виды силы трения</strong> между телом и поверхностью: трение покоя, трение скольжения, трение качения (иногда отдельно выделяют вязкое/жидкостное трение).</p>
+<div class="formula-box">$$mg = k\\Delta l \\;\\Rightarrow\\; k=\\frac{mg}{\\Delta l} \\quad\\text{(жёсткость пружины из статического сжатия)}$$</div>
+<p><strong>Теорема о движении центра масс:</strong> центр масс системы частиц движется как материальная точка, в которой сосредоточена вся масса системы, под действием суммы внешних сил:</p>
+<div class="formula-box">$$M\\vec a_{ц.м.} = \\vec F_{внеш}, \\qquad \\vec r_{ц.м.}=\\frac{\\sum m_i \\vec r_i}{\\sum m_i}$$</div>`},
+
+{n:6, g:'mech', title:'Кинетическая энергия. Работа силы. Мощность. Работа сил трения, тяжести, упругости', badges:['K=mv²/2','A=∫F·dx'],
+body:`
+<div class="formula-box">$$K=\\frac{mv^2}{2} \\qquad [A] = 1\\ \\text{Дж} = 1\\ \\text{кг·м}^2/\\text{с}^2 \\qquad dA=\\vec F\\cdot d\\vec x = F\\cos\\theta\\,dx$$</div>
+<div class="qa">
+<div class="qa-item"><div class="qa-q">Скорость увеличилась в 3 раза — как изменится K?</div><div class="qa-a">$K\\propto v^2 \\Rightarrow K$ вырастет в $9$ раз.</div></div>
+<div class="qa-item"><div class="qa-q">Работа силы тяжести: падение с высоты h vs скатывание по наклонной плоскости с той же h</div><div class="qa-a">Одинакова: $A=mgh$ в обоих случаях — сила тяжести потенциальна, работа не зависит от формы пути, только от перепада высот.</div></div>
+<div class="qa-item"><div class="qa-q">Работа силы упругости при сжатии пружины от x₀ до x₁</div><div class="qa-a">$$A=\\frac{k x_0^2}{2}-\\frac{k x_1^2}{2}$$</div></div>
+</div>`},
+
+{n:7, g:'mech', title:'Потенциальная энергия. Связь силы и потенциальной энергии. Закон сохранения энергии', badges:['U=mgh','F=-dU/dx'],
+body:`
+<div class="formula-box">$$A_{подъём}=mgh \\qquad U_{пруж}=\\frac{kx^2}{2} \\qquad F=-\\frac{dU}{dx}$$</div>
+<p><strong>Закон сохранения энергии</strong> (для консервативных сил): $E=K+U=\\text{const}$.</p>
+<p><strong>Условие равновесия</strong> механической системы: $\\dfrac{dU}{dx}=0$ (сила равна нулю); устойчивое равновесие — там, где U минимальна.</p>`},
+
+{n:8, g:'mech', title:'Момент силы и момент импульса. Закон сохранения момента импульса', badges:['M=r×F','L=Iω'],
+body:`
+<div class="formula-box">$$\\vec M = \\vec r \\times \\vec F, \\qquad [M]=\\text{Н·м}$$
+$$\\frac{d\\vec L}{dt}=\\vec M$$</div>
+<p><strong>Закон сохранения момента импульса:</strong> если суммарный момент внешних сил относительно оси/точки равен нулю, момент импульса системы сохраняется.</p>`},
+
+{n:9, g:'thermo', title:'Статистическая физика и термодинамика. Масса и размеры молекул. Внутренняя энергия. Первое начало', badges:['ν, Nᴀ','ΔU=Q−A'],
+body:`
+<div class="formula-box">$$dQ = dU + dA \\quad\\text{(первое начало термодинамики)}$$</div>
+<p><strong>Атомная (молекулярная) масса</strong> — масса атома (молекулы), выраженная в атомных единицах массы (относительно 1/12 массы атома углерода-12).</p>
+<p><strong>Количество вещества</strong> $\\nu$ — число структурных единиц (атомов, молекул), измеряется в молях; $1\\ \\text{моль}$ содержит число Авогадро $N_A\\approx 6{,}02\\times10^{23}$ частиц.</p>`},
+
+{n:10, g:'thermo', title:'Работа при изменении объёма. Температура. Уравнение состояния идеального газа', badges:['A=∫pdV','pV=νRT'],
+body:`
+<div class="formula-box">$$A=\\int\\limits_{V_1}^{V_2} p\\,dV \\quad\\text{— площадь под графиком в осях } p,V$$</div>
+<p><strong>Температура</strong> в термодинамике — величина, характеризующая степень нагретости тела и определяющая направление теплообмена (тепло переходит от более к менее нагретому); в кинетической теории — мера средней кинетической энергии теплового движения молекул.</p>
+<div class="formula-box">$$pV=\\nu RT = \\frac{m}{M}RT$$</div>`},
+
+{n:11, g:'thermo', title:'Внутренняя энергия и теплоёмкость. Основные газовые законы', badges:['U=(3/2)νRT'],
+body:`
+<div class="formula-box">$$U=\\frac{3}{2}\\nu R T \\quad\\text{(идеальный одноатомный газ, 3 поступательные степени свободы)}$$</div>
+<p>Газовые законы — частные случаи $pV=\\nu RT$: закон Бойля–Мариотта ($T=\\text{const}$), Гей-Люссака ($p=\\text{const}$), Шарля ($V=\\text{const}$).</p>`},
+
+{n:12, g:'thermo', title:'Давление газа на стенку как средний импульс молекул. Число ударов о стенку. Кинетическая энергия хаотического движения', badges:['p=⅓nm⟨v²⟩'],
+body:`
+<p>Давление возникает из-за передачи импульса молекулами при упругих столкновениях со стенкой сосуда. Основное уравнение молекулярно-кинетической теории:</p>
+<div class="formula-box">$$p=\\frac{1}{3}nm\\langle v^2\\rangle = \\frac{2}{3}n\\overline{E}_{к}$$</div>
+<p>где $n$ — концентрация молекул, $m$ — масса молекулы, $\\overline{E}_к=\\dfrac{m\\langle v^2\\rangle}{2}$ — средняя кинетическая энергия хаотического движения одной молекулы, связанная с температурой как $\\overline{E}_к=\\dfrac{3}{2}k_БT$.</p>`},
+
+{n:13, g:'thermo', title:'Основные законы термодинамики. Первое начало термодинамики', badges:['ΔU=Q−A'],
+body:`<div class="formula-box">$$Q = \\Delta U + A$$</div><p>Теплота, сообщённая системе, идёт на изменение внутренней энергии и на совершение работы системой над внешними телами.</p>`},
+
+{n:14, g:'thermo', title:'Свойства идеального газа. Процессы: изотерма, изохора, адиабата', badges:['pV=const','pVᵞ=const'],
+body:`
+<div class="formula-box">
+$$\\text{Изотерма } (T=\\text{const}): pV=\\text{const}$$
+$$\\text{Изохора } (V=\\text{const}): p/T=\\text{const}$$
+$$\\text{Изобара } (p=\\text{const}): V/T=\\text{const}$$
+$$\\text{Адиабата } (Q=0): pV^\\gamma=\\text{const},\\ \\gamma=C_p/C_V$$
+</div>
+<p>Адиабата на графике $pV$ идёт круче изотермы, так как при сжатии без теплообмена температура и давление растут быстрее.</p>`},
+
+{n:15, g:'thermo', title:'Цикл Карно. КПД. Второе начало термодинамики', badges:['η=1−T₂/T₁'],
+body:`
+<p>Цикл Карно состоит из двух изотерм и двух адиабат — это цикл с максимально возможным КПД между двумя заданными температурами нагревателя $T_1$ и холодильника $T_2$:</p>
+<div class="formula-box">$$\\eta = \\frac{A}{Q_1}=1-\\frac{T_2}{T_1}$$</div>
+<p><strong>Второе начало термодинамики</strong> (формулировка Клаузиуса): теплота не может самопроизвольно переходить от менее нагретого тела к более нагретому без каких-либо иных изменений в системе.</p>`},
+
+{n:16, g:'electro', title:'Взаимодействие зарядов. Электростатическое поле. Напряжённость. Принцип суперпозиции. Силовые линии', badges:['закон Кулона','E'],
+body:`
+<div class="formula-box">$$F=\\frac{1}{4\\pi\\varepsilon_0}\\frac{q_1 q_2}{d^2} \\quad\\text{(закон Кулона, вакуум)}$$</div>
+<p><strong>Принцип суперпозиции:</strong> напряжённость поля системы зарядов равна векторной сумме напряжённостей, создаваемых каждым зарядом по отдельности: $\\vec E=\\sum \\vec E_i$.</p>
+<p>Вектор напряжённости $\\vec E$ всегда <strong>перпендикулярен эквипотенциальной поверхности</strong> и направлен в сторону убывания потенциала.</p>`},
+
+{n:17, g:'electro', title:'Теорема Гаусса. Поле заряженной плоскости и сферы', badges:['∮E·dA=Q/ε₀'],
+body:`
+<div class="formula-box">$$\\oint \\vec E\\cdot d\\vec A = \\frac{Q}{\\varepsilon_0}$$
+$$E_{плоскость}=\\frac{\\sigma}{2\\varepsilon_0} \\qquad E_{сфера,\\ r>R}=\\frac{1}{4\\pi\\varepsilon_0}\\frac{Q}{r^2},\\quad E_{сфера,\\ r<R}=0$$</div>`},
+
+{n:18, g:'electro', title:'Работа сил электрического поля. Потенциал. Потенциал сферы', badges:['φ=kQ/r'],
+body:`
+<p><strong>Потенциал</strong> — энергетическая характеристика поля, равная потенциальной энергии единичного положительного заряда в данной точке. Единица измерения — вольт (В) = Дж/Кл.</p>
+<div class="formula-box">$$\\varphi_{сфера}=\\frac{1}{4\\pi\\varepsilon_0}\\frac{Q}{r}\\ (r\\ge R), \\qquad A_{12}=q(\\varphi_1-\\varphi_2)$$</div>`},
+
+{n:19, g:'electro', title:'Связь напряжённости и потенциала', badges:['E=−∇φ'],
+body:`<div class="formula-box">$$\\vec E = -\\nabla\\varphi \\quad\\text{(для одномерного случая: } E_x=-\\dfrac{d\\varphi}{dx}\\text{)}$$</div>
+<p>Напряжённость направлена в сторону наибыстрейшего убывания потенциала.</p>`},
+
+{n:20, g:'electro', title:'Проводники в электростатическом поле. Электроёмкость. Ёмкость сферы. Конденсаторы', badges:['C=Q/U'],
+body:`
+<p>Внутри проводника в статике поле равно нулю, весь избыточный заряд расположен на поверхности, поверхность — эквипотенциальна.</p>
+<div class="formula-box">$$C=\\frac{Q}{U} \\qquad C_{сфера}=4\\pi\\varepsilon_0 R \\qquad C_{плоский\\ конд.}=\\frac{\\varepsilon_0 S}{d}\\ \\text{(вакуум)}$$</div>`},
+
+{n:21, g:'electro', title:'Постоянный электрический ток. Сила тока. Уравнение непрерывности. ЭДС. Падение напряжения', badges:['I=dq/dt'],
+body:`
+<p><strong>Условие возникновения постоянного тока:</strong> наличие свободных носителей заряда, замкнутая цепь и источник ЭДС, поддерживающий разность потенциалов (сторонние силы, компенсирующие электростатическое поле внутри источника).</p>
+<div class="formula-box">$$I=\\frac{dq}{dt}$$</div>`},
+
+{n:22, g:'electro', title:'Закон Ома. Сопротивление. Сверхпроводимость', badges:['I=U/R','R=ρl/S'],
+body:`
+<div class="formula-box">$$I=\\frac{U}{R} \\qquad R=\\rho\\frac{l}{S}$$</div>
+<p><strong>Сверхпроводимость</strong> — исчезновение электрического сопротивления некоторых материалов ниже критической температуры.</p>
+<div class="qa">
+<div class="qa-item"><div class="qa-q">Сопротивление увеличили в 3 раза при неизменном напряжении — что с силой тока?</div><div class="qa-a">$I=U/R \\Rightarrow$ сила тока уменьшится в 3 раза, станет $I/3$.</div></div>
+</div>`},
+
+{n:23, g:'electro', title:'Магнитное поле в вакууме. Взаимодействие токов. Принцип суперпозиции', badges:['B','Био–Савар'],
+body:`
+<p>Особенность магнитного поля — оно не потенциально (силовые линии замкнуты, нет магнитных зарядов, $\\oint \\vec B\\cdot d\\vec A=0$). Поле создаётся движущимися зарядами (токами). Принцип суперпозиции: $\\vec B=\\sum \\vec B_i$.</p>`},
+
+{n:24, g:'electro', title:'Магнитное поле движущегося заряда. Сила Лоренца. Движение в скрещенных полях', badges:['F=qE+qv×B'],
+body:`
+<div class="formula-box">$$\\vec F = q\\vec E + q\\vec v\\times\\vec B \\quad\\text{(обобщённая сила Лоренца)}$$</div>
+<p>В однородном магнитном поле (без E) заряд движется по окружности или спирали — магнитная сила работы не совершает, энергия частицы не меняется. В скрещенных перпендикулярных $\\vec E$ и $\\vec B$ при определённой скорости электрическая и магнитная силы уравновешиваются ($qE=qvB$) — частица движется прямолинейно (принцип фильтра скоростей).</p>`}
+];
+
+const Q51 = [
+{n:1, g:'mech', q:'На графике показано изменение радиус-вектора при движении от точки A к точке B. Как найти путь, который проделала точка? Как найти перемещение точки?', a:'Путь — длина траектории, $s=\\int|\\vec v|\\,dt$ (скаляр, зависит от формы пути). Перемещение — вектор $\\Delta\\vec r=\\vec r-\\vec r_0$, кратчайший отрезок от A до B, не зависит от формы пути.'},
+{n:2, g:'mech', q:'Как восстановить закон движения, если известен закон изменения скорости v(t)?', a:'Интегрированием: $\\vec r(t)=\\vec r_0+\\displaystyle\\int_0^t \\vec v(t\')\\,dt\'$ — это площадь под графиком $v(t)$, прибавленная к начальному положению.'},
+{n:3, g:'mech', q:'Тело брошено под углом α к горизонту с начальной скоростью v₀. По какому закону меняются составляющие радиус-вектора тела (rX, rY)?', a:'$r_X=v_0\\cos\\alpha\\cdot t$, $\\ r_Y=v_0\\sin\\alpha\\cdot t-\\dfrac{gt^2}{2}$.'},
+{n:4, g:'mech', q:'Тело брошено под углом α к горизонту с начальной скоростью v₀. По какому закону меняются составляющие скорости (vX, vY)? составляющие ускорения (aX, aY)?', a:'$v_X=v_0\\cos\\alpha=\\text{const}$, $\\ v_Y=v_0\\sin\\alpha-gt$; $\\ a_X=0$, $\\ a_Y=-g$.'},
+{n:5, g:'mech', q:'Перечислить, что входит в понятие системы отсчёта.', a:'Тело отсчёта, связанная с ним система координат и часы (прибор для измерения времени).'},
+{n:6, g:'mech', q:'Как связаны угловая скорость и линейная скорость точки при движении по окружности?', a:'$v=\\omega R$.'},
+{n:7, g:'mech', q:'Как найти угловое ускорение точки при движении по окружности, если известна зависимость угла от времени?', a:'Дифференцированием: $\\varepsilon=\\dfrac{d\\omega}{dt}=\\dfrac{d^2\\varphi}{dt^2}$.'},
+{n:9, g:'mech', q:'Пользуясь обозначениями с рисунка, выразите тангенциальное и нормальное (центростремительное) ускорения точки, описывающей дугу окружности AB.', a:'$a_\\tau=\\dfrac{dv}{dt}$ (по касательной, меняет модуль скорости); $\\ a_n=\\dfrac{v^2}{R}=\\omega^2R$ (к центру O, меняет направление скорости).'},
+{n:10, g:'mech', q:'Выразите длину вектора перемещения Δr через радиус R и угловое перемещение Δφ. Запишите предельный случай для малых Δφ.', a:'$\\Delta r=2R\\sin(\\Delta\\varphi/2)$; при малых $\\Delta\\varphi$: $\\sin(\\Delta\\varphi/2)\\approx\\Delta\\varphi/2 \\Rightarrow \\Delta r\\to R\\,\\Delta\\varphi$.'},
+{n:11, g:'mech', q:'Как направлены центростремительное и тангенциальное ускорения в каждой точке траектории? В каком случае тангенциальное ускорение обращается в ноль?', a:'$a_n$ всегда направлено к центру окружности, $a_\\tau$ — по касательной (вдоль скорости). $a_\\tau=0$ при равномерном движении по окружности (модуль скорости постоянен).'},
+{n:12, g:'mech', q:'Запишите связь между линейной скоростью v и угловой скоростью ω, используя обозначения рисунка. Выразите угловую скорость ω через угловое перемещение Δφ и время t.', a:'$v=\\omega R$; $\\ \\omega=\\lim\\limits_{\\Delta t\\to0}\\dfrac{\\Delta\\varphi}{\\Delta t}$.'},
+{n:13, g:'mech', q:'Что такое инертность? Дать определение массы.', a:'Инертность — свойство тела сопротивляться изменению скорости. Масса — количественная мера инертности тела.'},
+{n:14, g:'mech', q:'Выразите производную импульса по времени.', a:'$\\dfrac{d\\vec p}{dt}=\\vec F$ (второй закон Ньютона в импульсной форме).'},
+{n:15, g:'mech', q:'Согласно второму закону Ньютона, запишите ускорение тела массой m, на которое действует сила F.', a:'$\\vec a=\\dfrac{\\vec F}{m}$.'},
+{n:16, g:'mech', q:'Как изменится ускорение тела под действием силы F, если масса тела уменьшилась в 4 раза? Выразить ответ через a₀.', a:'$a=\\dfrac{F}{m/4}=4\\cdot\\dfrac{F}{m}=4a_0$.'},
+{n:17, g:'mech', q:'Определение (формула) и единица измерения импульса.', a:'$\\vec p=m\\vec v$, единица — кг·м/с.'},
+{n:18, g:'mech', q:'Записать суммарный импульс системы из n частиц с учётом внутренних взаимодействий и действия внешних сил Fвнеш.', a:'$\\vec P=\\sum_{i=1}^n \\vec p_i$, $\\ \\dfrac{d\\vec P}{dt}=\\vec F_{внеш}$ — внутренние силы взаимно компенсируются (III закон Ньютона).'},
+{n:19, g:'mech', q:'Тележка массой m столкнулась с покоящейся такой же тележкой и они сцепились без отскока и диссипации. Сцепка приобрела скорость 3v. Какова была скорость подвижной тележки до столкновения?', a:'Сохранение импульса: $mv_0=(m+m)\\cdot3v \\Rightarrow v_0=6v$.'},
+{n:20, g:'mech', q:'Единица измерения силы в СИ? Какое ускорение приобретёт тело массой 1 кг под действием одной единицы силы?', a:'Ньютон, Н = кг·м/с². Тело массой 1 кг получит ускорение 1 м/с² — это и есть определение ньютона.'},
+{n:21, g:'mech', q:'Сформулируйте закон сохранения импульса.', a:'Если сумма внешних сил, действующих на систему, равна нулю, суммарный импульс системы остаётся постоянным.'},
+{n:22, g:'mech', q:'Назовите виды силы трения, возникающей между перемещаемым телом и поверхностью.', a:'Трение покоя, трение скольжения, трение качения (иногда отдельно — вязкое/жидкостное трение).'},
+{n:23, g:'mech', q:'Показать, как вычислить жёсткость пружины k, если масса m сдавливает вертикально установленную пружину на Δl.', a:'Из равновесия: $mg=k\\Delta l \\Rightarrow k=\\dfrac{mg}{\\Delta l}$.'},
+{n:24, g:'mech', q:'Сформулируйте теорему о движении центра масс.', a:'Центр масс системы частиц движется как материальная точка, в которой сосредоточена вся масса системы, под действием суммы внешних сил: $M\\vec a_{ц.м.}=\\vec F_{внеш}$.'},
+{n:25, g:'mech', q:'Запишите выражение для кинетической энергии тела массой m, двигающегося со скоростью v.', a:'$K=\\dfrac{mv^2}{2}$.'},
+{n:26, g:'mech', q:'В каких единицах измеряется работа в системе СИ? Выразите эту единицу через кг, м, с.', a:'Джоуль, Дж $=\\text{кг·м}^2/\\text{с}^2$.'},
+{n:27, g:'mech', q:'Как изменится кинетическая энергия тела, если его скорость увеличится в 3 раза?', a:'$K\\propto v^2 \\Rightarrow$ увеличится в 9 раз.'},
+{n:28, g:'mech', q:'Запишите выражение для работы силы F по перемещению тела на расстояние dx.', a:'$dA=\\vec F\\cdot d\\vec x=F\\cos\\theta\\,dx$.'},
+{n:29, g:'mech', q:'Сравните работу силы тяжести при падении тела с высоты вертикально вниз и при скатывании по наклонной плоскости с той же высоты.', a:'Работы равны: $A=mgh$ в обоих случаях — сила тяжести потенциальна, работа не зависит от формы пути.'},
+{n:30, g:'mech', q:'Выразите работу сил упругости при сжатии пружины жёсткостью k от длины x₀ до длины x₁.', a:'$A=\\dfrac{kx_0^2}{2}-\\dfrac{kx_1^2}{2}$.'},
+{n:31, g:'mech', q:'Чему равна работа по поднятию тела массой m на высоту h вблизи поверхности Земли?', a:'$A=mgh$.'},
+{n:32, g:'mech', q:'Запишите формулу потенциальной энергии упруго деформированной пружины.', a:'$U=\\dfrac{kx^2}{2}$.'},
+{n:33, g:'mech', q:'Определение момента силы. Единица измерения момента силы.', a:'$\\vec M=\\vec r\\times\\vec F$, единица — Н·м.'},
+{n:34, g:'mech', q:'Производная момента импульса по времени. Закон сохранения момента импульса.', a:'$\\dfrac{d\\vec L}{dt}=\\vec M$. Если суммарный момент внешних сил равен нулю, момент импульса системы сохраняется.'},
+{n:35, g:'thermo', q:'Первое начало термодинамики.', a:'$Q=\\Delta U+A$ — теплота идёт на изменение внутренней энергии и на работу, совершаемую системой.'},
+{n:36, g:'thermo', q:'Определение относительной атомной массы и молекулярной массы.', a:'Масса атома (молекулы), выраженная в атомных единицах массы — относительно 1/12 массы атома углерода-12.'},
+{n:37, g:'thermo', q:'Определение и единица измерения количества вещества.', a:'Количество вещества ν — число структурных единиц (атомов/молекул) в веществе; единица — моль. 1 моль содержит число Авогадро $N_A\\approx6{,}02\\times10^{23}$ частиц.'},
+{n:38, g:'thermo', q:'Работа газа при расширении. Изобразить графически в осях pV.', a:'$A=\\displaystyle\\int_{V_1}^{V_2}p\\,dV$ — численно равна площади под кривой процесса на диаграмме $p$–$V$.'},
+{n:39, g:'thermo', q:'Определение температуры в термодинамике.', a:'Величина, характеризующая степень нагретости тела и определяющая направление самопроизвольного теплообмена; в молекулярно-кинетической теории — мера средней кинетической энергии теплового движения молекул.'},
+{n:40, g:'thermo', q:'Уравнение состояния идеального газа.', a:'$pV=\\nu RT=\\dfrac{m}{M}RT$.'},
+{n:41, g:'thermo', q:'Связь внутренней энергии и абсолютной температуры для идеального одноатомного газа.', a:'$U=\\dfrac{3}{2}\\nu RT$.'},
+{n:42, g:'thermo', q:'Первое начало термодинамики.', a:'$Q=\\Delta U+A$ (то же соотношение, что и в вопросе 35).'},
+{n:43, g:'electro', q:'Выразить силу взаимодействия двух точечных зарядов q₁ и q₂, отстоящих друг от друга на расстоянии d, в вакууме.', a:'$F=\\dfrac{1}{4\\pi\\varepsilon_0}\\dfrac{q_1q_2}{d^2}$ — закон Кулона.'},
+{n:44, g:'electro', q:'Как проходит вектор напряжённости электрического поля E относительно эквипотенциальной поверхности?', a:'Перпендикулярно эквипотенциальной поверхности, направлен в сторону убывания потенциала.'},
+{n:45, g:'electro', q:'Определение и единица измерения потенциала.', a:'Потенциал — потенциальная энергия единичного положительного заряда в данной точке поля; единица — вольт (В = Дж/Кл).'},
+{n:46, g:'electro', q:'Ёмкость плоского конденсатора в вакууме.', a:'$C=\\dfrac{\\varepsilon_0 S}{d}$.'},
+{n:47, g:'electro', q:'Условия возникновения постоянного тока.', a:'Наличие свободных носителей заряда, замкнутая цепь и источник ЭДС (сторонние силы), поддерживающий разность потенциалов.'},
+{n:48, g:'electro', q:'Определение силы тока.', a:'$I=\\dfrac{dq}{dt}$ — заряд, переносимый через сечение проводника в единицу времени.'},
+{n:49, g:'electro', q:'Закон Ома для участка цепи.', a:'$I=\\dfrac{U}{R}$.'},
+{n:50, g:'electro', q:'Формула зависимости сопротивления от материала, площади сечения S и длины проводника l.', a:'$R=\\rho\\dfrac{l}{S}$, где $\\rho$ — удельное сопротивление материала.'},
+{n:51, g:'electro', q:'Если сила тока на участке цепи была I, напряжение не менялось, а сопротивление участка увеличили в 3 раза — какой станет сила тока?', a:'$I\'=\\dfrac{U}{3R}=\\dfrac{I}{3}$.'}
+];
+
+/* ================== RENDER ================== */
+const GROUP_LABEL = {mech:'Механика', thermo:'Термодинамика', electro:'Электричество и магнетизм'};
+const marked = new Set();
+
+function renderTabs(){
+  const tabsEl = document.getElementById('tabs');
+  let html = `<div class="tab-item" data-target="minimum-section" data-group="all" style="margin-bottom:14px;">
+      <span class="tab-flag" style="background:linear-gradient(180deg,var(--mech),var(--thermo),var(--electro));"></span>
+      <span><b>Вопросы минимума (1–51)</b></span>
+    </div>`;
+  let lastGroup = null;
+  T.forEach(t=>{
+    if(t.g !== lastGroup){
+      html += `<div class="tab-group-label">${GROUP_LABEL[t.g]}</div>`;
+      lastGroup = t.g;
+    }
+    html += `<div class="tab-item" data-target="topic-${t.n}" data-group="${t.g}">
+      <span class="tab-flag ${t.g}"></span>
+      <span><span class="tab-num">${t.n}.</span> ${t.title.split('.')[0]}</span>
+    </div>`;
+  });
+  tabsEl.innerHTML = html;
+  tabsEl.querySelectorAll('.tab-item').forEach(el=>{
+    el.addEventListener('click',()=>{
+      document.getElementById(el.dataset.target).scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+}
+
+const markedMin = new Set();
+
+function renderMinimum(){
+  const wrap = document.createElement('div');
+  wrap.className = 'min-section';
+  wrap.id = 'minimum-section';
+  wrap.innerHTML = `
+    <div class="min-header"><h2>Вопросы минимума</h2></div>
+    <p class="min-sub">Полный нумерованный список (1–51) из «Дополнения» к списку вопросов — тот самый набор, из которого на экзамене составят 15 вопросов на бланке. Кликните по вопросу, чтобы открыть краткий ответ.</p>
+    <div class="min-progress-row">
+      <div class="min-progress-track"><div class="min-progress-fill" id="minProgressFill"></div></div>
+      <div class="min-progress-label" id="minProgressLabel">0 / ${Q51.length} отмечено «знаю»</div>
+    </div>
+    <div class="jumpgrid" id="jumpgrid"></div>
+    <div class="qmin-list" id="qminList"></div>
+  `;
+  document.getElementById('content').appendChild(wrap);
+
+  document.getElementById('jumpgrid').innerHTML = Q51.map(item=>
+    `<button class="jump ${item.g}" data-jump="${item.n}" title="Вопрос ${item.n}">${item.n}</button>`
+  ).join('');
+
+  document.getElementById('qminList').innerHTML = Q51.map(item=>`
+    <div class="qmin ${item.g}" id="qmin-${item.n}" data-group="${item.g}" data-search="${(item.q+' '+item.a).toLowerCase().replace(/"/g,'&quot;')}">
+      <div class="qmin-top">
+        <span class="qmin-n">№${item.n}</span>
+        <div class="qmin-qtext">${item.q}</div>
+        <span class="qmin-toggle"></span>
+      </div>
+      <div class="qmin-answer">${item.a}</div>
+      <div class="qmin-know" data-n="${item.n}">знаю ✓</div>
+    </div>
+  `).join('');
+
+  document.querySelectorAll('.qmin-top').forEach(top=>{
+    top.addEventListener('click',()=>{
+      top.closest('.qmin').classList.toggle('open');
+    });
+  });
+
+  document.querySelectorAll('.qmin-know').forEach(btn=>{
+    btn.addEventListener('click',(e)=>{
+      e.stopPropagation();
+      const n = btn.dataset.n;
+      if(markedMin.has(n)){ markedMin.delete(n); btn.classList.remove('on'); }
+      else { markedMin.add(n); btn.classList.add('on'); }
+      document.getElementById(`jump-${n}`);
+      const jumpBtn = document.querySelector(`.jump[data-jump="${n}"]`);
+      if(jumpBtn) jumpBtn.classList.toggle('solved', markedMin.has(n));
+      updateMinProgress();
+    });
+  });
+
+  document.querySelectorAll('.jump').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const target = document.getElementById(`qmin-${btn.dataset.jump}`);
+      target.classList.add('open');
+      target.scrollIntoView({behavior:'smooth', block:'center'});
+    });
+  });
+
+  if(window.MathJax && MathJax.typesetPromise){ MathJax.typesetPromise(); }
+}
+
+function updateMinProgress(){
+  const total = Q51.length;
+  const done = markedMin.size;
+  document.getElementById('minProgressFill').style.width = (done/total*100)+'%';
+  document.getElementById('minProgressLabel').textContent = `${done} / ${total} отмечено «знаю»`;
+}
+
+function renderContent(){
+  const el = document.getElementById('content');
+  el.innerHTML = T.map(t=>`
+    <article class="topic ${t.g}" id="topic-${t.n}" data-group="${t.g}" data-search="${(t.title+' '+t.badges.join(' ')+' '+t.body).toLowerCase().replace(/"/g,'&quot;')}">
+      <div class="topic-head">
+        <div>
+          <div class="topic-num">${t.n}</div>
+          <h2>${t.title}</h2>
+          <div class="badges">${t.badges.map(b=>`<span class="badge">${b}</span>`).join('')}</div>
+        </div>
+        <button class="mark-btn" data-n="${t.n}" title="Отметить пройденным">✓</button>
+      </div>
+      <div class="topic-body">
+        ${t.diagram ? t.diagram + `<div class="diagram-caption">${t.diagramCaption||''}</div>` : ''}
+        ${t.body}
+      </div>
+    </article>
+  `).join('');
+
+  el.querySelectorAll('.mark-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const n = btn.dataset.n;
+      if(marked.has(n)){ marked.delete(n); btn.classList.remove('on'); }
+      else { marked.add(n); btn.classList.add('on'); }
+      updateProgress();
+      syncTabDone();
+    });
+  });
+
+  if(window.MathJax && MathJax.typesetPromise){ MathJax.typesetPromise(); }
+}
+
+function syncTabDone(){
+  document.querySelectorAll('.tab-item').forEach(tab=>{
+    const n = tab.dataset.target.replace('topic-','');
+    tab.classList.toggle('done', marked.has(n));
+  });
+}
+
+function updateProgress(){
+  const total = T.length;
+  const done = marked.size;
+  document.getElementById('progressFill').style.width = (done/total*100)+'%';
+  document.getElementById('progressLabel').textContent = `${done} / ${total} отмечено пройденным`;
+}
+
+/* filters */
+function applyFilters(){
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const activeBtn = document.querySelector('.filter-btn[data-active="true"]');
+  const group = activeBtn ? activeBtn.dataset.group : 'all';
+  document.querySelectorAll('.topic').forEach(topic=>{
+    const matchesGroup = (group==='all') || topic.dataset.group===group;
+    const matchesSearch = !q || topic.dataset.search.includes(q);
+    topic.classList.toggle('hidden', !(matchesGroup && matchesSearch));
+  });
+  document.querySelectorAll('.qmin').forEach(card=>{
+    const matchesGroup = (group==='all') || card.dataset.group===group;
+    const matchesSearch = !q || card.dataset.search.includes(q);
+    const show = matchesGroup && matchesSearch;
+    card.classList.toggle('hidden', !show);
+    if(show && q) card.classList.add('open');
+  });
+  document.querySelectorAll('.jump').forEach(btn=>{
+    const card = document.getElementById(`qmin-${btn.dataset.jump}`);
+    btn.classList.toggle('hidden', card ? card.classList.contains('hidden') : false);
+  });
+  document.querySelectorAll('.tab-item').forEach(tab=>{
+    if(tab.dataset.target==='minimum-section') return;
+    const matchesGroup = (group==='all') || tab.dataset.group===group;
+    tab.classList.toggle('hidden', !matchesGroup);
+  });
+}
+
+document.getElementById('search').addEventListener('input', applyFilters);
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-btn').forEach(b=>b.dataset.active='false');
+    btn.dataset.active='true';
+    applyFilters();
+  });
+});
+
+/* countdown to July 6, 2026 */
+function renderCountdown(){
+  const exam = new Date('2026-07-06T09:00:00');
+  const now = new Date();
+  const days = Math.max(0, Math.ceil((exam-now)/(1000*60*60*24)));
+  document.getElementById('countdown').innerHTML = `<b>${days}</b> дней до экзамена`;
+}
+
+renderTabs();
+renderContent();
+renderMinimum();
+renderCountdown();
+updateProgress();
+updateMinProgress();
+
+/* scrollspy */
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
+      const tab = document.querySelector(`.tab-item[data-target="${entry.target.id}"]`);
+      if(tab) tab.classList.add('active');
+    }
+  });
+}, {rootMargin:'-15% 0px -75% 0px'});
+document.querySelectorAll('.topic').forEach(t=>observer.observe(t));
+</script>
 </body>
 </html>
